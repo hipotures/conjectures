@@ -1,0 +1,475 @@
+\pdfoutput=1
+\documentclass[11pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1.15in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage[section]{placeins}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\usepackage{orcidlink}
+\usepackage[capitalise,nameinlink]{cleveref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\sv}{\ell_2}
+
+\title[Power-of-two cycles in censuses of cubic graphs]{Cycles of length 4, 8, 16 and 32\\ in censuses of cubic graphs}
+
+\author[A. Marszałek]{Andrzej Marszałek\,\orcidlink{0009-0006-6148-2965}}
+\address{Independent Researcher}
+\urladdr{https://github.com/hipotures/conjectures}
+
+\subjclass[2020]{05C38, 05C25, 05C35, 68V05}
+\keywords{Erdős–Gyárfás conjecture, cubic graphs, vertex-transitive graphs, arc-transitive graphs, graph censuses, girth}
+
+\date{27 November 2026}
+
+\begin{document}
+
+\begin{abstract}
+The Erdős–Gyárfás conjecture states that every graph of minimum degree at least
+three contains a cycle whose length is a power of two. We check it, with
+explicit and independently verified witnesses, on three published lists of
+cubic graphs. All $1{,}436{,}474$ connected cubic graphs of girth at least $9$
+on $58$ to $64$ vertices contain a $16$-cycle. All $111{,}360$ graphs of the
+Potočnik--Spiga--Verret census of cubic vertex-transitive graphs on at most
+$1280$ vertices, and all $3{,}815$ graphs of Conder's list of cubic symmetric
+graphs on at most $10{,}000$ vertices, contain a cycle of length $4$, $8$, $16$
+or $32$. We determine the shortest power-of-two cycle length of every graph.
+It is $32$ for exactly $100$ vertex-transitive graphs, the smallest of which has
+$180$ vertices, and for exactly $689$ symmetric graphs, the smallest of which has
+$1050$ vertices. Among symmetric graphs the share that needs a $32$-cycle grows
+from about $1\%$ below $1280$ vertices to about $25\%$ between $5000$ and
+$10{,}000$ vertices.
+\end{abstract}
+
+\maketitle
+
+%======================================================================
+\section{Introduction}
+
+\begin{quote}
+\textbf{Conjecture} (Erdős and Gyárfás, 1995; see~\cite{Erdos1997}).
+Every finite simple graph of minimum degree at least three contains a cycle
+whose length is a power of two.
+\end{quote}
+
+The conjecture is open even for cubic graphs. Exhaustive searches exclude small
+counterexamples: a counterexample has more than $40$ vertices, and more than
+$48$ if it is cubic~\cite{DucoffeDumitru2026}; a cubic bipartite one has at
+least $86$ vertices~\cite{Marszalek2026b}. Exoo~\cite{Exoo2014} found a cubic
+graph on $78$ vertices without cycles of length $4$, $8$ and $16$, and Ripatti's
+search~\cite{Ripatti2017} indicates that no smaller cubic graph has this
+property. Among structured classes, Burkhart~\cite{Burkhart2026} proved the
+conjecture for Cayley graphs of groups of odd order and of nilpotent groups.
+Cubic Cayley graphs of other groups, and cubic vertex-transitive graphs that are
+not Cayley graphs, are not covered. Gebendorfer~\cite{Gebendorfer2026} studied
+the cubic vertex-transitive bipartite graphs of girth $12$ without a $16$-cycle.
+
+Graphs of large girth are natural places to look for counterexamples, since
+they have no short cycles at all, and many of the smallest known cubic graphs
+of a given girth are vertex-transitive or arc-transitive. Such graphs are also
+the usual starting points for constructions that avoid short power-of-two
+cycles, such as voltage lifts and vertex replacements~\cite{Exoo2014,Marszalek2026}.
+Complete lists of these graphs exist up to certain orders, and we check all of
+them.
+
+For a graph $G$ let $\sv(G)$ be the least power of two $2^k\ge 4$ such that $G$
+has a cycle of length $2^k$ (and $\sv(G)=\infty$ if there is none).
+
+\begin{theorem}\label{thm:girth9}
+Every connected cubic graph of girth at least $9$ on at most $64$ vertices
+contains a $16$-cycle.
+\end{theorem}
+
+\begin{corollary}\label{cor:girth8}
+Every cubic graph of girth at least $8$ on at most $64$ vertices contains a
+cycle of length $8$ or $16$.
+\end{corollary}
+
+\begin{proof}
+Let $G$ be such a graph without an $8$-cycle. Then $G$ has girth at least $9$,
+so each component has at least $58$ vertices~\cite{BrinkmannMcKaySaager1995},
+and $G$ is connected. \Cref{thm:girth9} applies.
+\end{proof}
+
+\begin{theorem}\label{thm:vt}
+Every graph in the Potočnik--Spiga--Verret census of connected cubic
+vertex-transitive graphs on at most $1280$ vertices~\cite{PSV2013} contains a
+cycle of length $4$, $8$, $16$ or $32$. Exactly $100$ of the $111{,}360$ graphs
+have $\sv(G)=32$; the smallest has $180$ vertices.
+\end{theorem}
+
+\begin{theorem}\label{thm:sym}
+Every graph in Conder's list of connected cubic symmetric (arc-transitive)
+graphs on at most $10{,}000$ vertices~\cite{ConderList} contains a cycle of
+length $4$, $8$, $16$ or $32$. Exactly $689$ of the $3{,}815$ graphs have
+$\sv(G)=32$; the smallest has $1050$ vertices.
+\end{theorem}
+
+\Cref{thm:girth9} assumes that the House of Graphs lists of cubic graphs of
+girth at least $9$~\cite{HoG} are complete, and \cref{thm:vt,thm:sym} are
+statements about the two censuses as published; we do not regenerate them. Since
+the censuses are complete~\cite{PSV2013,ConderList}, \cref{thm:vt,thm:sym} say
+that every connected cubic vertex-transitive graph on at most $1280$ vertices,
+and every connected cubic symmetric graph on at most $10{,}000$ vertices, has a
+cycle of length $4$, $8$, $16$ or $32$. If Ripatti's result~\cite{Ripatti2017}
+is correct, it implies \cref{thm:girth9} (but not \cref{thm:vt,thm:sym}, whose
+graphs are larger); our proof is independent of it.
+
+\Cref{tab:summary} summarises the three computations.
+
+\begin{table}[ht]
+\centering
+\caption{The three censuses and the distribution of $\sv(G)$.}
+\label{tab:summary}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+census & orders & graphs & $\sv=4$ & $\sv=8$ & $\sv=16$ & $\sv=32$\\
+\midrule
+cubic, girth $\ge 9$~\cite{HoG} & $58$--$64$ & $1{,}436{,}474$ & -- & -- & $1{,}436{,}474$ & --\\
+vertex-transitive~\cite{PSV2013} & $4$--$1280$ & $111{,}360$ & $5{,}756$ & $16{,}624$ & $88{,}880$ & $100$\\
+symmetric~\cite{ConderList} & $4$--$10{,}000$ & $3{,}815$ & $3$ & $111$ & $3{,}012$ & $689$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Nature of the proof}
+The proofs are computer-assisted. A search program finds, for each graph, a
+cycle of length $\sv(G)$ and reports it. A second program, written separately,
+reads the original census files with its own parsers, checks every reported
+cycle edge by edge, and confirms with a different search algorithm that no
+shorter power-of-two cycle exists. The positive part of each statement (a cycle
+exists) therefore rests only on the census files and on a check that a given
+vertex sequence is a cycle. The minimality of $\sv(G)$, which is needed for the
+counts but not for \cref{thm:girth9,thm:vt,thm:sym} themselves, rests on the
+two searches agreeing.
+
+%======================================================================
+\section{The censuses}\label{sec:censuses}
+
+All input files are fixed by their SHA-256 hashes in the repository
+(\cref{sec:repro}).
+
+\emph{Cubic graphs of girth at least $9$.} House of Graphs~\cite{HoG} provides
+the connected cubic graphs of girth at least $9$ on $58$, $60$, $62$ and $64$
+vertices: $18$, $474$, $27{,}169$ and $1{,}408{,}813$ graphs, in graph6 format.
+There is none on fewer than $58$ vertices, and the $18$ graphs on $58$
+vertices are the $(3,9)$-cages~\cite{BrinkmannMcKaySaager1995}.
+
+\emph{Cubic vertex-transitive graphs.} Potočnik, Spiga and Verret~\cite{PSV2013}
+determined all connected cubic vertex-transitive graphs on at most $1280$
+vertices. We use the database release~\cite{PSVdata}, whose file
+\code{main\_Graph.txt} contains $111{,}705$ rows. The $111{,}360$ rows with a
+census index are the census; the other $345$ rows carry no census index and
+no adjacency lists, and we do not use them. We write $\mathrm{CVT}(n,i)$ for
+the graph of order $n$ with census index $i$. Each graph is read from its
+adjacency lists (the column \code{raw\_magma\_code}); the census also records
+the girth of every graph, which we compare with our own computation.
+
+\emph{Cubic symmetric graphs.} Conder~\cite{ConderList} lists all connected
+cubic arc-transitive graphs on at most $10{,}000$ vertices, extending the list
+of Conder and Dobcsányi~\cite{ConderDobcsanyi2002}. The file gives each graph as
+a set of edges, with a header line stating its name (such as
+$\mathrm{C1050.1}$), girth and other invariants.
+
+%======================================================================
+\section{Method}\label{sec:method}
+
+\subsection{Search}
+Let $G$ be a cubic graph and $v_0$ a vertex. For $h\ge 2$ a cycle of length
+$2h$ through $v_0$ is the union of two paths of length $h$ from $v_0$ to the
+vertex $w$ opposite $v_0$ on the cycle, and the two paths have disjoint sets of
+inner vertices. Conversely:
+
+\begin{lemma}\label{lem:mitm}
+Let $P=v_0x_1\cdots x_{h-1}w$ and $Q=v_0y_1\cdots y_{h-1}w$ be paths with the same
+ends and $\{x_1,\dots,x_{h-1}\}\cap\{y_1,\dots,y_{h-1}\}=\emptyset$. Then
+$v_0x_1\cdots x_{h-1}wy_{h-1}\cdots y_1$ is a cycle of length $2h$.
+\end{lemma}
+
+\begin{proof}
+The $2h$ listed vertices are distinct: $v_0$ and $w$ are ends of both paths and
+so occur in neither interior, and the interiors are disjoint. Consecutive
+vertices, including $y_1$ and $v_0$, are adjacent.
+\end{proof}
+
+The search program \code{census\_scan} therefore lists all paths of length $h$
+from $v_0$ (at most $3\cdot 2^{h-1}$ in a cubic graph), sorts them by end
+vertex, and looks for two paths with the same end and disjoint interiors. This
+finds a $2h$-cycle through $v_0$ whenever one exists. The program tries
+$h=2,4,8,16$ in turn and stops at the first $h$ for which a cycle exists.
+
+\begin{lemma}\label{lem:vt}
+If $G$ is vertex-transitive and has a cycle of length $L$, then every vertex
+of $G$ lies on a cycle of length $L$.
+\end{lemma}
+
+\begin{proof}
+An automorphism maps a vertex of the cycle to any given vertex, and maps the
+cycle to a cycle of the same length.
+\end{proof}
+
+For the vertex-transitive and symmetric censuses the program therefore searches
+through $v_0=0$ only, and $\sv(G)$ is the least $L$ for which a cycle through
+$0$ is found. For the girth-$9$ graphs it searches through every vertex. In
+each case it reports $\sv(G)$, the girth, and one cycle of length $\sv(G)$ as
+a list of vertices.
+
+\subsection{Checking}
+The checker \code{check\_witnesses.py} does not use the search program's input
+files. It reads the census files with its own parsers (a character scanner for
+the adjacency lists, a line-based reader for Conder's file, and its own graph6
+decoder) and, for every graph:
+\begin{enumerate}[label=(\roman*)]
+\item checks that the graph is simple, cubic and connected;
+\item checks that the reported cycle has $\sv(G)$ distinct vertices and that
+consecutive vertices, including the last and the first, are adjacent;
+\item computes the girth and compares it with the search program and, for the
+vertex-transitive and symmetric censuses, with the girth stored in the census;
+\item confirms minimality. For the girth-$9$ graphs the girth computed here
+(from every vertex) is at least $9$, which excludes $4$- and $8$-cycles. For the
+other two censuses, a depth-first search over paths $0=x_0,x_1,\dots$ pruned by
+$\operatorname{dist}(x_d,0)\le L-d$ finds no cycle of length $L$ through $0$ for
+each power of two $L<\sv(G)$, and finds one for $L=\sv(G)$.
+\end{enumerate}
+It also checks that every graph has exactly one result line and that the number
+of graphs agrees with \cref{sec:censuses}.
+
+The girth is computed as follows: for a vertex $s$, a breadth-first search
+labels each vertex by the neighbour of $s$ through which it is first reached;
+the least value of $d(u)+d(w)+1$ over edges $uw$ with differently labelled ends
+is the length of a shortest cycle through $s$ (both tree paths together with
+$uw$ form a cycle, and along any cycle through $s$ the label must change on
+some edge whose ends are close enough to $s$). Vertex-transitivity is taken
+from the census and not checked.
+
+%======================================================================
+\section{Results}\label{sec:results}
+
+\Cref{thm:girth9}: every one of the $1{,}436{,}474$ graphs has $\sv(G)=16$.
+
+\Cref{tab:vt,tab:sym} give $\sv(G)$ by girth for the vertex-transitive and the symmetric
+census.
+Rows with girth $4$, $8$ or $16$ are immediate, since then $\sv(G)$ equals the
+girth; graphs of girth at least $17$ have $\sv(G)\ge 32$ for the same reason.
+
+\begin{table}[ht]
+\centering
+\caption{Cubic vertex-transitive graphs on at most $1280$ vertices: number of
+graphs by girth $g$ and shortest power-of-two cycle length $\sv$.}
+\label{tab:vt}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$g$ & $\sv=4$ & $\sv=8$ & $\sv=16$ & $\sv=32$ & total\\
+\midrule
+3 & 2 & 3 & 102 & 53 & 160\\
+4 & 5{,}754 & & & & 5{,}754\\
+5 & & 14 & 83 & 3 & 100\\
+6 & & 2{,}957 & 55{,}692 & 25 & 58{,}674\\
+7 & & 121 & 70 & 1 & 192\\
+8 & & 13{,}529 & & & 13{,}529\\
+9 & & & 218 & 1 & 219\\
+10 & & & 25{,}805 & 1 & 25{,}806\\
+11 & & & 80 & & 80\\
+12 & & & 5{,}407 & 16 & 5{,}423\\
+13 & & & 37 & & 37\\
+14 & & & 1{,}365 & & 1{,}365\\
+15 & & & 12 & & 12\\
+16 & & & 9 & & 9\\
+\addlinespace
+total & 5{,}756 & 16{,}624 & 88{,}880 & 100 & 111{,}360\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Cubic symmetric graphs on at most $10{,}000$ vertices: number of
+graphs by girth $g$ and shortest power-of-two cycle length $\sv$.}
+\label{tab:sym}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$g$ & $\sv=4$ & $\sv=8$ & $\sv=16$ & $\sv=32$ & total\\
+\midrule
+3 & 1 & & & & 1\\
+4 & 2 & & & & 2\\
+5 & & 2 & & & 2\\
+6 & & 7 & 1{,}559 & & 1{,}566\\
+7 & & 2 & 8 & 9 & 19\\
+8 & & 100 & & & 100\\
+9 & & & 40 & & 40\\
+10 & & & 290 & 21 & 311\\
+11 & & & 7 & 4 & 11\\
+12 & & & 571 & 310 & 881\\
+13 & & & 2 & 1 & 3\\
+14 & & & 248 & 125 & 373\\
+15 & & & 22 & 14 & 36\\
+16 & & & 265 & & 265\\
+17--20 & & & & 205 & 205\\
+\addlinespace
+total & 3 & 111 & 3{,}012 & 689 & 3{,}815\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\emph{Smallest examples.} The smallest vertex-transitive graph with $\sv(G)=32$
+is $\mathrm{CVT}(180,50)$: it has girth $3$, is a Cayley graph and is not
+arc-transitive. The $53$ graphs of girth $3$ with $\sv(G)=32$ are the most
+numerous group; the smallest graph with $\sv(G)=32$ and girth at least $4$ is
+$\mathrm{CVT}(504,257)$, of girth $6$. The smallest symmetric graph with
+$\sv(G)=32$ is $\mathrm{C1050.1}$, bipartite of girth $12$. Six symmetric graphs
+on at most $1280$ vertices have $\sv(G)=32$ ($\mathrm{C1050.1}$,
+$\mathrm{C1134.3}$, $\mathrm{C1134.4}$, $\mathrm{C1134.5}$, $\mathrm{C1140.4}$,
+$\mathrm{C1248.1}$), and they are exactly the arc-transitive graphs among the
+$100$ of \cref{thm:vt}. The file \code{data/shortest32.tsv} lists all $789$
+graphs with $\sv(G)=32$ together with a $32$-cycle.
+
+\emph{Growth with the order.} Among symmetric graphs, the share with
+$\sv(G)=32$ is $1.2\%$ ($6$ of $482$) up to $1280$ vertices, $6.4\%$ ($31$ of
+$487$) from $1281$ to $2560$, $18.8\%$ ($177$ of $942$) from $2561$ to $5000$,
+and $24.9\%$ ($475$ of $1904$) from $5001$ to $10{,}000$ vertices. Among
+vertex-transitive graphs it stays below $0.11\%$ in each quarter of the range
+up to $1280$ vertices. No graph in either census needs a $64$-cycle.
+
+\emph{Girth $12$.} The $16$ graphs of girth $12$ in \cref{tab:vt} with
+$\sv(G)=32$ are all bipartite, and no non-bipartite vertex-transitive graph of
+girth $12$ on at most $1280$ vertices lacks a $16$-cycle. This agrees with
+Gebendorfer's count of exactly sixteen cubic vertex-transitive bipartite graphs
+of girth twelve without a $16$-cycle in the same census, each with a
+$32$-cycle~\cite{Gebendorfer2026}.
+
+%======================================================================
+\section{Validation}\label{sec:validation}
+
+Besides the checker of \cref{sec:method}, we ran the following checks.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Census metadata.} The girth computed by both programs agrees with
+the girth stored in the census for all $111{,}360$ vertex-transitive and all
+$3{,}815$ symmetric graphs.
+\item \emph{Negative controls.} The script \code{test\_checker.py} feeds the
+checker corrupted results for the Möbius--Kantor graph and the Heawood graph: a
+claimed $16$-cycle where an $8$-cycle exists, a cycle of the wrong length, a
+non-adjacent step, a repeated vertex, a wrong girth (reported or in the
+census), a mismatched graph name, a missing cycle, and a graph of girth $6$
+offered as a girth-$9$ graph. The checker rejects each of them and accepts the
+two correct results.
+\item \emph{A second search program.} An earlier scanner, written
+independently in Rust in the author's research workspace and not part of this
+repository, gives the same value of $\sv(G)$ for every graph of all three
+censuses.
+\item \emph{Prior counts.} The census sizes agree with the published
+ones~\cite{PSV2013,ConderList,HoG}, and the girth-$12$ count agrees
+with~\cite{Gebendorfer2026}.
+\end{enumerate}
+
+%======================================================================
+\section{Reproducibility}\label{sec:repro}
+
+Everything is in the repository \url{https://github.com/hipotures/conjectures},
+in the folder \code{results/}\allowbreak\code{cubic-census-power-of-two-cycles},
+and is in the public domain (CC0). The script \code{run\_census.py} downloads the six input files (about
+$2.6$\,GB, mostly the vertex-transitive census) and checks their SHA-256 hashes
+against \code{data/sources.json}. It then compiles and runs the search program
+\code{src/census\_scan.cpp}, runs the checker \code{check\_witnesses.py}, and
+writes the files \code{data/summary.json} and \code{data/shortest32.tsv}. Once the
+files are downloaded, a run takes about three and a half minutes on a $16$-core
+machine: about a minute to convert the files, half a minute for the searches
+and a minute and a half for the checks.
+
+\section*{Use of AI tools}
+This work was carried out with substantial assistance from AI systems, mainly
+Gemini~4~Neon (Google) and Claude Opus~5.5 (Anthropic), used through the
+Antigravity and Claude Code environments. They were used to write and run the
+search and checking programs and to draft the text. AI systems are not authors
+of this paper. The author takes responsibility for the content and for the
+attribution of prior work.
+
+\section*{Acknowledgements}
+This work relies entirely on the censuses of Primož Potočnik, Pablo Spiga and
+Gabriel Verret, of Marston Conder, and of House of Graphs, and on their public
+release.
+
+\begin{thebibliography}{99}
+
+\bibitem{BrinkmannMcKaySaager1995}
+G.~Brinkmann, B.~D.~McKay and C.~Saager, \emph{The smallest cubic graphs of
+girth nine}, Combin. Probab. Comput. \textbf{4} (1995), 317--329,
+\url{https://doi.org/10.1017/S0963548300001693}.
+
+\bibitem{Burkhart2026}
+M.~C.~Burkhart, \emph{Odd-ordered Cayley graphs satisfy Erdős--Gyárfás},
+arXiv:2611.05060, 2026.
+
+\bibitem{ConderList}
+M.~Conder, \emph{Trivalent (cubic) symmetric graphs on up to 10000 vertices},
+list of edge sets, 2024,
+\url{https://www.math.auckland.ac.nz/~conder/AllSymmCubic-OrderUpTo10000-ByEdgeSets.txt.gz}.
+
+\bibitem{ConderDobcsanyi2002}
+M.~Conder and P.~Dobcsányi, \emph{Trivalent symmetric graphs on up to 768
+vertices}, J. Combin. Math. Combin. Comput. \textbf{40} (2002), 41--63.
+
+\bibitem{HoG}
+K.~Coolsaet, S.~D'hondt and J.~Goedgebeur, \emph{House of Graphs 2.0: a
+database of interesting graphs and more}, Discrete Appl. Math. \textbf{325}
+(2023), 97--107, \url{https://doi.org/10.1016/j.dam.2022.10.013}. Lists:
+\url{https://houseofgraphs.org/meta-directory/cubic}.
+
+\bibitem{DucoffeDumitru2026}
+G.~Ducoffe and B.~Dumitru, \emph{Towards a more structured search for
+Erdős--Gyárfás counter-examples}, arXiv:2609.28594, 2026.
+
+\bibitem{Erdos1997}
+P.~Erdős, \emph{Some old and new problems in various branches of combinatorics},
+Discrete Math. \textbf{165/166} (1997), 227--231.
+
+\bibitem{Exoo2014}
+G.~Exoo, \emph{Three graphs and the Erdős--Gyárfás conjecture},
+arXiv:1403.5636, 2014.
+
+\bibitem{Gebendorfer2026}
+J.~J.~Gebendorfer, \emph{The Erdős--Gyárfás conjecture for cubic
+vertex-transitive graphs of girth twelve without sixteen-cycles: flat covers,
+chains, and the dodecagon-factor frontier}, preprint, Zenodo, 2026,
+\url{https://doi.org/10.5281/zenodo.21295085}.
+
+\bibitem{Marszalek2026}
+A.~Marszałek, \emph{Small graphs without cycles of length a power of two: new
+bounds with kernel-checked proofs}, preprint, 2026,
+\url{https://doi.org/10.5281/zenodo.24588313}.
+
+\bibitem{Marszalek2026b}
+A.~Marszałek, \emph{Every cubic bipartite graph on at most 84 vertices has a
+cycle of length 4, 8 or 16}, preprint, 2026,
+\url{https://github.com/hipotures/conjectures}.
+
+\bibitem{PSV2013}
+P.~Potočnik, P.~Spiga and G.~Verret, \emph{Cubic vertex-transitive graphs on up
+to 1280 vertices}, J. Symbolic Comput. \textbf{50} (2013), 465--477,
+\url{https://doi.org/10.1016/j.jsc.2012.09.002}.
+
+\bibitem{PSVdata}
+J.~Azarija, K.~Berčič, F.~Koprivec, T.~Marc, P.~Potočnik, P.~Rotar, P.~Spiga,
+G.~Verret and J.~Vidali, \emph{Cubic vertex-transitive graphs on up to 1280
+vertices}, dataset, Zenodo, 2022, \url{https://doi.org/10.5281/zenodo.6576526}.
+
+\bibitem{Ripatti2017}
+A.~V.~Ripatti, \emph{Faster approach for exhaustive search over graphs with
+certain properties}, abstract, BAIKAL 2017 conference, 2017.
+
+\end{thebibliography}
+
+\end{document}

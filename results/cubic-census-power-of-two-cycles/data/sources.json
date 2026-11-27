@@ -1,0 +1,38 @@
+{
+ "_note": "Input censuses. run_census.py downloads each file into the cache directory (or uses an existing copy) and refuses to continue if the SHA-256 differs.",
+ "files": {
+  "cub58g9.g6": {
+   "url": "https://houseofgraphs.org/data/cubics/cub58g9.g6",
+   "sha256": "6c5339042f2f48e9f596e154da3f0bc145d27cb835902f538618013c2439b5b2",
+   "graphs": 18
+  },
+  "cub60g9.g6": {
+   "url": "https://houseofgraphs.org/data/cubics/cub60g9.g6",
+   "sha256": "cfc7542f1ac8728b0d3a4dc69ba7a1795a49e6389dcf908d7624dd3e4dc6522f",
+   "graphs": 474
+  },
+  "cub62g9.g6.gz": {
+   "url": "https://houseofgraphs.org/data/cubics/cub62g9.g6.gz",
+   "sha256": "f1932360e7520e0af26e1fa7bf82af88cb66c9fab78157c8e992b15e0c7218c7",
+   "graphs": 27169
+  },
+  "cub64g9.g6.gz": {
+   "url": "https://houseofgraphs.org/data/cubics/cub64g9.g6.gz",
+   "sha256": "26800e3f3d0abaf8ec58a336bba388881c2690283b6b55b9fc9fa9477ea28ae8",
+   "graphs": 1408813
+  },
+  "main_Graph.txt": {
+   "url": "https://zenodo.org/api/records/6576526/files/main_Graph.txt/content",
+   "doi": "10.5281/zenodo.6576526",
+   "sha256": "95d8a0ecdf9ed49031a41dc272d90b104d742dd55fe7f0bf1ded97a4f7c4562c",
+   "md5_published_by_zenodo": "765f758067248cd4530a40f3f3ef9541",
+   "graphs": 111360,
+   "_rows": "Rows with ids 1..111360 are the census of Potocnik, Spiga and Verret (they carry a cvt_index and raw_magma_code). The 345 further rows (ids 111361..111705) have neither and are not used."
+  },
+  "AllSymmCubic-OrderUpTo10000-ByEdgeSets.txt.gz": {
+   "url": "https://www.math.auckland.ac.nz/~conder/AllSymmCubic-OrderUpTo10000-ByEdgeSets.txt.gz",
+   "sha256": "0170b695405da4c7b6eeaec8af13a8fb06e059fac439c2030acb5acd82dcf4e7",
+   "graphs": 3815
+  }
+ }
+}

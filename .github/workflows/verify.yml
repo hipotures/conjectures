@@ -33,3 +33,11 @@ jobs:
         run: python3 results/cubic-bipartite-power-of-two-cycles/independent_check.py
       - name: Search and witness checkers at small caps (cubic bipartite graphs)
         run: python3 results/cubic-bipartite-power-of-two-cycles/reproduce.py --quick
+      - name: Census checker rejects corrupted results (cubic censuses)
+        run: python3 results/cubic-census-power-of-two-cycles/test_checker.py
+      - name: Census scanner smoke test on the (3,10)-cages (cubic censuses)
+        run: |
+          g++ -O3 -std=c++17 -pthread results/cubic-census-power-of-two-cycles/src/census_scan.cpp -o /tmp/census_scan
+          awk '{print NR"\t"$0}' results/cubic-bipartite-power-of-two-cycles/data/cagesk3g10.g6 \
+            | /tmp/census_scan --mode general --girth --workers 2 | tee /tmp/cages.tsv
+          test "$(cut -f3,4 /tmp/cages.tsv | sort -u)" = "$(printf '10\t16')"

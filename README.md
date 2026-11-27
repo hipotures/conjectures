@@ -16,11 +16,14 @@ to reproduce it.
 |---|---|---|:-:|---|
 | [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Small graphs without cycles of length a power of two](results/small-graphs-power-of-two-cycles/) | preprint, v1.0.0 | A | [PDF](results/small-graphs-power-of-two-cycles/paper.pdf) · [TeX](results/small-graphs-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas) · [Python](results/small-graphs-power-of-two-cycles/verify.py) · [Data](results/small-graphs-power-of-two-cycles/data) |
 | [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Cubic bipartite graphs on at most 84 vertices have a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/) | draft | B | [PDF](results/cubic-bipartite-power-of-two-cycles/paper.pdf) · [TeX](results/cubic-bipartite-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas/CubicBipartite.lean) · [C++](results/cubic-bipartite-power-of-two-cycles/src) · [Python](results/cubic-bipartite-power-of-two-cycles/independent_check.py) · [Data](results/cubic-bipartite-power-of-two-cycles/data) |
+| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Cycles of length 4, 8, 16 and 32 in censuses of cubic graphs](results/cubic-census-power-of-two-cycles/) | draft | C | [PDF](results/cubic-census-power-of-two-cycles/paper.pdf) · [TeX](results/cubic-census-power-of-two-cycles/paper.tex) · [C++](results/cubic-census-power-of-two-cycles/src) · [Python](results/cubic-census-power-of-two-cycles/check_witnesses.py) · [Data](results/cubic-census-power-of-two-cycles/data) |
 
 **Categories.** **A**: every claim is proved by the Lean kernel; no external
 computation is trusted. **B**: computer-assisted; Lean proves the reductions
 and the soundness of the certificate checkers, while the exhaustive search runs
-outside Lean and is reproducible from the published code.
+outside Lean and is reproducible from the published code. **C**: a computation
+over published lists of graphs; every positive answer is an explicit object
+checked by a separately written program, and no Lean is involved.
 
 Each result lives in its own folder under `results/`, and each problem has its
 own Lean library under `lean/`. New problems are added the same way.
@@ -84,6 +87,33 @@ proved in Lean.
 
 </td>
 </tr>
+<tr>
+<td width="42%" valign="top"><a href="results/cubic-census-power-of-two-cycles/paper.pdf"><img src="assets/cubic-census-power-of-two-cycles/page1.png" alt="First page of the paper"></a></td>
+<td valign="top">
+
+### [Cycles of length 4, 8, 16 and 32 in censuses of cubic graphs](results/cubic-census-power-of-two-cycles/paper.pdf)
+
+Erdős–Gyárfás conjecture · category C · 6 pages · draft
+
+All **1,436,474** connected cubic graphs of girth ≥ 9 on 58–64 vertices have a
+16-cycle. Every graph in the census of cubic vertex-transitive graphs up to
+1280 vertices (**111,360** graphs) and in Conder's list of cubic symmetric
+graphs up to 10,000 vertices (**3,815** graphs) has a cycle of length 4, 8, 16
+or 32.
+
+A 32-cycle is needed by 100 vertex-transitive graphs (smallest: 180 vertices)
+and by 689 symmetric graphs (smallest: C1050.1). Among symmetric graphs this
+share grows from 1% below 1280 vertices to 25% near 10,000. Every cycle is
+checked by a separate program that reads the census files itself.
+
+[PDF](results/cubic-census-power-of-two-cycles/paper.pdf) ·
+[TeX](results/cubic-census-power-of-two-cycles/paper.tex) ·
+[how it is checked](results/cubic-census-power-of-two-cycles/README.md) ·
+[C++](results/cubic-census-power-of-two-cycles/src) ·
+[data](results/cubic-census-power-of-two-cycles/data)
+
+</td>
+</tr>
 </table>
 
 ### Visual highlights: small graphs without power-of-two cycles
@@ -140,6 +170,12 @@ category-A witnesses are proved 2-connected.
 | a cubic bipartite graph without C4, C8, C16 has ≥ **86** vertices | 60 (Tranquilli), 70 (Zhuge) | category B, draft | Lean: case split and witness soundness |
 | a cubic bipartite graph of girth ≥ 10 without C16 has ≥ **90** vertices | — | category B, draft | Branch B of the same proof |
 
+| Census | Graphs | Result | Status |
+|---|--:|---|---|
+| cubic, girth ≥ 9, 58–64 vertices | 1,436,474 | all have C16 | category C, draft |
+| cubic vertex-transitive, ≤ 1280 vertices | 111,360 | all have C4, C8, C16 or C32; 100 need C32 | category C, draft |
+| cubic symmetric, ≤ 10,000 vertices | 3,815 | all have C4, C8, C16 or C32; 689 need C32 | category C, draft |
+
 ---
 
 ## Verification
@@ -158,7 +194,9 @@ Every push runs [`verify.yml`](.github/workflows/verify.yml):
    the constructions from data extracted from the Lean sources and checks them
    with separately written code. For category B, CI runs the independent
    reimplementation and the search programs at small caps; the full computation
-   is reproduced with `reproduce.py` (see the result's README).
+   is reproduced with `reproduce.py` (see the result's README). For category C,
+   CI runs the checker's negative controls and a small search; the census
+   computation is reproduced with `run_census.py`.
 
 To reproduce locally:
 
