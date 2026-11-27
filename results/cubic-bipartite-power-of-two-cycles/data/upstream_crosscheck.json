@@ -1,0 +1,230 @@
+{
+ "_note": "Output of Tranquilli's unchanged triangle_root_universal_search.cpp, compiled with -DSIDE=cap and run single-threaded on a 16-core AMD Ryzen 9 7950X3D. 'structural' is the program's 'pair' counter. 'matches_this_work' compares all counters with data/expected_counts.json (per orbit for branch_a caps, orbit sums for branch_a_small caps).",
+ "upstream": {
+  "repository": "https://github.com/floor-licker/erdos-gyarfas-cubic-bipartite",
+  "commit": "67adc92d31d5d1edfbd0a7b845dc232e31c412cd",
+  "triangle_root_universal_search.cpp_sha256": "e778648bc3d5b0a19c860bec1371a542c464652693c2cbc4c2cd5ef05f314f41",
+  "transcript_sha256.hpp_sha256": "bd04b4ac76d0e77733ff0badabcf5a89d3c20f0ad9977bbfb9733770349934a1"
+ },
+ "compile": "g++ -O3 -march=native -std=c++17 -DSIDE=<cap> triangle_root_universal_search.cpp (g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0)",
+ "runs": {
+  "20": {
+   "orbit1": {
+    "states": 75,
+    "attempted": 2133,
+    "structural": 223,
+    "c8": 1788,
+    "c16": 48,
+    "completions": 0,
+    "transcript_sha256": "8172cdc40c83507e69648949731272acefa66e0aa753842f5897bc45a9e8b8f5"
+   },
+   "orbit2": {
+    "states": 408,
+    "attempted": 16205,
+    "structural": 1599,
+    "c8": 13863,
+    "c16": 336,
+    "completions": 0,
+    "transcript_sha256": "60ab7313257f3616119c3ac6f6977309926e2a501a00d26493e032e3e71d827a"
+   }
+  },
+  "22": {
+   "orbit1": {
+    "states": 138,
+    "attempted": 5432,
+    "structural": 529,
+    "c8": 4158,
+    "c16": 608,
+    "completions": 0,
+    "transcript_sha256": "a6d26017bea1987248e470857a2cb72e58f09063bde4148a28abd747fcbf176c"
+   },
+   "orbit2": {
+    "states": 874,
+    "attempted": 38384,
+    "structural": 3437,
+    "c8": 32786,
+    "c16": 1288,
+    "completions": 0,
+    "transcript_sha256": "998b8a73088106e462bbeb7569adf04d5315081f88d605d685adc53cbea121f3"
+   }
+  },
+  "24": {
+   "orbit1": {
+    "states": 241,
+    "attempted": 13180,
+    "structural": 1098,
+    "c8": 9778,
+    "c16": 2064,
+    "completions": 0,
+    "transcript_sha256": "6441b10f3fc0918165aa14716d7be305886c33e8187140466dc5686bda3eb3fc"
+   },
+   "orbit2": {
+    "states": 2166,
+    "attempted": 111638,
+    "structural": 9358,
+    "c8": 93389,
+    "c16": 6726,
+    "completions": 0,
+    "transcript_sha256": "12d4279b8bd7e03769b17040f3805d71fd9d8c236f5f7ec7425ee65ed231742c"
+   }
+  },
+  "26": {
+   "orbit1": {
+    "states": 502,
+    "attempted": 27980,
+    "structural": 2164,
+    "c8": 18754,
+    "c16": 6561,
+    "completions": 0,
+    "transcript_sha256": "3221c0627cc93828af50fabb0ccdff94f50e12c74c8758936b37a09d03b6f261"
+   },
+   "orbit2": {
+    "states": 5683,
+    "attempted": 361934,
+    "structural": 28275,
+    "c8": 286876,
+    "c16": 41101,
+    "completions": 0,
+    "transcript_sha256": "0c9aaa6de02b77e5fb9aa8d072536f99592784c343fb29e4a0278a8bda0d6085"
+   }
+  },
+  "29": {
+   "orbit1": {
+    "states": 1405,
+    "attempted": 106964,
+    "structural": 7184,
+    "c8": 63526,
+    "c16": 34850,
+    "completions": 0,
+    "transcript_sha256": "db17d0d30503871404b0027c13b05d31560bc2cea808959db4bb4d43c78117aa"
+   },
+   "orbit2": {
+    "states": 20088,
+    "attempted": 1655404,
+    "structural": 113012,
+    "c8": 1208473,
+    "c16": 313832,
+    "completions": 0,
+    "transcript_sha256": "74747832e0d49f0a477037c74be2b95d4ef5568c0994d42babec85ec49710a39"
+   }
+  },
+  "34": {
+   "orbit1": {
+    "states": 23143,
+    "attempted": 2972750,
+    "structural": 180011,
+    "c8": 1424785,
+    "c16": 1344812,
+    "completions": 0,
+    "transcript_sha256": "db548be2919a7f8a8b28c5ded67aa622779dd3e22192ee8a2a1e065f8c07b4c5"
+   },
+   "orbit2": {
+    "states": 202602,
+    "attempted": 25227209,
+    "structural": 1432521,
+    "c8": 15207779,
+    "c16": 8384308,
+    "completions": 0,
+    "transcript_sha256": "c2e03a0f97ea3c649a5feaf4d4145b229da6f56aa31b8ebbdb8b769b18848607"
+   }
+  },
+  "35": {
+   "orbit1": {
+    "states": 51974,
+    "attempted": 7282166,
+    "structural": 441386,
+    "c8": 3199099,
+    "c16": 3589708,
+    "completions": 0,
+    "transcript_sha256": "0edb1fc4152ac64df243f319ae0792dd498a8ad87764509d2b05a32abec020cf"
+   },
+   "orbit2": {
+    "states": 353357,
+    "attempted": 47941559,
+    "structural": 2696312,
+    "c8": 27114667,
+    "c16": 17777224,
+    "completions": 0,
+    "transcript_sha256": "b372e68f14270eb26f1d3e08b8dc458bfeab4c5ae71bfd48f276ec1c3bb1ec59"
+   }
+  },
+  "40": {
+   "orbit1": {
+    "states": 1763196,
+    "attempted": 354095363,
+    "structural": 18070520,
+    "c8": 148081803,
+    "c16": 186179845,
+    "completions": 0,
+    "transcript_sha256": "ae0c65c6addaaab5f9b9de743f4d1c014071607658045ef7d0026a087f05773d",
+    "seconds": 245.1
+   },
+   "orbit2": {
+    "states": 12393295,
+    "attempted": 2606532806,
+    "structural": 135470813,
+    "c8": 1036826697,
+    "c16": 1421842002,
+    "completions": 0,
+    "transcript_sha256": "a035185fe90f50df96ad89f3f0c3ea267851ea88980d4f47ba3d446dcfdccad3",
+    "seconds": 1778.9
+   }
+  },
+  "41": {
+   "orbit1": {
+    "states": 3111947,
+    "attempted": 618690795,
+    "structural": 31187384,
+    "c8": 281123347,
+    "c16": 303268118,
+    "completions": 0,
+    "transcript_sha256": "f24690d4b84a78a3f7d3058382a9ef041206bdb046a8402b58a73e19b854de33",
+    "seconds": 417.7
+   },
+   "orbit2": {
+    "states": 30997584,
+    "attempted": 7353663962,
+    "structural": 373859991,
+    "c8": 2860026335,
+    "c16": 4088780053,
+    "completions": 0,
+    "transcript_sha256": "614909285250ba1b12e8784624b0532433fb7b5e67a2726d8da24c8bbf47be34",
+    "seconds": 5475.1
+   }
+  },
+  "42": {
+   "orbit1": {
+    "states": 5517089,
+    "attempted": 1141100929,
+    "structural": 56503556,
+    "c8": 567886245,
+    "c16": 511194040,
+    "completions": 0,
+    "transcript_sha256": "64c30932dcc50b72d46b9f7656267e7168aa380607c6aaa4650de75ca01c7ea3",
+    "seconds": 696.7
+   },
+   "orbit2": {
+    "states": 73104843,
+    "attempted": 19186516084,
+    "structural": 936237621,
+    "c8": 7358733813,
+    "c16": 10818439808,
+    "completions": 0,
+    "transcript_sha256": "29412b5d2eb6c237bb62743f89c6322be05a65e5d53da7c623fc6059b4bb4b4a",
+    "seconds": 14168.3
+   }
+  }
+ },
+ "matches_this_work": {
+  "20": true,
+  "22": true,
+  "24": true,
+  "26": true,
+  "29": true,
+  "34": true,
+  "35": true,
+  "40": true,
+  "41": true,
+  "42": true
+ }
+}

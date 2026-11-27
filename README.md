@@ -15,7 +15,7 @@ to reproduce it.
 | Problem | Result | Status | Category | Artifacts |
 |---|---|---|:-:|---|
 | [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Small graphs without cycles of length a power of two](results/small-graphs-power-of-two-cycles/) | preprint, v1.0.0 | A | [PDF](results/small-graphs-power-of-two-cycles/paper.pdf) · [TeX](results/small-graphs-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas) · [Python](results/small-graphs-power-of-two-cycles/verify.py) · [Data](results/small-graphs-power-of-two-cycles/data) |
-| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Cubic bipartite graphs on at most 84 vertices have a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/) | draft | B | [PDF](results/cubic-bipartite-power-of-two-cycles/paper.pdf) · [TeX](results/cubic-bipartite-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas/CubicBipartite.lean) · [C++](results/cubic-bipartite-power-of-two-cycles/src) · [Python](results/cubic-bipartite-power-of-two-cycles/independent_check.py) · [Data](results/cubic-bipartite-power-of-two-cycles/data) |
+| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Cubic bipartite graphs on at most 84 vertices have a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/) | preprint, v1.1.0 | B | [PDF](results/cubic-bipartite-power-of-two-cycles/paper.pdf) · [TeX](results/cubic-bipartite-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas/CubicBipartite.lean) · [C++](results/cubic-bipartite-power-of-two-cycles/src) · [Python](results/cubic-bipartite-power-of-two-cycles/independent_check.py) · [Data](results/cubic-bipartite-power-of-two-cycles/data) |
 | [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Cycles of length 4, 8, 16 and 32 in censuses of cubic graphs](results/cubic-census-power-of-two-cycles/) | draft | C | [PDF](results/cubic-census-power-of-two-cycles/paper.pdf) · [TeX](results/cubic-census-power-of-two-cycles/paper.tex) · [C++](results/cubic-census-power-of-two-cycles/src) · [Python](results/cubic-census-power-of-two-cycles/check_witnesses.py) · [Data](results/cubic-census-power-of-two-cycles/data) |
 
 **Categories.** **A**: every claim is proved by the Lean kernel; no external
@@ -65,7 +65,7 @@ the Lean kernel; `#print axioms` shows only `propext`, `Classical.choice`,
 
 ### [Every cubic bipartite graph on at most 84 vertices has a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/paper.pdf)
 
-Erdős–Gyárfás conjecture · category B · 8 pages · draft
+Erdős–Gyárfás conjecture · category B · 8 pages · preprint, v1.1.0
 
 A cubic bipartite counterexample needs at least **86** vertices (previously 60
 and 70). Graphs with a 6-cycle go through Tranquilli's triangle-rooted search
@@ -217,8 +217,8 @@ category-A witnesses are proved 2-connected.
 
 | Lower bound | Previous | Status | Notes |
 |---|---|---|---|
-| a cubic bipartite graph without C4, C8, C16 has ≥ **86** vertices | 60 (Tranquilli), 70 (Zhuge) | category B, draft | Lean: case split and witness soundness |
-| a cubic bipartite graph of girth ≥ 10 without C16 has ≥ **90** vertices | — | category B, draft | Branch B of the same proof |
+| a cubic bipartite graph without C4, C8, C16 has ≥ **86** vertices | 60 (Tranquilli), 70 (Zhuge) | category B, preprint v1.1.0 | Lean: case split and witness soundness |
+| a cubic bipartite graph of girth ≥ 10 without C16 has ≥ **90** vertices | — | category B, preprint v1.1.0 | Branch B of the same proof |
 
 | Census | Graphs | Result | Status |
 |---|--:|---|---|
