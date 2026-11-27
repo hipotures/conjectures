@@ -1,0 +1,25 @@
+name: verify
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lean:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install elan
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Build (kernel-checks every proof)
+        working-directory: lean
+        run: lake build
+      - name: Axiom audit
+        run: python3 scripts/check_axioms.py
+      - name: Forbidden constructs
+        run: python3 scripts/check_forbidden.py

@@ -1,0 +1,6 @@
+name = "erdos_gyarfas"
+version = "1.0.0"
+defaultTargets = ["ErdosGyarfas"]
+
+[[lean_lib]]
+name = "ErdosGyarfas"
