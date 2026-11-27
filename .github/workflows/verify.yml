@@ -29,3 +29,7 @@ jobs:
           git diff --exit-code -- results/
       - name: Independent checker (small graphs without power-of-two cycles)
         run: python3 results/small-graphs-power-of-two-cycles/verify.py
+      - name: Independent checks (cubic bipartite graphs)
+        run: python3 results/cubic-bipartite-power-of-two-cycles/independent_check.py
+      - name: Search and witness checkers at small caps (cubic bipartite graphs)
+        run: python3 results/cubic-bipartite-power-of-two-cycles/reproduce.py --quick

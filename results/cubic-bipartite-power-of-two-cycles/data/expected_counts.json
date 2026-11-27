@@ -1,0 +1,268 @@
+{
+ "_note": "Counters of the restricted-growth searches (states, attempted proposals, structural = degree or pair rejections, cN = rejections by an N-cycle witness, completions). branch_a: src/triangle_search.cpp per root orbit; for every cap the same counters are produced by Tranquilli's triangle_root_universal_search.cpp, commit 67adc92d (data/upstream_crosscheck.json). branch_b: src/girth10_search.cpp, accepted by src/girth10_verify.cpp. *_small: both orbits added, reproduced by independent_check.py.",
+ "branch_a_small": {
+  "20": {
+   "states": 483,
+   "attempted": 18338,
+   "structural": 1822,
+   "c8": 15651,
+   "c16": 384,
+   "completions": 0
+  },
+  "22": {
+   "states": 1012,
+   "attempted": 43816,
+   "structural": 3966,
+   "c8": 36944,
+   "c16": 1896,
+   "completions": 0
+  },
+  "24": {
+   "states": 2407,
+   "attempted": 124818,
+   "structural": 10456,
+   "c8": 103167,
+   "c16": 8790,
+   "completions": 0
+  },
+  "26": {
+   "states": 6185,
+   "attempted": 389914,
+   "structural": 30439,
+   "c8": 305630,
+   "c16": 47662,
+   "completions": 0
+  }
+ },
+ "branch_b_small": {
+  "31": {
+   "states": 65,
+   "attempted": 3591,
+   "structural": 299,
+   "c6": 1340,
+   "c8": 1376,
+   "c16": 512,
+   "completions": 0
+  },
+  "32": {
+   "states": 593,
+   "attempted": 134381,
+   "structural": 7011,
+   "c6": 65590,
+   "c8": 48388,
+   "c16": 12800,
+   "completions": 0
+  },
+  "33": {
+   "states": 4850,
+   "attempted": 397350,
+   "structural": 28291,
+   "c6": 215550,
+   "c8": 119988,
+   "c16": 28672,
+   "completions": 0
+  }
+ },
+ "branch_a": {
+  "29": {
+   "orbit1": {
+    "states": 1405,
+    "attempted": 106964,
+    "structural": 7184,
+    "c8": 63526,
+    "c16": 34850,
+    "completions": 0
+   },
+   "orbit2": {
+    "states": 20088,
+    "attempted": 1655404,
+    "structural": 113012,
+    "c8": 1208473,
+    "c16": 313832,
+    "completions": 0
+   }
+  },
+  "34": {
+   "orbit1": {
+    "states": 23143,
+    "attempted": 2972750,
+    "structural": 180011,
+    "c8": 1424785,
+    "c16": 1344812,
+    "completions": 0
+   },
+   "orbit2": {
+    "states": 202602,
+    "attempted": 25227209,
+    "structural": 1432521,
+    "c8": 15207779,
+    "c16": 8384308,
+    "completions": 0
+   }
+  },
+  "35": {
+   "orbit1": {
+    "states": 51974,
+    "attempted": 7282166,
+    "structural": 441386,
+    "c8": 3199099,
+    "c16": 3589708,
+    "completions": 0
+   },
+   "orbit2": {
+    "states": 353357,
+    "attempted": 47941559,
+    "structural": 2696312,
+    "c8": 27114667,
+    "c16": 17777224,
+    "completions": 0
+   }
+  },
+  "40": {
+   "orbit1": {
+    "states": 1763196,
+    "attempted": 354095363,
+    "structural": 18070520,
+    "c8": 148081803,
+    "c16": 186179845,
+    "completions": 0
+   },
+   "orbit2": {
+    "states": 12393295,
+    "attempted": 2606532806,
+    "structural": 135470813,
+    "c8": 1036826697,
+    "c16": 1421842002,
+    "completions": 0
+   }
+  },
+  "41": {
+   "orbit1": {
+    "states": 3111947,
+    "attempted": 618690795,
+    "structural": 31187384,
+    "c8": 281123347,
+    "c16": 303268118,
+    "completions": 0
+   },
+   "orbit2": {
+    "states": 30997584,
+    "attempted": 7353663962,
+    "structural": 373859991,
+    "c8": 2860026335,
+    "c16": 4088780053,
+    "completions": 0
+   }
+  },
+  "42": {
+   "orbit1": {
+    "states": 5517089,
+    "attempted": 1141100929,
+    "structural": 56503556,
+    "c8": 567886245,
+    "c16": 511194040,
+    "completions": 0
+   },
+   "orbit2": {
+    "states": 73104843,
+    "attempted": 19186516084,
+    "structural": 936237621,
+    "c8": 7358733813,
+    "c16": 10818439808,
+    "completions": 0
+   }
+  }
+ },
+ "branch_b": {
+  "35": {
+   "states": 28995,
+   "attempted": 6416316,
+   "structural": 334752,
+   "c6": 1013910,
+   "c8": 4217540,
+   "c16": 821120,
+   "completions": 0
+  },
+  "36": {
+   "states": 41571,
+   "attempted": 8044454,
+   "structural": 395768,
+   "c6": 1150772,
+   "c8": 5301400,
+   "c16": 1154944,
+   "completions": 0
+  },
+  "37": {
+   "states": 55684,
+   "attempted": 8406847,
+   "structural": 407992,
+   "c6": 1181052,
+   "c8": 5521416,
+   "c16": 1240704,
+   "completions": 0
+  },
+  "38": {
+   "states": 69092,
+   "attempted": 11408831,
+   "structural": 544920,
+   "c6": 2255036,
+   "c8": 7044104,
+   "c16": 1495680,
+   "completions": 0
+  },
+  "39": {
+   "states": 83749,
+   "attempted": 16916906,
+   "structural": 768230,
+   "c6": 4114728,
+   "c8": 9884728,
+   "c16": 2065472,
+   "completions": 0
+  },
+  "40": {
+   "states": 99477,
+   "attempted": 19929254,
+   "structural": 875102,
+   "c6": 5053904,
+   "c8": 11441060,
+   "c16": 2459712,
+   "completions": 0
+  },
+  "41": {
+   "states": 122678,
+   "attempted": 21779839,
+   "structural": 960350,
+   "c6": 5771896,
+   "c8": 12326772,
+   "c16": 2598144,
+   "completions": 0
+  },
+  "42": {
+   "states": 151270,
+   "attempted": 30152223,
+   "structural": 1310846,
+   "c6": 7802760,
+   "c8": 14160948,
+   "c16": 6726400,
+   "completions": 0
+  },
+  "43": {
+   "states": 430471,
+   "attempted": 66385632,
+   "structural": 3039214,
+   "c6": 16168760,
+   "c8": 23969780,
+   "c16": 22777408,
+   "completions": 0
+  },
+  "44": {
+   "states": 1192135,
+   "attempted": 259856800,
+   "structural": 11307910,
+   "c6": 84761220,
+   "c8": 72703376,
+   "c16": 89892160,
+   "completions": 0
+  }
+ }
+}

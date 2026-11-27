@@ -6,7 +6,7 @@ to reproduce it.
 
 **Author:** Andrzej Marszałek (Independent Researcher, ORCID
 [0009-0006-6148-2965](https://orcid.org/0009-0006-6148-2965)) ·
-**License:** CC0 1.0 (public domain) ·
+**License:** CC0 1.0 (public domain), except code adapted from MIT-licensed work, which keeps its MIT license ([details](results/cubic-bipartite-power-of-two-cycles/src/LICENSE)) ·
 [![verify](https://github.com/hipotures/conjectures/actions/workflows/verify.yml/badge.svg)](https://github.com/hipotures/conjectures/actions/workflows/verify.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24588312.svg)](https://doi.org/10.5281/zenodo.24588312)
 
@@ -15,7 +15,7 @@ to reproduce it.
 | Problem | Result | Status | Category | Artifacts |
 |---|---|---|:-:|---|
 | [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Small graphs without cycles of length a power of two](results/small-graphs-power-of-two-cycles/) | preprint, v1.0.0 | A | [PDF](results/small-graphs-power-of-two-cycles/paper.pdf) · [TeX](results/small-graphs-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas) · [Python](results/small-graphs-power-of-two-cycles/verify.py) · [Data](results/small-graphs-power-of-two-cycles/data) |
-| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | Cubic bipartite graphs on at most 84 vertices contain a cycle of length 4, 8 or 16 | in preparation | B | [Lean reductions](lean/ErdosGyarfas/CubicBipartite.lean) |
+| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Cubic bipartite graphs on at most 84 vertices have a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/) | draft | B | [PDF](results/cubic-bipartite-power-of-two-cycles/paper.pdf) · [TeX](results/cubic-bipartite-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas/CubicBipartite.lean) · [C++](results/cubic-bipartite-power-of-two-cycles/src) · [Python](results/cubic-bipartite-power-of-two-cycles/independent_check.py) · [Data](results/cubic-bipartite-power-of-two-cycles/data) |
 
 **Categories.** **A**: every claim is proved by the Lean kernel; no external
 computation is trusted. **B**: computer-assisted; Lean proves the reductions
@@ -121,9 +121,11 @@ Every push runs [`verify.yml`](.github/workflows/verify.yml):
 3. **Forbidden constructs.** [`scripts/check_forbidden.py`](scripts/check_forbidden.py)
    rejects `sorry`, `native_decide`, `implemented_by`, `extern` and `axiom` in
    code.
-4. **Independent checks.** Each result's `verify.py` rebuilds the constructions
-   from data extracted from the Lean sources and checks them with separately
-   written code.
+4. **Independent checks.** For category A, each result's `verify.py` rebuilds
+   the constructions from data extracted from the Lean sources and checks them
+   with separately written code. For category B, CI runs the independent
+   reimplementation and the search programs at small caps; the full computation
+   is reproduced with `reproduce.py` (see the result's README).
 
 To reproduce locally:
 
