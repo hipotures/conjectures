@@ -4,6 +4,7 @@ title: "Conjectures: formally verified results on open graph-theory problems"
 type: software
 version: "1.0.0"
 date-released: "2026-11-27"
+doi: "10.5281/zenodo.24588312"
 authors:
   - family-names: "Marszałek"
     given-names: "Andrzej"
