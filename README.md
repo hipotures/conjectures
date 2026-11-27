@@ -17,9 +17,10 @@ The conjecture is open. A counterexample would have to avoid cycles of lengths
 4, 8, 16, 32, … simultaneously. The extremal functions below measure how small
 a graph can be while avoiding only the first few of these lengths:
 
-- **f(k)** — the minimum order of a graph with minimum degree at least 3 that
-  has no cycle of length 4, 8, …, 2^k;
-- **f_cubic(k)** — the same, restricted to 3-regular graphs.
+- **f_δ≥3(k)** — the minimum order of a graph with minimum degree at least 3
+  that has no cycle of length 4, 8, …, 2^k;
+- **f_cubic(k)** — the same, restricted to 3-regular graphs (this is the f(k)
+  of Henry 2026).
 
 ### Results
 
@@ -31,16 +32,17 @@ Lean.
 
 | Result | Previous bound | Cat. | Lean theorem |
 |---|---|:-:|---|
-| f(4) ≤ **73** | 78 (cubic, Exoo) | A | `f_delta3_4_le_73`, `f_delta3_4_le_73_alt` |
-| f(5) ≤ **345** | 370 (cubic, Henry 2026) | A | `f_delta3_5_le_345` |
-| f_cubic(5) ≤ 370 | 370 (Henry 2026, found first) | A | `f_cubic_5_le_370` |
-| f_cubic(6) ≤ **10,498** | 10,522 (Henry's theorem with the 702-vertex girth-16 graph) | A | `f_cubic_6_le_10498` |
-| f_cubic(4) ≤ 78 | 78 (Exoo; optimal per Ripatti 2017) | A | `f_cubic_4_le_78` |
-| Gadget-lift cycle theorem | — | A | `liftGraph_cycle_dichotomy`, `liftGraph_no_cycle` |
+| f_δ≥3(4) ≤ **73** | 78 (cubic, Exoo) | A | `f_delta3_4_le_73`, `f_delta3_4_le_73_alt` |
+| f_δ≥3(5) ≤ **345** | 370 (cubic, Henry 2026) | A | `f_delta3_5_le_345` |
+| f_cubic(6) ≤ **10,498** | 10,522 (Henry's one-source theorem applied to Poláček's 702-vertex girth-16 graph) | A | `f_cubic_6_le_10498` |
+| f_cubic(5) ≤ 370 — independent rediscovery, first found by Henry (2026) | 370 | A | `f_cubic_5_le_370` |
+| f_cubic(4) ≤ 78 — formal check of a known bound | 78 (Exoo; optimal per Ripatti 2017) | A | `f_cubic_4_le_78` |
+| Cycle projection for 3-port gadget lifts — known (García 2026, Henry 2026), formalized here | — | A | `liftGraph_cycle_dichotomy`, `liftGraph_no_cycle` |
 | Every cubic bipartite graph on ≤ 84 vertices has a C4, C8, or C16 | ≤ 68 (Zhuge 2026) | B | reductions in `CubicBipartite` |
-| 370 and 345 are optimal among Tutte–Coxeter lifts by H7, H8\*, H15 | — | B | reductions in `TutteCoxeter` |
+| 370 and 345 are optimal among lifts of the Tutte–Coxeter graph by H7, H8\*, H15 | — | B | reductions in `TutteCoxeter` |
 
-All witnesses in category A are also proved 2-connected
+Bold entries are new bounds. The gadgets H7 and H15 are due to García (2026);
+H8\* was found in this work. All witnesses in category A are also proved 2-connected
 (`*_is2Connected`). Full statements, constructions, and references will be
 given in the accompanying papers (in preparation).
 
