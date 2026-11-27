@@ -5,6 +5,7 @@
 \usepackage[margin=1.15in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{booktabs}
+\usepackage[section]{placeins}
 \usepackage{microtype}
 \usepackage{enumitem}
 \usepackage{xcolor}
@@ -40,7 +41,7 @@
 \DeclareUnicodeCharacter{2264}{\ensuremath{\le}}
 \DeclareUnicodeCharacter{27E8}{\ensuremath{\langle}}
 \DeclareUnicodeCharacter{27E9}{\ensuremath{\rangle}}
-\DefineVerbatimEnvironment{leancode}{Verbatim}{fontsize=\small,frame=single,framesep=2mm,rulecolor=\color{black!30}}
+\DefineVerbatimEnvironment{leancode}{Verbatim}{fontsize=\small,frame=single,framesep=2mm,rulecolor=\color{black!30},samepage=true}
 
 \title[Small graphs without power-of-two cycles]{Small graphs without cycles of length a power of two:\\ new bounds with kernel-checked proofs}
 
@@ -153,7 +154,8 @@ $16$ from the House of Graphs~\cite{HoG}. Henry did not have this graph; we
 verify its girth formally.
 
 \subsection*{Formal verification}
-Each statement above is a theorem of a Lean~4~\cite{Lean4} library of about
+The three bounds of \cref{thm:main}, and the $2$-connectivity of the witnesses
+for parts (i) and (ii), are theorems of a Lean~4~\cite{Lean4} library of about
 $7{,}000$ lines. The library defines finite simple graphs and cycles from first
 principles and proves the soundness of the cycle checkers it uses. All finite
 computations, including a girth certificate for a $702$-vertex graph, are
@@ -237,7 +239,7 @@ Hence the lift minus $x$ is connected.
 
 The Petersen and Tutte--Coxeter graphs are $3$-connected, and $\Hseven$,
 $\Height$ and $\Hfifteen$ are $2$-connected. The $702$-vertex base of
-\cref{sec:packing} is connected, cubic and bipartite. A connected regular
+\cref{sec:packing} is connected, cubic and bipartite. A connected cubic
 bipartite graph has no bridge, and in a cubic graph vertex and edge
 connectivity coincide, so this base is $2$-connected too. This proves the last
 sentence of \cref{thm:main}. The formal version is
@@ -502,8 +504,8 @@ sources in $S$ be pairwise at distance at least $g/2+1$. Every base cycle then
 has $w(D)\ge 3g>2^{k-1}$. A base cycle of length $\ell\ge g+1$ meets at most
 $\lfloor \ell/(g/2+1)\rfloor$ sources, so $w(D)\ge 4\ell-\lfloor\ell/(g/2+1)\rfloor\ge 4g+3$.
 A base cycle of length $g$ meets at most one source, and the argument above gives
-$w(D)\ge 4g+1$. Hence $\fc(k)\le 15N-8|S|$. For $|S|=1$ this is Henry's
-refinement. The Lean formalization covers only $k=6$.
+$w(D)\ge 4g+1$. Hence $\fc(k)\le 15N-8|S|$. For $|S|=1$ this recovers Henry's
+bound. The Lean formalization covers only $k=6$.
 \end{remark}
 
 \begin{proof}[Proof of \cref{thm:main}(iii)]
@@ -578,11 +580,13 @@ definitions the three parts of \cref{thm:main} read:
 \begin{leancode}
 theorem f_delta3_4_le_73 : ∃ G : FinGraph 73,
     G.MinDegAtLeast 3 ∧ ¬ G.HasCycle 4 ∧ ¬ G.HasCycle 8 ∧ ¬ G.HasCycle 16
-
+\end{leancode}
+\begin{leancode}
 theorem f_delta3_5_le_345 : ∃ G : FinGraph 345,
     G.MinDegAtLeast 3 ∧ ¬ G.HasCycle 4 ∧ ¬ G.HasCycle 8 ∧
     ¬ G.HasCycle 16 ∧ ¬ G.HasCycle 32
-
+\end{leancode}
+\begin{leancode}
 theorem f_cubic_6_le_10498 : ∃ G : FinGraph 10498,
     G.IsCubic ∧ ¬ G.HasCycle 4 ∧ ¬ G.HasCycle 8 ∧
     ¬ G.HasCycle 16 ∧ ¬ G.HasCycle 32 ∧ ¬ G.HasCycle 64
