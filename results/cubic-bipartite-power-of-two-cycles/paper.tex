@@ -11,10 +11,12 @@
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
 \usepackage[hidelinks]{hyperref}
 \usepackage{xurl}
 \usepackage{orcidlink}
 \usepackage[capitalise,nameinlink]{cleveref}
+\crefname{figure}{Figure}{Figures}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -114,7 +116,7 @@ a $16$-cycle.
 \begin{table}[ht]
 \centering
 \caption{Lower bounds for the order of a cubic bipartite counterexample. The
-last two rows require only a cycle of length $4$, $8$ or $16$.}
+last three rows require only a cycle of length $4$, $8$ or $16$.}
 \label{tab:history}
 \begin{tabular}{@{}llll@{}}
 \toprule
@@ -130,8 +132,9 @@ this paper & cubic bipartite & $n\le \mathbf{84}$ & yes\\
 
 Let $\fcb(4)$ denote the least order of a cubic bipartite graph without cycles
 of length $4$, $8$ and $16$. \Cref{thm:main} gives $\fcb(4)\ge 86$. For
-comparison, the least order of a cubic graph without these cycles is
-$78$~\cite{Exoo2014,Ripatti2017}, and a graph of minimum degree at least three
+comparison, Exoo~\cite{Exoo2014} found a cubic graph on $78$ vertices without
+these cycles, Ripatti's exhaustive search~\cite{Ripatti2017} indicates that
+none is smaller, and a graph of minimum degree at least three
 without them exists on $73$ vertices~\cite{Marszalek2026}.
 
 \subsection*{Nature of the proof}
@@ -175,7 +178,8 @@ length $4$, $6$ or $8$.
 \end{proof}
 
 \begin{lemma}[incremental cycle tests]\label{lem:incremental}
-Let $\mathcal H$ be a partial configuration and $B=\{x,y,z\}$ a new block. The
+Let $\mathcal H$ be a partial configuration, $B=\{x,y,z\}$ a new block and
+$k\ge 2$. The
 Levi graph of $\mathcal H+B$ has a $2k$-cycle through $B$ if and only if the Levi
 graph of $\mathcal H$ has a simple path of length $2k-2$ between two points of
 $B$; equivalently, $\mathcal H$ contains $k-1$ distinct blocks
@@ -206,28 +210,30 @@ each state:
   $(q_0,r_0)$ if $p$ changes). If there is none, the state is a
   \emph{completion} if the number of blocks equals $m$; stop.
 \item If there are already $\mathrm{cap}$ blocks, stop.
-\item The candidates for $q<r$ are: introduced points $q>p$ of degree less than
-  $3$ not yet paired with $p$, and the fresh labels $m$ and $m+1$ (if they are
-  less than $\mathrm{cap}$). The second fresh label $m+1$ is used only together
-  with $m$. Propose the blocks $\{p,q,r\}$ with $(q,r)>(q_0,r_0)$ in
-  lexicographic order.
-\item Reject a proposal that violates a degree or pair condition
-  (\emph{structural} rejection), or that closes a forbidden Berge cycle
-  (\cref{lem:incremental}). Otherwise insert it, introduce the fresh labels it
-  uses, and recurse.
+\item The \emph{candidate points} are the introduced points greater than $p$
+  of degree less than $3$ that are not yet paired with $p$, and the fresh labels
+  $m$ and $m+1$ (if they are less than $\mathrm{cap}$). Propose the blocks
+  $\{p,q,r\}$ with candidate points $q<r$ and $(q,r)>(q_0,r_0)$, in
+  lexicographic order, where the second fresh label $m+1$ is used only together
+  with $m$.
+\item Reject a proposal whose points $q$ and $r$ are already paired
+  (\emph{structural} rejection; the conditions involving $p$ were applied in
+  (3)), or that closes a forbidden Berge cycle (\cref{lem:incremental}).
+  Otherwise insert it, introduce the fresh labels it uses, and recurse.
 \end{enumerate}
 The forbidden cycles are the $8$- and $16$-cycles in Branch~A and the $6$-, $8$-
-and $16$-cycles in Branch~B. Branch~B also stops when the total degree deficit
-of the introduced points exceeds three times the number of blocks that may still
-be added; this is sound because each block supplies three incidences and a
-completion with at most $\mathrm{cap}$ points has at most $\mathrm{cap}$ blocks.
+and $16$-cycles in Branch~B. Every proposal counted in the tables below is
+either rejected or expanded, and every expansion creates one new state; so the
+number of proposals equals the number of rejections plus the number of states
+minus one (the root state).
 
 \begin{proposition}[coverage]\label{prop:coverage}
 Let $\mathcal T$ be a connected linear configuration with at most
 $\mathrm{cap}$ points and no forbidden Berge cycle. Let $R$ be a set of blocks of
-$\mathcal T$, with its points labelled $0,\dots,m-1$, such that every point
-$u<s$ lies in three blocks of $R$, and every block of $\mathcal T\setminus R$
-through $s$ is lexicographically after $(q_0,r_0)$. Then the search started from
+$\mathcal T$, with its points labelled $0,\dots,m-1$, such that every block of
+$R$ contains a point at most $s$, every point $u<s$ lies in three blocks of
+$R$, and every block of $\mathcal T\setminus R$ through $s$ is
+lexicographically after $(q_0,r_0)$. Then the search started from
 the state $(R,s,(q_0,r_0))$ reaches a completion isomorphic to $\mathcal T$.
 \end{proposition}
 
@@ -286,10 +292,14 @@ depth $5$. All nodes at depth $4$ and $5$ lie in the branch of the point $0$.
 Hence the tree path between any two of the $46$ nodes has length at most $8$:
 inside the branch of $0$ both nodes are at depth at most $4$ below $0$, and
 otherwise the path passes through $\beta$ and one end is at depth at most $3$.
-If two nodes were the same vertex of the Levi graph, this path would be a closed
-non-backtracking walk of length at most $8$, which contains a cycle of length at
-most $8$. This is impossible in girth at least $10$, so all $31$ points and $15$
-blocks are distinct, and they can be labelled as displayed.
+Suppose two nodes are the same vertex of the Levi graph, and choose such a pair
+at minimal distance in the tree. Then the internal nodes of the tree path
+between them are distinct vertices, different from its ends. The path has length
+at least $3$, because the children of a node are distinct neighbours of it other
+than its parent. So the path is a cycle of length at most $8$, impossible in
+girth at least $10$. Hence
+all $31$ points and $15$ blocks are distinct, and they can be labelled as
+displayed.
 \end{proof}
 
 All points $0,\dots,6$ are saturated in this root, and every block through $7$
@@ -301,12 +311,14 @@ with $s=7$ and no previous block.
 \begin{tikzpicture}[
   pt/.style={circle,draw,inner sep=1.2pt,minimum size=12pt,font=\scriptsize},
   bl/.style={rectangle,draw,fill=black!8,inner sep=1.5pt,minimum size=8pt},
+  dl/.style={font=\scriptsize,text=black!50,anchor=west},
   x=0.42cm,y=0.95cm]
-  \node[bl] (r) at (0,4) {};
-  \node[font=\scriptsize,right] at (r.east) {$\{0,1,2\}$};
+  \foreach \d/\y in {0/4.4,1/3,2/2,3/1,4/0.15} \node[dl] at (-17.3,\y) {depth \d};
+  \node[bl] (r) at (0,4.4) {};
+  \node[font=\scriptsize,right] at (r.east) {$\beta=\{0,1,2\}$};
   \foreach \p/\x in {0/-10,1/0,2/10} \node[pt] (p\p) at (\x,3) {\p};
   \foreach \p in {0,1,2} \draw (r)--(p\p);
-  % second level blocks and points 3..14
+  % depth 2 blocks and depth 3 points 3..14
   \foreach \a/\b/\c/\x in {0/3/4/-12.5,0/5/6/-7.5,1/7/8/-2.5,1/9/10/2.5,2/11/12/7.5,2/13/14/12.5}{
     \node[bl] (b\b) at (\x,2) {};
     \draw (p\a)--(b\b);
@@ -314,13 +326,15 @@ with $s=7$ and no previous block.
     \node[pt] (p\c) at (\x+1.1,1) {\c};
     \draw (b\b)--(p\b); \draw (b\b)--(p\c);
   }
-  % third level from 3..6
+  % depth 4 blocks below 3..6
   \foreach \p/\x in {3/-13.6,4/-11.4,5/-8.6,6/-6.4}{
     \node[bl] (c\p a) at (\x-0.55,0.15) {};
     \node[bl] (c\p b) at (\x+0.55,0.15) {};
     \draw (p\p)--(c\p a); \draw (p\p)--(c\p b);
   }
-  \node[font=\scriptsize,align=left,anchor=west] at (-4.5,0.0) {two further blocks through each of $3,4,5,6$:\\ $16$ distinct new points $15,\dots,30$};
+  \draw[decorate,decoration={brace,mirror,amplitude=4pt},black!60] (-14.5,-0.25) -- (-5.5,-0.25);
+  \node[font=\scriptsize,align=center,anchor=north] at (-10,-0.45)
+    {$8$ blocks, two through each of $3,4,5,6$;\\ their other points are $15,\dots,30$ (depth $5$, not drawn)};
 \end{tikzpicture}
 \caption{The root of Branch B (\cref{lem:moore-root}): $15$ blocks on $31$
 points in the Levi graph. Squares are blocks, circles are points.}
@@ -376,12 +390,16 @@ $v$ ($n\le 2v$) & orbit & states & proposals & structural & $C_8$ & $C_{16}$\\
 \midrule
 29 (58) & 1 & 1{,}405 & 106{,}964 & 7{,}184 & 63{,}526 & 34{,}850\\
         & 2 & 20{,}088 & 1{,}655{,}404 & 113{,}012 & 1{,}208{,}473 & 313{,}832\\
+\addlinespace
 34 (68) & 1 & 23{,}143 & 2{,}972{,}750 & 180{,}011 & 1{,}424{,}785 & 1{,}344{,}812\\
         & 2 & 202{,}602 & 25{,}227{,}209 & 1{,}432{,}521 & 15{,}207{,}779 & 8{,}384{,}308\\
+\addlinespace
 40 (80) & 1 & 1{,}763{,}196 & 354{,}095{,}363 & 18{,}070{,}520 & 148{,}081{,}803 & 186{,}179{,}845\\
         & 2 & 12{,}393{,}295 & 2{,}606{,}532{,}806 & 135{,}470{,}813 & 1{,}036{,}826{,}697 & 1{,}421{,}842{,}002\\
+\addlinespace
 41 (82) & 1 & 3{,}111{,}947 & 618{,}690{,}795 & 31{,}187{,}384 & 281{,}123{,}347 & 303{,}268{,}118\\
         & 2 & 30{,}997{,}584 & 7{,}353{,}663{,}962 & 373{,}859{,}991 & 2{,}860{,}026{,}335 & 4{,}088{,}780{,}053\\
+\addlinespace
 42 (84) & 1 & 5{,}517{,}089 & 1{,}141{,}100{,}929 & 56{,}503{,}556 & 567{,}886{,}245 & 511{,}194{,}040\\
         & 2 & 73{,}104{,}843 & 19{,}186{,}516{,}084 & 936{,}237{,}621 & 7{,}358{,}733{,}813 & 10{,}818{,}439{,}808\\
 \bottomrule
@@ -427,7 +445,10 @@ Branch~B with cap $42$ reaches it. Both searches have no completion.
 
 \begin{proof}[Proof of \cref{thm:girth10}]
 The same argument with Branch~B alone and cap $44$; a graph of girth at least
-$10$ has no $4$-, $6$- or $8$-cycle, so only the $16$-cycle can be missing.
+$10$ has no $4$-, $6$- or $8$-cycle, so only the $16$-cycle can be missing. The
+three $(3,10)$-cages~\cite{OKeefeWong1980,Wong1983} are bipartite, cubic, of
+girth $10$ and order $70$ (their bipartiteness is also checked by
+\code{independent\_check.py}), so the first part applies to them.
 \end{proof}
 
 %======================================================================
@@ -443,7 +464,8 @@ an error in the enumeration, that is, in the implementation of
   Tranquilli (commit \code{67adc92d}, whose
   SHA-256 we checked against the published manifest). We compiled that program,
   unchanged, for the caps $20,22,24,26,29,34,35,\dots,42$. For every cap and
-  orbit, all six counters agree with \cref{tab:branchA}. Tranquilli's program
+  orbit, all six counters agree: the five columns of \cref{tab:branchA} and the
+  number of completions, which is zero. Tranquilli's program
   is single-threaded and does not share the subtree splitting.
 \item \emph{An independent implementation.} The file
   \code{independent\_check.py} implements both schedules from their description
@@ -487,10 +509,13 @@ axioms:
   checkers;
 \item \lean{c6\_two\_orbit\_dichotomy}: the case analysis of \cref{lem:triangle};
 \item \lean{girth10\_moore\_tree\_62}: a cubic graph of girth at least $10$ has
-  at least $62$ vertices, the vertex count underlying \cref{lem:moore-root}.
+  at least $62$ vertices (the edge-rooted Moore bound). Its proof shows that an
+  edge-rooted tree of depth four has $62$ distinct vertices; the $46$-node tree of
+  \cref{lem:moore-root} is a subtree of it, but \cref{lem:moore-root} itself is
+  not formalized.
 \end{itemize}
-The formalization does not cover \cref{prop:coverage}, the root labelling of
-\cref{lem:moore-root}, or the correctness of the C++ programs. For this reason
+The formalization does not cover \cref{prop:coverage}, \cref{lem:moore-root},
+or the correctness of the C++ programs. For this reason
 we regard \cref{thm:main} as a computer-assisted result, verified by the
 cross-checks of \cref{sec:validation}, and not as a formally verified one.
 

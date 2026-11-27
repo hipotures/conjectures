@@ -237,11 +237,6 @@ class G10CertGen {
         }
         if (static_cast<int>(blocks_.size()) >= V_) return;
 
-        // Exact necessary deficit bound (also checked identically in verifier):
-        int deficit = 0;
-        for (int u = point; u < introduced_; ++u) deficit += (3 - deg_[u]);
-        if (deficit > 3 * (V_ - static_cast<int>(blocks_.size()))) return;
-
         const int old = introduced_;
         std::vector<int> possible;
         possible.reserve(V_);

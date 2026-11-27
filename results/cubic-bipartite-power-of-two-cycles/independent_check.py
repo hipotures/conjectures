@@ -117,8 +117,7 @@ class Config:
         return any(self.has_path(x, y, length - 2) for x, y in ((a, b), (a, c), (b, c)))
 
 
-def run(cfg: Config, start_point: int, tests: tuple[int, ...], deficit_bound: bool,
-        replay=None):
+def run(cfg: Config, start_point: int, tests: tuple[int, ...], replay=None):
     """Restricted-growth search. `tests` are the cycle lengths tested in order
     (e.g. (8, 16) or (6, 8, 16)). Returns the counters. If `replay` is given it is a
     function choosing the single block to follow at each state (coverage replay)."""
@@ -137,10 +136,6 @@ def run(cfg: Config, start_point: int, tests: tuple[int, ...], deficit_bound: bo
             return
         if len(cfg.blocks) >= cfg.cap:
             return
-        if deficit_bound:
-            deficit = sum(3 - cfg.deg(u) for u in range(point, cfg.introduced))
-            if deficit > 3 * (cfg.cap - len(cfg.blocks)):
-                return
         old = cfg.introduced
         cands = [q for q in range(point + 1, old)
                  if cfg.deg(q) < 3 and frozenset((point, q)) not in cfg.pairs]
@@ -199,7 +194,7 @@ def branch_a(cap: int) -> dict:
         for b in TRIANGLE_ROOT + [blk]:
             cfg.add(b)
         cfg.introduced = intro
-        cnt, rec = run(cfg, 1, (8, 16), deficit_bound=False)
+        cnt, rec = run(cfg, 1, (8, 16))
         rec(1, (2, 4))
         for k, v in cnt.items():
             total[k] = total.get(k, 0) + v
@@ -211,7 +206,7 @@ def branch_b(cap: int) -> dict:
     for b in GIRTH10_ROOT:
         cfg.add(b)
     cfg.introduced = 31
-    cnt, rec = run(cfg, 7, (6, 8, 16), deficit_bound=True)
+    cnt, rec = run(cfg, 7, (6, 8, 16))
     rec(7, None)
     return cnt
 
@@ -305,7 +300,7 @@ def replay_cage(adj, root_block, flip, tests=(6, 8)):
     for b in GIRTH10_ROOT:
         cfg.add(b)
     cfg.introduced = 31
-    cnt, rec = run(cfg, 7, tests, deficit_bound=True, replay=chooser)
+    cnt, rec = run(cfg, 7, tests, replay=chooser)
     rec(7, None)
     return cnt
 

@@ -6,7 +6,7 @@
 // Checker for the Branch B witness streams written by girth10_search.cpp.
 //
 // Rebuilds the root, replays the restricted-growth schedule, recomputes degree and pair
-// rejections and the deficit bound, and checks every C6 (2 blocks), C8 (3 blocks) and
+// rejections, and checks every C6 (2 blocks), C8 (3 blocks) and
 // C16 (7 blocks) witness against the current configuration. It never searches for cycles.
 // Fails on any malformed witness, on a completed configuration, on trailing bytes, or if
 // the counters differ from the header.
@@ -238,10 +238,6 @@ class G10Verifier {
             return;
         }
         if (static_cast<int>(blocks_.size()) >= V_) return;
-
-        int deficit = 0;
-        for (int u = point; u < introduced_; ++u) deficit += (3 - deg_[u]);
-        if (deficit > 3 * (V_ - static_cast<int>(blocks_.size()))) return;
 
         const int old = introduced_;
         std::vector<int> possible;
