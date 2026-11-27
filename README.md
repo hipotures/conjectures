@@ -1,4 +1,4 @@
-# Conjectures
+![CONJECTURES — kernel-checked graph theory](assets/banner.svg)
 
 Results on open problems in mathematics, each published with a paper, a Lean 4
 proof checked by the Lean kernel, an independent checker, and the data needed

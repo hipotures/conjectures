@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 280" width="1200" height="280" role="img" aria-label="CONJECTURES — Kernel-Checked Graph Theory">
+  <rect width="1200" height="280" fill="#0b0e14" />
+  <rect x="68" y="64" width="76" height="2.5" fill="#89a4e0" />
+  <text x="66" y="156" font-family="Georgia, &#39;Times New Roman&#39;, serif" font-size="62" letter-spacing="3" fill="#f0f3f8">CONJECTURES</text>
+  <text x="68" y="200" font-family="-apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Helvetica, Arial, sans-serif" font-size="18" letter-spacing="0.4" fill="#8b949e">Kernel-Checked Graph Theory · hipotures · Lean 4</text>
+  <g id="petersen-graph">
+    <g stroke="#1c2330" stroke-width="0.9" fill="none">
+      <line x1="835" y1="149" x2="1135" y2="149" />
+      <line x1="985" y1="26" x2="985" y2="256" />
+      <circle cx="985" cy="149" r="96" />
+      <circle cx="985" cy="149" r="49" />
+      <circle cx="985" cy="149" r="18.7" />
+    </g>
+    <g stroke="#2e3b52" stroke-width="1.1">
+      <line x1="985.0" y1="100.0" x2="1013.8" y2="188.6" />
+      <line x1="1013.8" y1="188.6" x2="938.4" y2="133.9" />
+      <line x1="938.4" y1="133.9" x2="1031.6" y2="133.9" />
+      <line x1="1031.6" y1="133.9" x2="956.2" y2="188.6" />
+      <line x1="956.2" y1="188.6" x2="985.0" y2="100.0" />
+    </g>
+    <g stroke="#445675" stroke-width="1.15">
+      <line x1="985.0" y1="53.0" x2="985.0" y2="100.0" />
+      <line x1="1076.3" y1="119.3" x2="1031.6" y2="133.9" />
+      <line x1="1041.4" y1="226.7" x2="1013.8" y2="188.6" />
+      <line x1="928.6" y1="226.7" x2="956.2" y2="188.6" />
+      <line x1="893.7" y1="119.3" x2="938.4" y2="133.9" />
+    </g>
+    <polygon points="985.0,53.0 1076.3,119.3 1041.4,226.7 928.6,226.7 893.7,119.3" fill="none" stroke="#7d97c8" stroke-width="1.45" stroke-linejoin="round" />
+    <polyline points="893.7,119.3 985.0,53.0 1076.3,119.3" fill="none" stroke="#9cb6eb" stroke-width="1.75" stroke-linejoin="round" />
+    <g fill="#6b7a94">
+      <circle cx="985.0" cy="100.0" r="2.8" />
+      <circle cx="1031.6" cy="133.9" r="2.8" />
+      <circle cx="1013.8" cy="188.6" r="2.8" />
+      <circle cx="956.2" cy="188.6" r="2.8" />
+      <circle cx="938.4" cy="133.9" r="2.8" />
+    </g>
+    <g fill="#a6b1c4">
+      <circle cx="1041.4" cy="226.7" r="3.2" />
+      <circle cx="928.6" cy="226.7" r="3.2" />
+    </g>
+    <g fill="none" stroke="#89a4e0" stroke-opacity="0.38" stroke-width="1">
+      <circle cx="985.0" cy="53.0" r="7.5" />
+      <circle cx="1076.3" cy="119.3" r="7.5" />
+      <circle cx="893.7" cy="119.3" r="7.5" />
+    </g>
+    <g fill="#89a4e0">
+      <circle cx="985.0" cy="53.0" r="3.8" />
+      <circle cx="1076.3" cy="119.3" r="3.8" />
+      <circle cx="893.7" cy="119.3" r="3.8" />
+    </g>
+  </g>
+</svg>
