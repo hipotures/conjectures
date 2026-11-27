@@ -13,7 +13,7 @@ to reproduce it.
 
 | Problem | Result | Status | Category | Artifacts |
 |---|---|---|:-:|---|
-| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Small graphs without cycles of length a power of two](results/small-graphs-power-of-two-cycles/) | draft paper | A | [PDF](results/small-graphs-power-of-two-cycles/paper.pdf) · [TeX](results/small-graphs-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas) · [Python](results/small-graphs-power-of-two-cycles/verify.py) · [Data](results/small-graphs-power-of-two-cycles/data) |
+| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Small graphs without cycles of length a power of two](results/small-graphs-power-of-two-cycles/) | preprint, v1.0.0 | A | [PDF](results/small-graphs-power-of-two-cycles/paper.pdf) · [TeX](results/small-graphs-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas) · [Python](results/small-graphs-power-of-two-cycles/verify.py) · [Data](results/small-graphs-power-of-two-cycles/data) |
 | [Erdős–Gyárfás](#erdősgyárfás-conjecture) | Cubic bipartite graphs on at most 84 vertices contain a cycle of length 4, 8 or 16 | in preparation | B | [Lean reductions](lean/ErdosGyarfas/CubicBipartite.lean) |
 
 **Categories.** **A**: every claim is proved by the Lean kernel; no external

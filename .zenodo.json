@@ -1,0 +1,30 @@
+{
+  "title": "Conjectures: formally verified results on open graph-theory problems",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Marszałek, Andrzej",
+      "affiliation": "Independent Researcher",
+      "orcid": "0009-0006-6148-2965"
+    }
+  ],
+  "description": "<p>Kernel-checked Lean 4 proofs, graph certificates, independent checkers and papers for results on open problems in graph theory.</p><p>Release v1.0.0 contains the paper <em>Small graphs without cycles of length a power of two</em> with its formal development: f<sub>δ≥3</sub>(4) ≤ 73, f<sub>δ≥3</sub>(5) ≤ 345 and f<sub>cubic</sub>(6) ≤ 10,498 (Erdős–Gyárfás conjecture). The proofs use Lean 4.36.0 without Mathlib, without native_decide, and only the standard axioms propext, Classical.choice and Quot.sound.</p><p>AI systems (Gemini 4 Neon, Claude Opus 5.5; tools Antigravity and Claude Code) assisted substantially; they are not authors.</p>",
+  "license": "cc-zero",
+  "access_right": "open",
+  "version": "1.0.0",
+  "keywords": [
+    "Erdős–Gyárfás conjecture",
+    "cycles of length a power of two",
+    "cubic graphs",
+    "extremal graph theory",
+    "Lean 4",
+    "formal verification"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/hipotures/conjectures",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
