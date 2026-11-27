@@ -150,19 +150,20 @@ def table_tex(res: dict) -> str:
     """The results table of the paper, from data/results.json."""
     rows = []
     label = {"delta3_a14": r"\textsf{A}", "delta3_a15_c1": r"\textsf{B}", "cubic_a19": r"\textsf{C}",
-             "control_delta3_a15": r"control, \textsf{A} with $a\le 15$",
-             "control_cubic_a20": r"control, \textsf{C} with $a\le 20$"}
+             "control_delta3_a15": r"control \textsf{A}, $a\le 15$",
+             "control_cubic_a20": r"control \textsf{C}, $a\le 20$"}
     for name in encode.INSTANCES:
         js = [j for j in res["jobs"] if j["instance"] == name]
         if not js:
             continue
         solve = sum(j["solve_s"] for j in js)
         ver = sum(j.get("verify_s", 0) for j in js)
-        res_ = js[0]["result"] + (", all checked" if js[0]["result"] == "UNSAT" and
-                                  all(j.get("drat_trim") == "VERIFIED" for j in js) else "")
-        num = lambda v: f"{v:,.0f}".replace(",", "{,}")
+        checked = js[0]["result"] == "UNSAT" and all(j.get("drat_trim") == "VERIFIED" for j in js)
+        res_ = js[0]["result"] + ((", all checked" if len(js) > 1 else ", checked") if checked else "")
+        num = lambda v: f"{v:,.0f}".replace(",", "{,}") if v >= 10000 else f"{v:.0f}"
+        span = lambda k: "--".join(num(v) for v in sorted({min(j[k] for j in js), max(j[k] for j in js)}))
         S = encode.encode(**encode.INSTANCES[name])[2]["slack"]
-        rows.append(f"{label[name]} & {len(js)} & {num(js[0]['vars'])} & {num(js[0]['clauses'])} & "
+        rows.append(f"{label[name]} & {len(js)} & {span('vars')} & {span('clauses')} & "
                     f"{S} & {num(solve)} & {num(ver) if ver else '--'} & {res_}" + r"\\")
     body = "\n".join(rows)
     return (r"""\begin{table}[ht]
@@ -170,7 +171,8 @@ def table_tex(res: dict) -> str:
 \caption{The SAT instances. $S$ is the bound of \cref{cor:counting}(a). Times
 are the running times of the single-threaded CaDiCaL runs and of
 \code{drat-trim} on their proofs, summed over the files of a case; variables
-and clauses are per file. Machine: """ + res["machine"].replace("_", r"\_") + r""", """ +
+and clauses are per file (the cube clauses of case \textsf{C} add one clause
+to some files). Machine: """ + res["machine"].replace("_", r"\_") + r""", """ +
             f"{res['wall_seconds'] / 60:.0f}" + r""" minutes of wall time.}
 \label{tab:results}
 \small

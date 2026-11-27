@@ -166,7 +166,7 @@ every cycle $D$ of $B$, then $L$ has no cycle of length $4$, $8$, $16$ or $32$.
 
 \begin{proof}
 A cycle inside one gadget has at most $15$ vertices, and the gadgets have no
-cycle of length $4$ or $8$~\cite[Table~1]{Marszalek2026a}. A cycle $C$ of $L$
+cycle of length $4$ or $8$~\cite[Table~2]{Marszalek2026a}. A cycle $C$ of $L$
 that meets two gadgets visits each gadget in at most one run, and contracting
 the gadgets turns $C$ into a cycle $D=(v_1,\dots,v_\ell)$ of
 $B$~\cite[Lemma~2.1]{Marszalek2026a}. The run in $H_{v_i}$ is a path from port
@@ -268,6 +268,20 @@ contributions to the port distances of the gadgets used in the lift
 construction of~\cite{Marszalek2026a}. The test suite checks that the list in
 Lean is the set of eight-cycles used by the encoder.
 
+\begin{proposition}\label{prop:sat}
+No lift of $\TC$ satisfies the conclusions of \cref{cor:necessary} and
+\cref{cor:counting}(a) in any of the cases
+\begin{itemize}[leftmargin=2.2em]
+\item[\textsf{A}:] gadgets $\Hfifteen,\Height$, at most $14$ copies of $\Hfifteen$;
+\item[\textsf{B}:] all three gadgets, at most $15$ copies of $\Hfifteen$, at least one $\Hseven$;
+\item[\textsf{C}:] gadgets $\Hfifteen,\Hseven$, at most $19$ copies of $\Hfifteen$.
+\end{itemize}
+\end{proposition}
+
+In each case the bound of \cref{cor:counting}(a), maximized over the allowed
+counts, is $6$, $22$ and $38$ respectively. \Cref{sec:sat,sec:results}
+prove the proposition.
+
 \begin{proof}[Proof of \cref{thm:main}, given \cref{prop:sat}]
 Suppose a lift without $32$-cycles has $n$ vertices.
 
@@ -281,19 +295,6 @@ $n=210+8a$. If $n<370$ then $a\le 19$: this is case~\textsf{C}.
 
 By \cref{prop:sat} none of the three cases occurs.
 \end{proof}
-
-\begin{proposition}\label{prop:sat}
-No lift of $\TC$ satisfies the conclusions of \cref{cor:necessary} and
-\cref{cor:counting}(a) in any of the cases
-\begin{itemize}[leftmargin=2.2em]
-\item[\textsf{A}:] gadgets $\Hfifteen,\Height$, at most $14$ copies of $\Hfifteen$;
-\item[\textsf{B}:] all three gadgets, at most $15$ copies of $\Hfifteen$, at least one $\Hseven$;
-\item[\textsf{C}:] gadgets $\Hfifteen,\Hseven$, at most $19$ copies of $\Hfifteen$.
-\end{itemize}
-\end{proposition}
-
-In each case the bound of \cref{cor:counting}(a), maximized over the allowed
-counts, is $6$, $22$ and $38$ respectively.
 
 %======================================================================
 \section{The SAT encoding}\label{sec:sat}
@@ -326,8 +327,8 @@ one with the same counts and the same weights. Case~\textsf{C} is split
 further into $56$ disjoint subcases (cube and
 conquer~\cite{HeuleKullmannWieringaBiere2012}): by the states of the
 neighbours $1$ and $29$ of vertex $0$ ($36$ pairs), and for the four pairs in
-which both are $\Hfifteen$ with $q\neq n_{\cdot,0}$, also by the state of the
-third neighbour $17$. A test checks that the $56$ subcases cover each of the
+which both are $\Hfifteen$ with $q(1)\neq 0$ and $q(29)\neq 0$, also by the
+state of the third neighbour $17$. A test checks that the $56$ subcases cover each of the
 $216$ states of $(1,29,17)$ exactly once.
 
 %======================================================================
@@ -335,8 +336,8 @@ $216$ states of $(1,29,17)$ exactly once.
 
 \Cref{tab:results} lists the instances. All $58$ unsatisfiable formulas
 were refuted by CaDiCaL, and \code{drat-trim} reported \code{s VERIFIED} for
-each of the $58$ proofs. The longest solver run took $1{,}298$ seconds and the
-longest check $1{,}195$ seconds. The two controls are satisfiable, and
+each of the $58$ proofs. The longest solver run took $1298$ seconds and the
+longest check $1195$ seconds. The two controls are satisfiable, and
 their models are the optimal lifts described in \cref{sec:validation}. The
 whole run took $50$ minutes on $16$ cores.
 
@@ -396,7 +397,8 @@ downloads CaDiCaL~2.1.3 and \code{drat-trim} (commit \code{2e3b2dc}), checks
 their SHA-256 hashes and builds them, writes all $60$ CNF files, solves them,
 checks every DRAT proof, checks the two controls, and writes
 \code{data/results.json} with the SHA-256 hash of every CNF file. The Lean
-library is built with \code{lake build} in the folder \code{lean}.
+library is built with \code{lake build} in the folder \code{lean} at the root
+of the repository, which is shared with~\cite{Marszalek2026a}.
 
 \section*{Use of AI tools}
 This work was carried out with substantial assistance from AI systems, mainly
@@ -434,15 +436,15 @@ Verification and Testing -- HVC 2011, Lecture Notes in Comput. Sci.
 \textbf{7261}, Springer, 2012, 50--65,
 \url{https://doi.org/10.1007/978-3-642-34188-5_8}.
 
-\bibitem{Lean4}
-L.~de Moura and S.~Ullrich, \emph{The Lean 4 theorem prover and programming
-language}, in: Automated Deduction -- CADE 28, Lecture Notes in Comput. Sci.
-\textbf{12699}, Springer, 2021, 625--635.
-
 \bibitem{Marszalek2026a}
 A.~Marszałek, \emph{Small graphs without cycles of length a power of two: new
 bounds with kernel-checked proofs}, preprint, 2026,
 \url{https://doi.org/10.5281/zenodo.24588313}.
+
+\bibitem{Lean4}
+L.~de Moura and S.~Ullrich, \emph{The Lean 4 theorem prover and programming
+language}, in: Automated Deduction -- CADE 28, Lecture Notes in Comput. Sci.
+\textbf{12699}, Springer, 2021, 625--635.
 
 \bibitem{Sinz2005}
 C.~Sinz, \emph{Towards an optimal CNF encoding of Boolean cardinality
