@@ -438,8 +438,9 @@ an error in the enumeration, that is, in the implementation of
 \cref{prop:coverage}. We test it in four ways.
 
 \begin{enumerate}[leftmargin=2em,label=(\alph*)]
-\item \emph{Tranquilli's program.} Branch~A uses the schedule of Tranquilli's
-  \code{triangle\_root\_\allowbreak universal\_\allowbreak search.cpp} (commit \code{67adc92d}, whose
+\item \emph{Tranquilli's program.} Branch~A uses the schedule of the program
+  \code{triangle\_root\_\allowbreak universal\_\allowbreak search.cpp} of
+  Tranquilli (commit \code{67adc92d}, whose
   SHA-256 we checked against the published manifest). We compiled that program,
   unchanged, for the caps $20,22,24,26,29,34,35,\dots,42$. For every cap and
   orbit, all six counters agree with \cref{tab:branchA}. Tranquilli's program
@@ -452,8 +453,9 @@ an error in the enumeration, that is, in the implementation of
   enumerating Berge cycles. For Branch~A at caps $20$--$26$ and Branch~B at
   caps $31$--$33$ all counters agree with the C++ programs.
 \item \emph{Coverage on the cages.} The three
-  $(3,10)$-cages~\cite{OKeefeWong1980,Wong1983} have girth $10$ and $70$ vertices. For each cage, each colour class taken as
-  points and each of the $35$ root blocks, \code{independent\_check.py} labels
+  $(3,10)$-cages~\cite{OKeefeWong1980,Wong1983} have girth $10$ and $70$
+  vertices. For each cage, each colour class taken as points and each of the
+  $35$ root blocks, the script \code{independent\_check.py} labels
   the cage as in \cref{lem:moore-root,prop:coverage} and follows it through the
   Branch~B schedule with the $16$-cycle test switched off. All $210$ replays are
   accepted at every step and end in a completion. With the $16$-cycle test on,

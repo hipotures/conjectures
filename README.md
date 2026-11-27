@@ -56,9 +56,37 @@ the Lean kernel; `#print axioms` shows only `propext`, `Classical.choice`,
 
 </td>
 </tr>
+<tr>
+<td width="42%" valign="top"><a href="results/cubic-bipartite-power-of-two-cycles/paper.pdf"><img src="assets/cubic-bipartite-power-of-two-cycles/page1.png" alt="First page of the paper"></a></td>
+<td valign="top">
+
+### [Every cubic bipartite graph on at most 84 vertices has a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/paper.pdf)
+
+Erdős–Gyárfás conjecture · category B · 8 pages · draft
+
+A cubic bipartite counterexample needs at least **86** vertices (previously 60
+and 70). Graphs with a 6-cycle go through Tranquilli's triangle-rooted search
+at a larger cap; graphs of girth at least 10 go through a new search from a
+forced 15-block root, which also shows that every cubic bipartite graph of
+girth ≥ 10 on at most 88 vertices has a 16-cycle.
+
+About 2·10¹⁰ candidate blocks; every rejection carries a witness cycle checked
+separately. The counters match Tranquilli's original program and an
+independent Python implementation; the case split and witness soundness are
+proved in Lean.
+
+[PDF](results/cubic-bipartite-power-of-two-cycles/paper.pdf) ·
+[TeX](results/cubic-bipartite-power-of-two-cycles/paper.tex) ·
+[how it is checked](results/cubic-bipartite-power-of-two-cycles/README.md) ·
+[Lean](lean/ErdosGyarfas/CubicBipartite.lean) ·
+[C++](results/cubic-bipartite-power-of-two-cycles/src) ·
+[data](results/cubic-bipartite-power-of-two-cycles/data)
+
+</td>
+</tr>
 </table>
 
-### Visual highlights
+### Visual highlights: small graphs without power-of-two cycles
 
 <table>
 <tr>
@@ -106,6 +134,11 @@ degree at least 3 (respectively, a cubic graph) that has no cycle of length
 The cycle-projection lemma for gadget lifts and the gadgets H7 and H15 are due
 to García (2026) and Henry (2026); this repository formalizes them. All
 category-A witnesses are proved 2-connected.
+
+| Lower bound | Previous | Status | Notes |
+|---|---|---|---|
+| a cubic bipartite graph without C4, C8, C16 has ≥ **86** vertices | 60 (Tranquilli), 70 (Zhuge) | category B, draft | Lean: case split and witness soundness |
+| a cubic bipartite graph of girth ≥ 10 without C16 has ≥ **90** vertices | — | category B, draft | Branch B of the same proof |
 
 ---
 

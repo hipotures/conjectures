@@ -7,7 +7,8 @@ Usage (from the repository root):
         python scripts/build_showcase.py small-graphs-power-of-two-cycles
 
 Every image is derived from committed sources, so it can be regenerated and
-cannot drift from them:
+cannot drift from them. Every result gets `page1.png`; the other images exist
+only for small-graphs-power-of-two-cycles:
 
 - `page1.png`   first page of `paper.pdf`;
 - `gadgets.svg` the gadgets H7 and H8* from `data/constructions.json`, drawn
@@ -196,9 +197,11 @@ def main() -> None:
     result = ROOT / "results" / name
     out = ROOT / "assets" / name
     out.mkdir(parents=True, exist_ok=True)
+    page1(result, out)
+    if not (result / "verify.py").exists():
+        return  # results without construction data get only the first-page card
     V = load_verify(result)
     data = V.DATA
-    page1(result, out)
     gadgets(data, out)
     lift73(V, data, out)
     weights16(V, data, out)
