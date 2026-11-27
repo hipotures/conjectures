@@ -65,7 +65,8 @@ the Lean kernel; `#print axioms` shows only `propext`, `Classical.choice`,
 
 ### [Every cubic bipartite graph on at most 84 vertices has a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/paper.pdf)
 
-Erdős–Gyárfás conjecture · category B · 8 pages · preprint, v1.1.0
+Erdős–Gyárfás conjecture · category B · 8 pages ·
+[v1.1.0, doi:10.5281/zenodo.24599605](https://doi.org/10.5281/zenodo.24599605)
 
 A cubic bipartite counterexample needs at least **86** vertices (previously 60
 and 70). Graphs with a 6-cycle go through Tranquilli's triangle-rooted search
