@@ -221,6 +221,33 @@ Vertex-transitive graphs up to 1280 vertices. Only 100 of 111,360 need a
 </tr>
 </table>
 
+### Visual highlights: Tutte–Coxeter lifts
+
+<table>
+<tr>
+<td width="50%" valign="top"><img src="assets/tutte-coxeter-lifts-without-32-cycles/case_map.svg" alt="Gadget counts and what rules each out"><br>
+Every pair (copies of H15, copies of H7) and its number of vertices. Counting
+over the 90 eight-cycles rules out the dark cells; SAT with checked DRAT proofs
+rules out the blue ones. Orange: the optima, 345 and 370 (cubic).</td>
+<td width="50%" valign="top"><img src="assets/tutte-coxeter-lifts-without-32-cycles/weights8.svg" alt="Weights of the eight-cycles in the optimal lifts"><br>
+In both optimal lifts most eight-cycles have weight exactly 33. The excess over
+33 adds up to 30 and 70, as the counting identity 24a − 8c − 330 says it
+must.</td>
+</tr>
+<tr>
+<td width="50%" valign="top"><img src="assets/tutte-coxeter-lifts-without-32-cycles/port_paths.svg" alt="Port-to-port path lengths in the gadgets"><br>
+Path lengths between two ports have no gaps. So a lift has a 32-cycle exactly
+when some cycle of the base has weight at most 32.</td>
+<td width="50%" valign="top">
+
+**How these images are made.** Same script; the weights are computed from the
+lifts in `results/small-graphs-power-of-two-cycles/data/constructions.json` and
+the path lengths from the gadget edge lists.
+
+</td>
+</tr>
+</table>
+
 ---
 
 ## Erdős–Gyárfás conjecture

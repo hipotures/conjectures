@@ -417,6 +417,140 @@ def girth_table(result: Path, out: Path, key: str, fname: str, main: str, sub: s
     save(fig, out / fname)
 
 
+def _tc_module(result: Path):
+    spec = importlib.util.spec_from_file_location("encode", result / "encode.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def case_map(out: Path) -> None:
+    """Gadget counts (a copies of H15, c of H7): what excludes each pair."""
+    from matplotlib.patches import Rectangle
+    fig, ax = plt.subplots(figsize=(7, 5.4))
+    fig.subplots_adjust(left=0.1, right=0.97, bottom=0.2, top=0.84)
+    title(fig, "Where the small lifts go",
+          "a copies of H15, c of H7, the rest H8*; cell label = number of vertices 240 + 7a − c")
+    A, C = range(10, 23), range(0, 16)
+    for a in A:
+        for c in C:
+            if a + c > 30:
+                continue
+            n = 240 + 7 * a - c
+            if 3 * a - c < 42:
+                fc, tc, lab = "#262626", "#555555", ""
+            elif (a + c == 30 and n < 370) or n < 345:
+                fc, tc, lab = BLUE, SURFACE, str(n)
+            else:
+                fc, tc, lab = "#2f2f2f", TEXT2, str(n)
+            if (a, c) in ((15, 0), (20, 10)):
+                fc, tc = ORANGE, SURFACE
+            ax.add_patch(Rectangle((a - 0.46, c - 0.46), 0.92, 0.92, color=fc, lw=0))
+            if lab:
+                ax.text(a, c, lab, ha="center", va="center", fontsize=6.3, color=tc)
+    ax.plot([10 - 0.5, 22.5], [20.5, 7.5], color=TEXT2, lw=0.8, ls=":")
+    ax.text(20.6, 13.2, "cubic lifts: a + c = 30", ha="left", fontsize=7.5, color=TEXT2)
+    ax.set_xlim(9.4, 22.6)
+    ax.set_ylim(-0.6, 15.6)
+    ax.set_xlabel("a (copies of H15)")
+    ax.set_ylabel("c (copies of H7)")
+    ax.set_xticks(list(A))
+    for sp in ax.spines.values():
+        sp.set_visible(False)
+    ax.tick_params(length=0)
+    fig.text(0.1, 0.07, "■", color="#262626", fontsize=11)
+    fig.text(0.125, 0.07, "excluded by counting (3a − c < 42)", fontsize=8, color=TEXT2)
+    fig.text(0.47, 0.07, "■", color=BLUE, fontsize=11)
+    fig.text(0.495, 0.07, "refuted by SAT (cases A, B, C)", fontsize=8, color=TEXT2)
+    fig.text(0.79, 0.07, "■", color=ORANGE, fontsize=11)
+    fig.text(0.815, 0.07, "optimum", fontsize=8, color=TEXT2)
+    save(fig, out / "case_map.svg")
+
+
+def tc_weights(result: Path, out: Path) -> None:
+    """Weights of the 90 eight-cycles in the two optimal lifts."""
+    import json
+    E = _tc_module(result)
+    adj = E.tutte_coxeter()
+    G = E.load_gadgets()
+    dist = {g: E.port_distances(G[g]) for g in G}
+    lifts = json.loads((ROOT / "results" / "small-graphs-power-of-two-cycles" / "data" /
+                        "constructions.json").read_text())["lifts"]
+    c8 = [E.off_edges(adj, c) for c in E.cycles(adj, (8,))]
+
+    def weights(L):
+        return [8 + sum(dist[L["gadget"][v]][1] if L["choice"][v] == o else dist[L["gadget"][v]][0]
+                        for v, o in c) for c in c8]
+    w345, w370 = weights(lifts["tc345"]), weights(lifts["tc370"])
+    xs = list(range(33, max(w345 + w370) + 1))
+    fig, ax = plt.subplots(figsize=(7, 4.2))
+    fig.subplots_adjust(left=0.1, right=0.97, bottom=0.16, top=0.78)
+    title(fig, "Most eight-cycles are exactly at the limit",
+          "weight w(D) of the 90 eight-cycles in the two optimal lifts; w ≤ 32 would give a 32-cycle")
+    for off, ws, col, lab in ((-0.2, w345, BLUE, "345 vertices (H15, H8*)"),
+                              (0.2, w370, ORANGE, "370 vertices (H15, H7, cubic)")):
+        ys = [ws.count(x) for x in xs]
+        ax.bar([x + off for x in xs], ys, width=0.38, color=col, label=lab, zorder=2)
+        for x, y in zip(xs, ys):
+            if y:
+                ax.text(x + off, y + 0.8, str(y), ha="center", fontsize=7.5, color=TEXT2)
+    ax.set_xticks(xs)
+    ax.set_xlabel("w(D)")
+    ax.set_ylabel("eight-cycles")
+    ax.grid(axis="y", color=GRID, lw=0.6, zorder=0)
+    for sp in ("top", "right", "left"):
+        ax.spines[sp].set_visible(False)
+    ax.tick_params(length=0)
+    ax.legend(loc="upper right", frameon=False, fontsize=8.5, labelcolor=TEXT)
+    save(fig, out / "weights8.svg")
+
+
+def port_paths(result: Path, out: Path) -> None:
+    """Lengths of port-to-port paths in the three gadgets."""
+    E = _tc_module(result)
+    G = E.load_gadgets()
+    rows = []
+    for g, name in (("H7", "H7"), ("H8star", "H8*"), ("H15", "H15")):
+        gr = G[g]
+        adj = [[] for _ in range(gr["order"])]
+        for u, v in gr["edges"]:
+            adj[u].append(v)
+            adj[v].append(u)
+        P = gr["ports"]
+        for i, j in ((0, 1), (1, 2)):
+            got = set()
+
+            def go(x, seen, d):
+                if x == P[j]:
+                    got.add(d)
+                    return
+                for y in adj[x]:
+                    if y not in seen:
+                        go(y, seen | {y}, d + 1)
+            go(P[i], {P[i]}, 0)
+            rows.append((f"{name}  ports {i},{j}", sorted(got)))
+    fig, ax = plt.subplots(figsize=(7, 3.9))
+    fig.subplots_adjust(left=0.2, right=0.97, bottom=0.16, top=0.76)
+    title(fig, "No gaps in the path lengths",
+          "lengths of paths between two ports; the shortest (orange) enters the weight w(D)")
+    for k, (lab, ls) in enumerate(rows):
+        y = len(rows) - 1 - k
+        for L in ls:
+            ax.add_patch(plt.Rectangle((L - 0.42, y - 0.32), 0.84, 0.64,
+                                       color=ORANGE if L == ls[0] else BLUE, lw=0, zorder=2))
+        ax.text(1.2, y, lab, ha="right", va="center", fontsize=8.5, color=TEXT)
+    ax.set_xlim(1.3, 14.7)
+    ax.set_ylim(-0.7, len(rows) - 0.3)
+    ax.set_yticks([])
+    ax.set_xticks(range(2, 15))
+    ax.set_xlabel("path length")
+    ax.grid(axis="x", color=GRID, lw=0.6, zorder=0)
+    for sp in ("top", "right", "left"):
+        ax.spines[sp].set_visible(False)
+    ax.tick_params(length=0)
+    save(fig, out / "port_paths.svg")
+
+
 def main() -> None:
     name = sys.argv[1] if len(sys.argv) > 1 else "small-graphs-power-of-two-cycles"
     result = ROOT / "results" / name
@@ -434,6 +568,11 @@ def main() -> None:
                     "graphs by girth g and shortest power-of-two cycle ℓ₂")
         girth_table(result, out, "AllSymmCubic-OrderUpTo10000-ByEdgeSets.txt.gz", "girth_sym.svg",
                     "Symmetric, n ≤ 10,000", "graphs by girth g and shortest power-of-two cycle ℓ₂")
+        return
+    if name == "tutte-coxeter-lifts-without-32-cycles":
+        case_map(out)
+        tc_weights(result, out)
+        port_paths(result, out)
         return
     if not (result / "verify.py").exists():
         return  # results without construction data get only the first-page card
