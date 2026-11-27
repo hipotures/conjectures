@@ -1,0 +1,20 @@
+\begin{table}[ht]
+\centering
+\caption{The SAT instances. $S$ is the bound of \cref{cor:counting}(a). Times
+are the running times of the single-threaded CaDiCaL runs and of
+\code{drat-trim} on their proofs, summed over the files of a case; variables
+and clauses are per file. Machine: AMD Ryzen 9 7950X3D 16-Core Processor, 16 threads, 16 parallel runs, 50 minutes of wall time.}
+\label{tab:results}
+\small
+\begin{tabular}{@{}lrrrrrrl@{}}
+\toprule
+case & files & variables & clauses & $S$ & solve (s) & check (s) & result\\
+\midrule
+\textsf{A} & 1 & 7{,}570 & 35{,}999 & 6 & 30 & 32 & UNSAT, all checked\\
+\textsf{B} & 1 & 9{,}984 & 41{,}590 & 22 & 1{,}239 & 1{,}195 & UNSAT, all checked\\
+\textsf{C} & 56 & 10{,}563 & 41{,}950 & 38 & 14{,}261 & 15{,}087 & UNSAT, all checked\\
+control, \textsf{A} with $a\le 15$ & 1 & 9{,}735 & 40{,}304 & 30 & 2 & -- & SAT\\
+control, \textsf{C} with $a\le 20$ & 1 & 13{,}440 & 47{,}669 & 70 & 22 & -- & SAT\\
+\bottomrule
+\end{tabular}
+\end{table}

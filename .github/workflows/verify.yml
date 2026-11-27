@@ -35,6 +35,10 @@ jobs:
         run: python3 results/cubic-bipartite-power-of-two-cycles/reproduce.py --quick
       - name: Census checker rejects corrupted results (cubic censuses)
         run: python3 results/cubic-census-power-of-two-cycles/test_checker.py
+      - name: Encoding tests (Tutte-Coxeter lifts)
+        run: python3 results/tutte-coxeter-lifts-without-32-cycles/test_encoding.py
+      - name: Case A and both controls with DRAT check (Tutte-Coxeter lifts)
+        run: python3 results/tutte-coxeter-lifts-without-32-cycles/prove.py --workers 3 --only delta3_a14 control_delta3_a15 control_cubic_a20
       - name: Census scanner smoke test on the (3,10)-cages (cubic censuses)
         run: |
           g++ -O3 -std=c++17 -pthread results/cubic-census-power-of-two-cycles/src/census_scan.cpp -o /tmp/census_scan

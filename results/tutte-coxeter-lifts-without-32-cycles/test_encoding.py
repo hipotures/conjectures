@@ -8,8 +8,9 @@ graphs from the gadget edge lists, and
 
   1. the gadget facts the paper uses are recomputed: port distances, the
      path-length intervals between ports, no 4-, 8-, 16- or 32-cycles;
-  2. TC facts: 90 8-cycles, 72 10-cycles, girth 8, each (vertex, edge) pair on
-     exactly 8 of the 8-cycles, 1440 automorphisms, arc-transitive;
+  2. TC facts: 90 8-cycles (the same as the list tcC8Cycles in the Lean
+     library), 72 10-cycles, girth 8, each (vertex, edge) pair on exactly 8 of
+     the 8-cycles, 1440 automorphisms, arc-transitive;
   3. for 300 lifts near the optimum: the weight w(D), computed from paths in
      the real lift, matches the BFS length of the shortest cycle through an
      edge between gadgets; the CNF accepts the lift iff w(D) >= 33 for every
@@ -359,6 +360,14 @@ def main():
     check(sorted(tuple(c) for c in enc_c) == sorted(c for c in found if len(c) in (8, 10)),
           "encode.py lists exactly these 8- and 10-cycles")
     c8 = [list(c) for c in found if len(c) == 8]
+    lean = (HERE.parent.parent / "lean" / "ErdosGyarfas" / "TutteCoxeter.lean").read_text()
+    body = lean.split("def tcC8Cycles : List (List Nat) := [", 1)[1].split("\n]", 1)[0]
+    lean_c8 = [json.loads(line.strip().rstrip(",")) for line in body.strip().splitlines()]
+
+    def edges(c):
+        return frozenset(frozenset((c[i], c[(i + 1) % len(c)])) for i in range(len(c)))
+    check(len(lean_c8) == 90 and {edges(c) for c in lean_c8} == {edges(c) for c in c8},
+          "the Lean list tcC8Cycles is the same set of 90 8-cycles")
     inc = {}
     for c in found:
         if len(c) == 8:

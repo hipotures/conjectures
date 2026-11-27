@@ -136,6 +136,55 @@ def run(job, cadical, drat_trim, keep):
     return job
 
 
+def cpu_name() -> str:
+    try:
+        for line in open("/proc/cpuinfo"):
+            if line.startswith("model name"):
+                return line.split(":", 1)[1].strip()
+    except OSError:
+        pass
+    return platform.processor() or platform.machine()
+
+
+def table_tex(res: dict) -> str:
+    """The results table of the paper, from data/results.json."""
+    rows = []
+    label = {"delta3_a14": r"\textsf{A}", "delta3_a15_c1": r"\textsf{B}", "cubic_a19": r"\textsf{C}",
+             "control_delta3_a15": r"control, \textsf{A} with $a\le 15$",
+             "control_cubic_a20": r"control, \textsf{C} with $a\le 20$"}
+    for name in encode.INSTANCES:
+        js = [j for j in res["jobs"] if j["instance"] == name]
+        if not js:
+            continue
+        solve = sum(j["solve_s"] for j in js)
+        ver = sum(j.get("verify_s", 0) for j in js)
+        res_ = js[0]["result"] + (", all checked" if js[0]["result"] == "UNSAT" and
+                                  all(j.get("drat_trim") == "VERIFIED" for j in js) else "")
+        num = lambda v: f"{v:,.0f}".replace(",", "{,}")
+        S = encode.encode(**encode.INSTANCES[name])[2]["slack"]
+        rows.append(f"{label[name]} & {len(js)} & {num(js[0]['vars'])} & {num(js[0]['clauses'])} & "
+                    f"{S} & {num(solve)} & {num(ver) if ver else '--'} & {res_}" + r"\\")
+    body = "\n".join(rows)
+    return (r"""\begin{table}[ht]
+\centering
+\caption{The SAT instances. $S$ is the bound of \cref{cor:counting}(a). Times
+are the running times of the single-threaded CaDiCaL runs and of
+\code{drat-trim} on their proofs, summed over the files of a case; variables
+and clauses are per file. Machine: """ + res["machine"].replace("_", r"\_") + r""", """ +
+            f"{res['wall_seconds'] / 60:.0f}" + r""" minutes of wall time.}
+\label{tab:results}
+\small
+\begin{tabular}{@{}lrrrrrrl@{}}
+\toprule
+case & files & variables & clauses & $S$ & solve (s) & check (s) & result\\
+\midrule
+""" + body + r"""
+\bottomrule
+\end{tabular}
+\end{table}
+""")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--cache", type=Path,
@@ -195,7 +244,7 @@ def main():
             j.pop(k, None)
     out = {
         "solvers": {k: v["version"] for k, v in SOURCES.items()},
-        "machine": f"{platform.processor() or platform.machine()}, {os.cpu_count()} threads, {a.workers} workers",
+        "machine": f"{cpu_name()}, {os.cpu_count()} threads, {a.workers} parallel runs",
         "wall_seconds": wall,
         "instances": {n: {k: (list(v) if isinstance(v, tuple) else v) for k, v in spec.items()}
                       | {"expect": encode.EXPECT[n]} for n, spec in encode.INSTANCES.items()},
@@ -206,6 +255,7 @@ def main():
     if not a.only:
         (HERE / "data").mkdir(exist_ok=True)
         (HERE / "data" / "results.json").write_text(json.dumps(out, indent=1) + "\n")
+        (HERE / "results_table.tex").write_text(table_tex(out))
     print("ALL INSTANCES VERIFIED" if ok else "VERIFICATION FAILED")
     sys.exit(0 if ok else 1)
 

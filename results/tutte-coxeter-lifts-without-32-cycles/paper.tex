@@ -1,0 +1,466 @@
+\pdfoutput=1
+\documentclass[11pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1.15in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage[section]{placeins}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\usepackage{orcidlink}
+\usepackage[capitalise,nameinlink]{cleveref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\leanus}{\textunderscore\allowbreak}
+\newcommand{\lean}[1]{{\ttfamily\let\_\leanus #1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\fd}{f_{\delta\ge 3}}
+\newcommand{\fc}{f_{\mathrm{cubic}}}
+\newcommand{\Hseven}{H_7}
+\newcommand{\Hfifteen}{H_{15}}
+\newcommand{\Height}{H_8^{*}}
+\newcommand{\TC}{\mathrm{TC}}
+
+\title[Tutte--Coxeter lifts without 32-cycles]{The smallest Tutte--Coxeter lifts\\ without cycles of length 32}
+
+\author[A. Marszałek]{Andrzej Marszałek\,\orcidlink{0009-0006-6148-2965}}
+\address{Independent Researcher}
+\urladdr{https://github.com/hipotures/conjectures}
+
+\subjclass[2020]{05C38, 05C35, 68V15}
+\keywords{Erdős–Gyárfás conjecture, power-of-two cycles, Tutte–Coxeter graph, vertex replacement, SAT, DRAT proofs}
+
+\date{27 November 2026}
+
+\begin{document}
+
+\begin{abstract}
+The best known graphs of minimum degree three without cycles of length $4$,
+$8$, $16$ and $32$ are obtained from the Tutte--Coxeter graph by replacing
+every vertex with one of three small gadgets: Henry's cubic graph on $370$
+vertices and our earlier graph on $345$ vertices. We show that neither
+construction can be improved within its family. Every such lift without a
+cycle of length $32$ has at least $345$ vertices, and at least $370$ if it is
+cubic. The proof first shows that, for these gadgets, a lift has a $32$-cycle
+exactly when some cycle of the base is too light. A double-counting identity
+over the $90$ eight-cycles of the Tutte--Coxeter graph, proved in Lean~4, then
+leaves three cases. Each of them is a SAT instance that CaDiCaL refutes; every
+refutation is a DRAT proof checked by \code{drat-trim}. An independent test
+suite checks the encoding against lifts built as graphs.
+\end{abstract}
+
+\maketitle
+
+%======================================================================
+\section{Introduction}
+
+\begin{quote}
+\textbf{Conjecture} (Erdős and Gyárfás, 1995; see~\cite{Erdos1997}).
+Every finite simple graph of minimum degree at least three contains a cycle
+whose length is a power of two.
+\end{quote}
+
+For $k\ge 2$ let $\fd(k)$ and $\fc(k)$ be the least order of a graph of
+minimum degree at least $3$, respectively of a cubic graph, with no cycle of
+length $4,8,\dots,2^k$~\cite{Garcia2026,Henry2026,Marszalek2026a}. For $k=5$
+the best bounds come from one construction. Take the Tutte--Coxeter graph
+$\TC$, the $(3,8)$-cage on $30$ vertices~\cite{Tutte1947}, and replace each
+vertex by a small three-port gadget. Henry~\cite{Henry2026} obtained
+$\fc(5)\le 370$ with a construction of this type. Our earlier
+paper~\cite{Marszalek2026a} gives a $370$-vertex lift with the gadgets
+$\Hseven$ and $\Hfifteen$ of García~\cite{Garcia2026}, and a $345$-vertex lift
+with $\Hfifteen$ and a new gadget $\Height$ on eight vertices, which shows
+$\fd(5)\le 345$. Both lifts have no cycle of length $4$, $8$, $16$ or $32$.
+
+Can a cleverer arrangement of the same gadgets on the same base do better?
+There are $18^{30}$ ways to place a gadget and a port bijection at each vertex,
+so the question is not settled by trying them.
+
+\begin{theorem}\label{thm:main}
+Let $L$ be a lift of the Tutte--Coxeter graph in which every vertex is
+replaced by $\Hseven$, $\Height$ or $\Hfifteen$, with arbitrary port
+bijections. If $L$ has no cycle of length $32$, then
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $|V(L)|\ge 345$, and
+\item $|V(L)|\ge 370$ if $L$ is cubic, that is, if no gadget is $\Height$.
+\end{enumerate}
+Both bounds are attained by lifts with no cycle of length $4$, $8$, $16$ or
+$32$~\cite{Marszalek2026a}.
+\end{theorem}
+
+So the constructions are optimal in their family, and an improvement of
+$\fd(5)\le 345$ or $\fc(5)\le 370$ needs a different base or different gadgets.
+The theorem says nothing about such graphs, and nothing about lower bounds
+for $\fd(5)$ or $\fc(5)$ themselves.
+
+Forbidding only $32$-cycles costs nothing here: for these gadgets a lift
+without $32$-cycles automatically has no cycle of length at most $32$ that
+meets two gadgets (\cref{lem:c32}), so it also has no cycle of length $4$, $8$
+or $16$.
+
+\subsection*{Nature of the proof}
+The proof has three parts. \Cref{sec:lifts} reduces the absence of
+$32$-cycles to a condition on the $90$ eight-cycles of $\TC$; it uses a short
+table of path lengths inside the gadgets, computed by exhaustive enumeration.
+\Cref{sec:counting} proves a double-counting identity over these eight-cycles.
+It is formalized in Lean~4~\cite{Lean4} in the library of our earlier
+paper~\cite{Marszalek2026a}, and it leaves three cases. \Cref{sec:sat} encodes
+each case as a CNF formula. CaDiCaL~\cite{CaDiCaL2024} shows that all three are
+unsatisfiable and produces DRAT proofs, and \code{drat-trim}~\cite{DRATtrim2014}
+checks every proof against the formula. What is not machine-checked is that the
+CNF formulas say what \cref{sec:sat} says they say. \Cref{sec:validation}
+describes the tests that address this.
+
+%======================================================================
+\section{Lifts and 32-cycles}\label{sec:lifts}
+
+We use the setting of~\cite[Section~2]{Marszalek2026a}. A
+\emph{three-port gadget} is a graph $H$ with three ports $p_0,p_1,p_2$ of
+degree $2$ and all other vertices of degree at least $3$. Given a cubic graph
+$B$, a gadget $H_v$ at every vertex $v$ and a bijection $\sigma_v$ from the
+three edges at $v$ to $\{0,1,2\}$, the \emph{lift} $B[H,\sigma]$ is the
+disjoint union of the $H_v$ together with an edge from port $\sigma_u(uv)$ of
+$H_u$ to port $\sigma_v(uv)$ of $H_v$ for every edge $uv$ of $B$. For a cycle
+$D=(v_1,\dots,v_\ell)$ of $B$ put $a_i=\sigma_{v_i}(v_{i-1}v_i)$,
+$b_i=\sigma_{v_i}(v_iv_{i+1})$ and
+\[
+  w(D)=\ell+\sum_{i=1}^{\ell} d_{H_{v_i}}(a_i,b_i).
+\]
+
+\begin{table}[ht]
+\centering
+\caption{Lengths of paths between two ports of each gadget. Every set is an
+interval. $d(0,1)=d(0,2)$ in all three gadgets.}
+\label{tab:paths}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Gadget & $|V|$ & ports $0,1$ and $0,2$ & ports $1,2$ & $s(H)=d(1,2)+2d(0,1)$\\
+\midrule
+$\Hseven$   & 7  & $2,\dots,6$  & $3,\dots,6$  & 7\\
+$\Height$   & 8  & $3,\dots,7$  & $2,\dots,7$  & 8\\
+$\Hfifteen$ & 15 & $3,\dots,14$ & $5,\dots,14$ & 11\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The gadgets are those of~\cite[Section~3]{Marszalek2026a}; their edge lists
+are in \code{data/gadgets.json}. \Cref{tab:paths} was obtained by listing all
+port-to-port paths.
+
+\begin{lemma}\label{lem:c32}
+Let $B$ be a cubic graph of girth at least $8$ and $L$ a lift of $B$ by the
+gadgets $\Hseven$, $\Height$, $\Hfifteen$. Then $L$ has a cycle of length $32$
+if and only if $w(D)\le 32$ for some cycle $D$ of $B$. If $w(D)\ge 33$ for
+every cycle $D$ of $B$, then $L$ has no cycle of length $4$, $8$, $16$ or $32$.
+\end{lemma}
+
+\begin{proof}
+A cycle inside one gadget has at most $15$ vertices, and the gadgets have no
+cycle of length $4$ or $8$~\cite[Table~1]{Marszalek2026a}. A cycle $C$ of $L$
+that meets two gadgets visits each gadget in at most one run, and contracting
+the gadgets turns $C$ into a cycle $D=(v_1,\dots,v_\ell)$ of
+$B$~\cite[Lemma~2.1]{Marszalek2026a}. The run in $H_{v_i}$ is a path from port
+$a_i$ to port $b_i$, so $|C|=\ell+\sum_i |P_i|$ with $P_i$ that path.
+Conversely, any choice of $a_i$--$b_i$ paths $P_i$ in the gadgets $H_{v_i}$,
+joined by the $\ell$ edges between consecutive gadgets, is a cycle of $L$,
+because the gadgets are disjoint. By \cref{tab:paths} the possible lengths of
+$P_i$ form an interval $[d_i,M_i]$ with $d_i=d_{H_{v_i}}(a_i,b_i)$ and
+$M_i\ge 6$. A sum of integer intervals is an interval, so the lengths of the
+cycles of $L$ that contract to $D$ are exactly the integers from $w(D)$ to
+$\ell+\sum_i M_i\ge 7\ell\ge 56$. Hence $32$ is such a length if and only if
+$w(D)\le 32$. Both statements follow.
+\end{proof}
+
+At a vertex $v$ of a cycle $D$, the edge of $v$ that is not on $D$ goes to some
+port $o$; the cycle passes through the other two. If $o=0$, the contribution
+of $v$ to $w(D)$ is $d(1,2)$, and otherwise it is $d(0,1)$, since
+$d(0,1)=d(0,2)$. So $w(D)$ depends only on the gadgets and on the neighbour
+$q(v)$ joined to port $0$:
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+& $\Hseven$ & $\Height$ & $\Hfifteen$\\
+\midrule
+edge to $q(v)$ off $D$ & 3 & 2 & 5\\
+edge to $q(v)$ on $D$  & 2 & 3 & 3\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every contribution is at least $2$, so $w(D)\ge 3\ell\ge 36$ when $\ell\ge 12$.
+The Tutte--Coxeter graph is bipartite of girth $8$, so only its $90$ cycles of
+length $8$ and $72$ cycles of length $10$ can be light. For the lower bound we
+need only the eight-cycles.
+
+\begin{corollary}\label{cor:necessary}
+If a lift of $\TC$ by these gadgets has no $32$-cycle, then $w(D)\ge 33$ for
+each of the $90$ eight-cycles $D$ of $\TC$.
+\end{corollary}
+
+%======================================================================
+\section{Counting}\label{sec:counting}
+
+\begin{lemma}\label{lem:incidence}
+For every vertex $v$ of $\TC$ and every edge $e$ at $v$, exactly $8$ of the
+$90$ eight-cycles pass through $v$ and avoid $e$.
+\end{lemma}
+
+\begin{proof}
+The automorphism group of $\TC$, of order $1440$, acts transitively on pairs
+$(v,e)$ with $e$ an edge at $v$, since $\TC$ is arc-transitive (indeed
+$5$-arc-transitive~\cite{Tutte1947}). There are $90$ such pairs. Each
+eight-cycle passes through $8$ vertices and avoids exactly one edge at each of
+them, giving $8$ pairs per cycle and $720$ incidences in total. By
+transitivity each pair receives $720/90=8$.
+\end{proof}
+
+Let $a$, $b$ and $c$ be the numbers of copies of $\Hfifteen$, $\Height$ and
+$\Hseven$ in a lift, so $a+b+c=30$ and the lift has $15a+8b+7c=240+7a-c$
+vertices.
+
+\begin{lemma}\label{lem:identity}
+For every lift of $\TC$ by these gadgets,
+\[
+  \sum_{D}\bigl(w(D)-33\bigr) \;=\; 88a+64b+56c-2250 \;=\; 24a-8c-330,
+\]
+where $D$ runs over the $90$ eight-cycles of $\TC$.
+\end{lemma}
+
+\begin{proof}
+The sum of $w(D)$ is $90\cdot 8$ plus the sum, over pairs $(v,e)$, of the
+contribution of $v$ when $e$ is the edge of $v$ off the cycle, counted $8$
+times by \cref{lem:incidence}. Summed over the three edges at $v$, the
+contributions give $s(H_v)$ of \cref{tab:paths}. Hence the sum of $w(D)$ is
+$720+8(11a+8b+7c)$, and subtracting $90\cdot 33$ gives the identity. The second
+form uses $b=30-a-c$.
+\end{proof}
+
+\begin{corollary}\label{cor:counting}
+If a lift of $\TC$ by these gadgets has no $32$-cycle, then
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item at most $24a-8c-330$ of the eight-cycles have $w(D)\ge 34$;
+\item $3a-c\ge 42$, and the lift has at least $282+4a$ vertices.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+By \cref{cor:necessary} every term of \cref{lem:identity} is non-negative,
+and each eight-cycle with $w(D)\ge 34$ contributes at least $1$. This gives (a)
+and $24a-8c\ge 330$. The left side is divisible by $8$, so $24a-8c\ge 336$,
+that is, $3a-c\ge 42$. Then $240+7a-c=240+(3a-c)+4a\ge 282+4a$.
+\end{proof}
+
+The formal versions are \lean{tc\_incidence\_eq\_8},
+\lean{tc\_double\_counting\_eq} and \lean{tc\_slack\_card\_sound} in
+\code{lean/ErdosGyarfas/TutteCoxeter.lean}. They state the same facts for an
+explicit list of $90$ distinct eight-cycles, with the contributions of the
+table above, and \lean{tcVertexWeight\_eq\_liftWeight} connects these
+contributions to the port distances of the gadgets used in the lift
+construction of~\cite{Marszalek2026a}. The test suite checks that the list in
+Lean is the set of eight-cycles used by the encoder.
+
+\begin{proof}[Proof of \cref{thm:main}, given \cref{prop:sat}]
+Suppose a lift without $32$-cycles has $n$ vertices.
+
+(i) Let $n\le 344$. By \cref{cor:counting}(b), $a\le 15$. If $a\le 14$, then
+$c\le 3a-42\le 0$, so $c=0$ and the lift uses only $\Hfifteen$ and $\Height$,
+with at most $14$ copies of $\Hfifteen$: this is case~\textsf{A}. If $a=15$,
+then $n=345-c\le 344$ gives $c\ge 1$: this is case~\textsf{B}.
+
+(ii) If the lift is cubic, then $b=0$ and $c=30-a$, so (b) gives $a\ge 18$ and
+$n=210+8a$. If $n<370$ then $a\le 19$: this is case~\textsf{C}.
+
+By \cref{prop:sat} none of the three cases occurs.
+\end{proof}
+
+\begin{proposition}\label{prop:sat}
+No lift of $\TC$ satisfies the conclusions of \cref{cor:necessary} and
+\cref{cor:counting}(a) in any of the cases
+\begin{itemize}[leftmargin=2.2em]
+\item[\textsf{A}:] gadgets $\Hfifteen,\Height$, at most $14$ copies of $\Hfifteen$;
+\item[\textsf{B}:] all three gadgets, at most $15$ copies of $\Hfifteen$, at least one $\Hseven$;
+\item[\textsf{C}:] gadgets $\Hfifteen,\Hseven$, at most $19$ copies of $\Hfifteen$.
+\end{itemize}
+\end{proposition}
+
+In each case the bound of \cref{cor:counting}(a), maximized over the allowed
+counts, is $6$, $22$ and $38$ respectively.
+
+%======================================================================
+\section{The SAT encoding}\label{sec:sat}
+
+Number the vertices of $\TC$ by its LCF code $[-13,-9,7,-7,9,13]^5$, and let
+$(n_{v,0},n_{v,1},n_{v,2})$ be the neighbours of $v$ in increasing order.
+For each vertex $v$, allowed gadget $g$ and $p\in\{0,1,2\}$ a variable
+$x_{v,g,p}$ says that $H_v=g$ and $q(v)=n_{v,p}$. The formula contains:
+\begin{enumerate}[label=(\arabic*)]
+\item exactly one $x_{v,g,p}$ for every $v$ (pairwise exclusions);
+\item for each eight-cycle $D$, the constraint $w(D)\ge 33$. Write the
+  contribution of each vertex of $D$ as $2+e$ with $e\in\{0,1,3\}$. A variable
+  for each value of $e$ at each pair $(v,\text{edge off }D)$ is defined as the
+  disjunction of the states $x_{v,g,p}$ that give it. Prefix variables
+  $s_{i,t}$, meaning that the first $i$ vertices of $D$ contribute $e$-sum at
+  least $t$, are defined by full equivalences in a sequential layout, and the
+  formula asserts $s_{8,9}$, which is $w(D)\ge 33$;
+\item a sequential-counter encoding~\cite{Sinz2005} of the bounds on the
+  number of copies of $\Hfifteen$ and $\Hseven$;
+\item the bound of \cref{cor:counting}(a): with $s_{8,10}$ (that is,
+  $w(D)\ge 34$) for each eight-cycle, at most $S$ of these $90$ variables are
+  true, where $S=6,22,38$ as above;
+\item symmetry breaking: in case \textsf{A} vertex $0$ is $\Height$, in cases
+  \textsf{B} and \textsf{C} it is $\Hseven$, and in all cases $q(0)=1$.
+\end{enumerate}
+The symmetry breaking loses nothing. Each case contains at least one vertex
+with the named gadget, and an automorphism of $\TC$ maps that vertex and its
+neighbour $q(v)$ to the arc $(0,1)$, transforming the lift into an isomorphic
+one with the same counts and the same weights. Case~\textsf{C} is split
+further into $56$ disjoint subcases (cube and
+conquer~\cite{HeuleKullmannWieringaBiere2012}): by the states of the
+neighbours $1$ and $29$ of vertex $0$ ($36$ pairs), and for the four pairs in
+which both are $\Hfifteen$ with $q\neq n_{\cdot,0}$, also by the state of the
+third neighbour $17$. A test checks that the $56$ subcases cover each of the
+$216$ states of $(1,29,17)$ exactly once.
+
+%======================================================================
+\section{Results}\label{sec:results}
+
+\Cref{tab:results} lists the instances. All $58$ unsatisfiable formulas
+were refuted by CaDiCaL, and \code{drat-trim} reported \code{s VERIFIED} for
+each of the $58$ proofs. The longest solver run took $1{,}298$ seconds and the
+longest check $1{,}195$ seconds. The two controls are satisfiable, and
+their models are the optimal lifts described in \cref{sec:validation}. The
+whole run took $50$ minutes on $16$ cores.
+
+\input{results_table.tex}
+
+%======================================================================
+\section{Validation}\label{sec:validation}
+
+The script \code{test\_encoding.py} uses only the Python standard library and
+no SAT solver; it runs in about $15$ seconds. It does not reuse the encoder's
+model of the problem:
+\begin{enumerate}[label=(\alph*)]
+\item It rebuilds $\TC$ as the incidence graph of the generalized quadrangle
+  $\mathrm{GQ}(2,2)$ and finds an isomorphism to the encoder's graph. It
+  recounts the cycles of length $8$, $10$ and $12$ ($90$, $72$ and $300$),
+  checks \cref{lem:incidence}, finds all $1440$ automorphisms, and checks that
+  the eight-cycles agree with the Lean list.
+\item It recomputes \cref{tab:paths} and the cycle lengths of the gadgets.
+\item It builds $300$ lifts near the optimum as graphs, starting from the
+  $345$- and $370$-vertex lifts of~\cite{Marszalek2026a}, applying random
+  automorphisms and changing a few gadgets and port bijections, including the
+  choice between ports $1$ and $2$. For each lift it computes the shortest
+  cycle through an edge between two gadgets by breadth-first search. It checks
+  that this equals the smallest $w(D)$ over the $8$- and $10$-cycles, and that
+  a small DPLL solver finds the formula made of parts~(1) and~(2) satisfiable under the
+  lift's states exactly when all eight-cycles have $w(D)\ge 33$ ($48$ lifts
+  accepted, $252$ rejected). For every rejected lift it constructs an explicit
+  $32$-cycle, as in the proof of \cref{lem:c32}, and checks it edge by edge.
+  Every accepted lift also satisfies the full formula with its own counts,
+  including constraint~(4), and, after an automorphism moves one of its
+  vertices to $0$, constraint~(5).
+\item It checks the cardinality encoding exhaustively for up to six variables.
+\end{enumerate}
+We also changed the encoder on purpose: a bound of $32$ instead of $33$,
+swapped port distances, and a shifted edge index. Each change made the test
+fail. Two satisfiable controls give the optimal lifts: \textsf{A} with at most
+$15$ copies of $\Hfifteen$, and \textsf{C} with at most $20$. The script
+\code{prove.py} decodes their models and checks them as graphs: they have
+$345$ and $370$ vertices, and their shortest cycle between two gadgets has
+length $33$.
+
+\begin{remark}
+The $10$-cycles are not needed. In a search over lifts with all eight-cycle
+weights at least $33$ we found no $10$-cycle of weight below $35$, and
+encoding only the eight-cycles keeps the formula a relaxation: unsatisfiability
+of the relaxation rules out every lift.
+\end{remark}
+
+%======================================================================
+\section{Reproducibility}\label{sec:repro}
+
+Everything is in the repository \url{https://github.com/hipotures/conjectures},
+in the folder \nolinkurl{results/tutte-coxeter-lifts-without-32-cycles}, in the
+public domain (CC0).
+\code{python3 test\_encoding.py} runs the tests. \code{python3 prove.py}
+downloads CaDiCaL~2.1.3 and \code{drat-trim} (commit \code{2e3b2dc}), checks
+their SHA-256 hashes and builds them, writes all $60$ CNF files, solves them,
+checks every DRAT proof, checks the two controls, and writes
+\code{data/results.json} with the SHA-256 hash of every CNF file. The Lean
+library is built with \code{lake build} in the folder \code{lean}.
+
+\section*{Use of AI tools}
+This work was carried out with substantial assistance from AI systems, mainly
+Gemini~4~Neon (Google) and Claude Opus~5.5 (Anthropic), used through the
+Antigravity and Claude Code environments. They were used to write and run the
+encoder, the tests and the Lean proofs, and to draft the text. AI systems are
+not authors of this paper. The author takes responsibility for the content and
+for the attribution of prior work.
+
+\begin{thebibliography}{99}
+
+\bibitem{CaDiCaL2024}
+A.~Biere, T.~Faller, K.~Fazekas, M.~Fleury, N.~Froleyks and F.~Pollitt,
+\emph{CaDiCaL 2.0}, in: Computer Aided Verification -- CAV 2024, Lecture Notes
+in Comput. Sci. \textbf{14681}, Springer, 2024, 133--152,
+\url{https://doi.org/10.1007/978-3-031-65627-9_7}.
+
+\bibitem{Erdos1997}
+P.~Erdős, \emph{Some old and new problems in various branches of combinatorics},
+Discrete Math. \textbf{165/166} (1997), 227--231.
+
+\bibitem{Garcia2026}
+D.~García, \emph{Small graphs without power-of-two cycles: a lower bound of 24,
+a correction to a construction of Exoo, and explicit bounds for $f(k)$},
+arXiv:2609.04686, 2026.
+
+\bibitem{Henry2026}
+K.~Henry, \emph{Improved cubic graph constructions avoiding power-of-two cycle
+lengths}, preprint, Zenodo, 2026, \url{https://doi.org/10.5281/zenodo.23886386}.
+
+\bibitem{HeuleKullmannWieringaBiere2012}
+M.~J.~H.~Heule, O.~Kullmann, S.~Wieringa and A.~Biere, \emph{Cube and conquer:
+guiding CDCL SAT solvers by lookaheads}, in: Hardware and Software:
+Verification and Testing -- HVC 2011, Lecture Notes in Comput. Sci.
+\textbf{7261}, Springer, 2012, 50--65,
+\url{https://doi.org/10.1007/978-3-642-34188-5_8}.
+
+\bibitem{Lean4}
+L.~de Moura and S.~Ullrich, \emph{The Lean 4 theorem prover and programming
+language}, in: Automated Deduction -- CADE 28, Lecture Notes in Comput. Sci.
+\textbf{12699}, Springer, 2021, 625--635.
+
+\bibitem{Marszalek2026a}
+A.~Marszałek, \emph{Small graphs without cycles of length a power of two: new
+bounds with kernel-checked proofs}, preprint, 2026,
+\url{https://doi.org/10.5281/zenodo.24588313}.
+
+\bibitem{Sinz2005}
+C.~Sinz, \emph{Towards an optimal CNF encoding of Boolean cardinality
+constraints}, in: Principles and Practice of Constraint Programming -- CP 2005,
+Lecture Notes in Comput. Sci. \textbf{3709}, Springer, 2005, 827--831,
+\url{https://doi.org/10.1007/11564751_73}.
+
+\bibitem{Tutte1947}
+W.~T.~Tutte, \emph{A family of cubical graphs}, Proc. Cambridge Philos. Soc.
+\textbf{43} (1947), 459--474.
+
+\bibitem{DRATtrim2014}
+N.~Wetzler, M.~J.~H.~Heule and W.~A.~Hunt~Jr., \emph{DRAT-trim: efficient
+checking and trimming using expressive clausal proofs}, in: Theory and
+Applications of Satisfiability Testing -- SAT 2014, Lecture Notes in Comput.
+Sci. \textbf{8561}, Springer, 2014, 422--429,
+\url{https://doi.org/10.1007/978-3-319-09284-3_31}.
+
+\end{thebibliography}
+
+\end{document}

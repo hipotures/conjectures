@@ -17,6 +17,7 @@ to reproduce it.
 | [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Small graphs without cycles of length a power of two](results/small-graphs-power-of-two-cycles/) | preprint, v1.0.0 | A | [PDF](results/small-graphs-power-of-two-cycles/paper.pdf) · [TeX](results/small-graphs-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas) · [Python](results/small-graphs-power-of-two-cycles/verify.py) · [Data](results/small-graphs-power-of-two-cycles/data) |
 | [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Cubic bipartite graphs on at most 84 vertices have a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/) | preprint, v1.1.0 | B | [PDF](results/cubic-bipartite-power-of-two-cycles/paper.pdf) · [TeX](results/cubic-bipartite-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas/CubicBipartite.lean) · [C++](results/cubic-bipartite-power-of-two-cycles/src) · [Python](results/cubic-bipartite-power-of-two-cycles/independent_check.py) · [Data](results/cubic-bipartite-power-of-two-cycles/data) |
 | [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Cycles of length 4, 8, 16 and 32 in censuses of cubic graphs](results/cubic-census-power-of-two-cycles/) | draft | C | [PDF](results/cubic-census-power-of-two-cycles/paper.pdf) · [TeX](results/cubic-census-power-of-two-cycles/paper.tex) · [C++](results/cubic-census-power-of-two-cycles/src) · [Python](results/cubic-census-power-of-two-cycles/check_witnesses.py) · [Data](results/cubic-census-power-of-two-cycles/data) |
+| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [The smallest Tutte–Coxeter lifts without cycles of length 32](results/tutte-coxeter-lifts-without-32-cycles/) | draft | B | [PDF](results/tutte-coxeter-lifts-without-32-cycles/paper.pdf) · [TeX](results/tutte-coxeter-lifts-without-32-cycles/paper.tex) · [Lean](lean/ErdosGyarfas/TutteCoxeter.lean) · [Python](results/tutte-coxeter-lifts-without-32-cycles/encode.py) · [Data](results/tutte-coxeter-lifts-without-32-cycles/data) |
 
 **Categories.** **A**: every claim is proved by the Lean kernel; no external
 computation is trusted. **B**: computer-assisted; Lean proves the reductions
@@ -112,6 +113,33 @@ checked by a separate program that reads the census files itself.
 [how it is checked](results/cubic-census-power-of-two-cycles/README.md) ·
 [C++](results/cubic-census-power-of-two-cycles/src) ·
 [data](results/cubic-census-power-of-two-cycles/data)
+
+</td>
+</tr>
+<tr>
+<td width="42%" valign="top"><a href="results/tutte-coxeter-lifts-without-32-cycles/paper.pdf"><img src="assets/tutte-coxeter-lifts-without-32-cycles/page1.png" alt="First page of the paper"></a></td>
+<td valign="top">
+
+### [The smallest Tutte–Coxeter lifts without cycles of length 32](results/tutte-coxeter-lifts-without-32-cycles/paper.pdf)
+
+Erdős–Gyárfás conjecture · category B · 6 pages · draft
+
+The graphs behind f_δ≥3(5) ≤ 345 and f_cubic(5) ≤ 370 replace each vertex of
+the Tutte–Coxeter graph by a small gadget. Among all **18³⁰** such lifts with
+the gadgets H7, H8\*, H15, none without a 32-cycle has fewer than **345**
+vertices, and none of the cubic ones fewer than **370**: both constructions are
+optimal in their family.
+
+A double-counting identity over the 90 eight-cycles (proved in Lean) leaves
+three cases; CaDiCaL refutes them in 58 formulas, and drat-trim checks every
+proof. An independent test suite compares the encoding with 300 lifts built as
+graphs.
+
+[PDF](results/tutte-coxeter-lifts-without-32-cycles/paper.pdf) ·
+[TeX](results/tutte-coxeter-lifts-without-32-cycles/paper.tex) ·
+[how it is checked](results/tutte-coxeter-lifts-without-32-cycles/README.md) ·
+[Python](results/tutte-coxeter-lifts-without-32-cycles) ·
+[results](results/tutte-coxeter-lifts-without-32-cycles/data/results.json)
 
 </td>
 </tr>
@@ -220,6 +248,7 @@ category-A witnesses are proved 2-connected.
 |---|---|---|---|
 | a cubic bipartite graph without C4, C8, C16 has ≥ **86** vertices | 60 (Tranquilli), 70 (Zhuge) | category B, preprint v1.1.0 | Lean: case split and witness soundness |
 | a cubic bipartite graph of girth ≥ 10 without C16 has ≥ **90** vertices | — | category B, preprint v1.1.0 | Branch B of the same proof |
+| a lift of the Tutte–Coxeter graph by H7, H8\*, H15 without C32 has ≥ **345** vertices (≥ **370** if cubic) | — | category B, draft | Lean: counting identity; SAT with drat-trim-checked DRAT proofs |
 
 | Census | Graphs | Result | Status |
 |---|--:|---|---|
@@ -247,7 +276,9 @@ Every push runs [`verify.yml`](.github/workflows/verify.yml):
    reimplementation and the search programs at small caps; the full computation
    is reproduced with `reproduce.py` (see the result's README). For category C,
    CI runs the checker's negative controls and a small search; the census
-   computation is reproduced with `run_census.py`.
+   computation is reproduced with `run_census.py`. For the Tutte–Coxeter lifts,
+   CI runs the encoding tests and the smallest SAT case with its DRAT check;
+   `prove.py` reproduces all cases.
 
 To reproduce locally:
 
