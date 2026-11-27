@@ -1,5 +1,5 @@
 {
-  "title": "Conjectures: formally verified results on open graph-theory problems",
+  "title": "Conjectures: computer-assisted and formally verified results on open problems in mathematics",
   "upload_type": "software",
   "creators": [
     {
@@ -8,19 +8,22 @@
       "orcid": "0009-0006-6148-2965"
     }
   ],
-  "description": "<p>Kernel-checked Lean 4 proofs, graph certificates, independent checkers and papers for results on open problems in graph theory.</p><p>Release v1.1.0 adds the paper <em>Every cubic bipartite graph on at most 84 vertices has a cycle of length 4, 8 or 16</em> (category B: computer-assisted, with the case split and the soundness of the witness checks proved in Lean 4): a cubic bipartite counterexample to the Erdős–Gyárfás conjecture has at least 86 vertices, and every cubic bipartite graph of girth at least 10 on at most 88 vertices has a 16-cycle. The search code adapts Julius Tranquilli's MIT-licensed program and keeps the MIT License (folder results/cubic-bipartite-power-of-two-cycles/src); everything else is CC0. The release also contains a draft of <em>Cycles of length 4, 8, 16 and 32 in censuses of cubic graphs</em>.</p><p>Release v1.0.0 contained the paper <em>Small graphs without cycles of length a power of two</em> with its formal development: f<sub>δ≥3</sub>(4) ≤ 73, f<sub>δ≥3</sub>(5) ≤ 345 and f<sub>cubic</sub>(6) ≤ 10,498. The proofs use Lean 4.36.0 without Mathlib, without native_decide, and only the standard axioms propext, Classical.choice and Quot.sound.</p><p>AI systems (Gemini 4 Neon, Claude Opus 5.5; tools Antigravity and Claude Code) assisted substantially; they are not authors.</p>",
+  "description": "<p>Papers, code, data and machine-checked proofs (Lean 4, DRAT) for results on open problems in mathematics. Each result states its category: A, every claim proved by the Lean kernel; B, computer-assisted, with the reductions and checker soundness proved in Lean; C, a reproducible computation with independently checked witnesses. Current problem: the Erdős–Gyárfás conjecture.</p><p>Release v1.1.0 adds the paper <em>Every cubic bipartite graph on at most 84 vertices has a cycle of length 4, 8 or 16</em> (category B: computer-assisted, with the case split and the soundness of the witness checks proved in Lean 4): a cubic bipartite counterexample to the Erdős–Gyárfás conjecture has at least 86 vertices, and every cubic bipartite graph of girth at least 10 on at most 88 vertices has a 16-cycle. The search code adapts Julius Tranquilli's MIT-licensed program and keeps the MIT License (folder results/cubic-bipartite-power-of-two-cycles/src); everything else is CC0. The release also contains a draft of <em>Cycles of length 4, 8, 16 and 32 in censuses of cubic graphs</em>.</p><p>Release v1.0.0 contained the paper <em>Small graphs without cycles of length a power of two</em> with its formal development: f<sub>δ≥3</sub>(4) ≤ 73, f<sub>δ≥3</sub>(5) ≤ 345 and f<sub>cubic</sub>(6) ≤ 10,498. The proofs use Lean 4.36.0 without Mathlib, without native_decide, and only the standard axioms propext, Classical.choice and Quot.sound.</p><p>AI systems (Gemini 4 Neon, Claude Opus 5.5; tools Antigravity and Claude Code) assisted substantially; they are not authors.</p>",
   "license": "cc-zero",
   "access_right": "open",
   "version": "1.1.0",
   "keywords": [
+    "open problems",
+    "computer-assisted proof",
+    "formal verification",
+    "Lean 4",
+    "SAT",
+    "DRAT",
     "Erdős–Gyárfás conjecture",
     "cycles of length a power of two",
     "cubic graphs",
     "extremal graph theory",
-    "Lean 4",
-    "formal verification",
-    "cubic bipartite graphs",
-    "computer-assisted proof"
+    "cubic bipartite graphs"
   ],
   "related_identifiers": [
     {

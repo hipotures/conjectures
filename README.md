@@ -1,8 +1,8 @@
-![CONJECTURES — kernel-checked graph theory](assets/banner.svg)
+![CONJECTURES — machine-checked results on open problems](assets/banner.svg)
 
-Results on open problems in mathematics, each published with a paper, a Lean 4
-proof checked by the Lean kernel, an independent checker, and the data needed
-to reproduce it.
+Results on open problems in mathematics. Each one is published with a paper,
+the code and data needed to reproduce it, and an independent check; how much of
+it is proved by the Lean kernel is stated by its category (below).
 
 **Author:** Andrzej Marszałek (Independent Researcher, ORCID
 [0009-0006-6148-2965](https://orcid.org/0009-0006-6148-2965)) ·

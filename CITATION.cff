@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use these results, formal proofs, or certificates, please cite them as below."
-title: "Conjectures: formally verified results on open graph-theory problems"
+title: "Conjectures: computer-assisted and formally verified results on open problems in mathematics"
 type: software
 version: "1.1.0"
 date-released: "2026-11-27"
@@ -13,6 +13,9 @@ authors:
 license: CC0-1.0
 repository-code: "https://github.com/hipotures/conjectures"
 keywords:
+  - open problems
+  - SAT
+  - DRAT
   - Erdős–Gyárfás conjecture
   - cycles of length a power of two
   - cubic graphs
@@ -22,8 +25,8 @@ keywords:
   - cubic bipartite graphs
   - computer-assisted proof
 abstract: >-
-  Kernel-checked Lean 4 proofs, graph certificates, independent checkers, and
-  papers for results on graphs without cycles whose length is a power of two,
-  motivated by the Erdős–Gyárfás conjecture. Code in
+  Papers, code, data and machine-checked proofs (Lean 4, DRAT) for results on
+  open problems in mathematics. Current problem: the Erdős–Gyárfás conjecture
+  (graphs without cycles whose length is a power of two). Code in
   results/cubic-bipartite-power-of-two-cycles/src is MIT-licensed (adapted from
   Julius Tranquilli); everything else is CC0.
