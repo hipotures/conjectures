@@ -28,7 +28,8 @@
 \newcommand{\Hseven}{H_7}
 \newcommand{\Hfifteen}{H_{15}}
 \newcommand{\Height}{H_8^{*}}
-\newcommand{\lean}[1]{\texttt{#1}}
+\newcommand{\leanus}{\textunderscore\allowbreak}
+\newcommand{\lean}[1]{{\ttfamily\let\_\leanus #1}}
 
 \usepackage{fancyvrb}
 \DeclareUnicodeCharacter{2203}{\ensuremath{\exists}}
@@ -109,8 +110,27 @@ indicates that $\fc(4)=78$. For $k=5$, García~\cite{Garcia2026} gave a
 corrected $450$-vertex construction, and Henry~\cite{Henry2026} lowered this to
 $\fc(5)\le 370$. For $k=6$, García's general bound gives $\fc(6)\le 32{,}640$.
 Henry proved $\fc(k)\le 15\,n_3(2^{k-2})-8$ for $k\ge 5$, where $n_3(g)$ is the
-least order of a connected cubic graph of girth at least $g$, and noted that a
-reported $702$-vertex cubic graph of girth $16$ would give $\fc(6)\le 10{,}522$.
+least order of a connected cubic graph of girth at least $g$. With the published
+$936$-vertex cubic graph of girth $16$~\cite{EGJSV2026} this gives
+$\fc(6)\le 14{,}032$, and Henry noted that a reported $702$-vertex cubic graph of
+girth $16$ would give $\fc(6)\le 10{,}522$.
+
+\begin{table}[ht]
+\centering
+\caption{Upper bounds for small $k$. Bold entries are new.}
+\label{tab:summary}
+\begin{tabular}{@{}rlll@{}}
+\toprule
+$k$ & previous bounds for $\fc(k)$ & this paper & method\\
+\midrule
+2 & $10$ (Petersen graph) & -- & --\\
+3 & $24$ \cite{Markstrom2004,Garcia2026} & -- & --\\
+4 & $78$ \cite{Exoo2014,Ripatti2017} & $\fd(4)\le\mathbf{73}$ & Petersen graph, $\Height$, $\Hseven$\\
+5 & $370$ \cite{Henry2026} & $\fd(5)\le\mathbf{345}$ & Tutte--Coxeter graph, $\Height$, $\Hfifteen$\\
+6 & $14{,}032$ \cite{Henry2026}; $10{,}522$ conditional \cite{Henry2026} & $\fc(6)\le\mathbf{10{,}498}$ & source packing, $702$-vertex base\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection*{Results}
 \begin{theorem}\label{thm:main}
@@ -120,7 +140,7 @@ reported $702$-vertex cubic graph of girth $16$ would give $\fc(6)\le 10{,}522$.
   \item $\fd(5)\le 345$;
   \item $\fc(6)\le 10{,}498$.
 \end{enumerate}
-All witnesses are $2$-connected.
+All witnesses are $2$-connected (\cref{lem:2conn}).
 \end{theorem}
 
 Parts (i) and (ii) use a new gadget $\Height$ on eight vertices with one vertex
@@ -141,11 +161,11 @@ performed by the Lean kernel itself. No \lean{native\_decide}, no external
 solver and no axiom beyond Lean's three standard ones is used
 (\cref{sec:formal}). The library also re-proves Henry's bound $\fc(5)\le 370$
 and the existence of a $78$-vertex cubic graph without cycles of length $4$, $8$
-and $16$.
+and $16$ (cf.\ Exoo~\cite{Exoo2014}).
 
 \subsection*{Organisation}
-\Cref{sec:lifts} recalls three-port vertex replacement and the cycle projection
-lemma. \Cref{sec:gadgets} describes the gadgets. \Cref{sec:small} proves parts
+\Cref{sec:lifts} recalls three-port vertex replacement, the cycle projection
+lemma, and a lemma on $2$-connectivity. \Cref{sec:gadgets} describes the gadgets. \Cref{sec:small} proves parts
 (i) and (ii). \Cref{sec:packing} proves the source-packing theorem and part
 (iii). \Cref{sec:formal} describes the formalization, and \cref{sec:repro}
 explains how to reproduce the results.
@@ -201,6 +221,28 @@ $w(D)>L$ for every cycle $D$ of $B$. Then $B[H,\sigma]$ has no cycle of
 length $L$.
 \end{corollary}
 
+\begin{lemma}\label{lem:2conn}
+If $B$ is $2$-connected and every gadget $H_v$ is $2$-connected or equal to
+$U_1$, then $B[H,\sigma]$ is $2$-connected.
+\end{lemma}
+
+\begin{proof}
+Delete a vertex $x$ of $H_u$. If $H_u=U_1$, what remains is a lift of the
+connected graph $B-u$ by connected gadgets, so it is connected. Otherwise
+$H_u-x$ is connected and contains at least two ports, so it is joined to some
+$H_v$ with $v\ne u$. The gadgets $H_v$ with $v\ne u$ are intact and connected,
+and they are joined to each other along the edges of the connected graph $B-u$.
+Hence the lift minus $x$ is connected.
+\end{proof}
+
+The Petersen and Tutte--Coxeter graphs are $3$-connected, and $\Hseven$,
+$\Height$ and $\Hfifteen$ are $2$-connected. The $702$-vertex base of
+\cref{sec:packing} is connected, cubic and bipartite. A connected regular
+bipartite graph has no bridge, and in a cubic graph vertex and edge
+connectivity coincide, so this base is $2$-connected too. This proves the last
+sentence of \cref{thm:main}. The formal version is
+\lean{liftGraph\_is2Connected}.
+
 In our constructions $\sigma_v$ is determined by one distinguished neighbour
 $q(v)$ of $v$: the edge $vq(v)$ goes to port $0$, and the other two edges go to
 ports $1$ and $2$. For the gadgets below, $d_H(0,1)=d_H(0,2)$, so $w(D)$
@@ -217,14 +259,14 @@ the data in \cref{sec:repro}.)
 Cycle lengths were found by exhaustive enumeration. None of the gadgets
 contains a cycle of length $4$ or $8$, and all have fewer than $16$ vertices.}
 \label{tab:gadgets}
-\begin{tabular}{@{}lcccll@{}}
+\begin{tabular}{@{}lrrrrll@{}}
 \toprule
-Gadget & order & $d(0,\cdot)$ & $d(1,2)$ & degrees & internal cycle lengths\\
+Gadget & $|V|$ & $|E|$ & $d(0,\cdot)$ & $d(1,2)$ & degrees & internal cycle lengths\\
 \midrule
-$\Hseven$ \cite{Garcia2026}   & 7  & 2 & 3 & $2^3\,3^4$ & 3, 5, 6, 7\\
-$\Height$ (new)               & 8  & 3 & 2 & $2^3\,3^4\,4^1$ & 3, 5, 6, 7\\
-$\Hfifteen$ \cite{Garcia2026} & 15 & 3 & 5 & $2^3\,3^{12}$ & 3, 5, 6, 7, 9--15\\
-$U_1$                         & 1  & 0 & 0 & -- & none\\
+$\Hseven$ \cite{Garcia2026}   & 7  & 9  & 2 & 3 & $2^3\,3^4$ & 3, 5, 6, 7\\
+$\Height$ (new)               & 8  & 11 & 3 & 2 & $2^3\,3^4\,4^1$ & 3, 5, 6, 7\\
+$\Hfifteen$ \cite{Garcia2026} & 15 & 21 & 3 & 5 & $2^3\,3^{12}$ & 3, 5, 6, 7, 9--15\\
+$U_1$                         & 1  & 0  & 0 & 0 & -- & none\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -239,30 +281,52 @@ We use the following labelled versions. Ports are listed as $(p_0,p_1,p_2)$.
   García's $\Hfifteen$; its cycle spectrum agrees with~\cite[Table~2]{Henry2026}.
 \item $\Height$: vertices $0,\dots,7$; edges
   $03,04,13,16,25,27,35,46,47,57,67$; ports $(2,0,1)$. Vertex $7$ has degree
-  $4$.
+  $4$; the star marks that, unlike $\Hseven$ and $\Hfifteen$, this gadget is
+  not cubic apart from its ports.
 \end{itemize}
 
 \begin{figure}[ht]
 \centering
-\begin{tikzpicture}[scale=1.05,
-  v/.style={circle,draw,fill=white,inner sep=1.6pt,font=\scriptsize},
-  p/.style={circle,draw,fill=black!15,inner sep=1.6pt,font=\scriptsize}]
-  \node[p] (2) at (0,2.5) {2};
-  \node[v] (5) at (-1,1.5) {5};
-  \node[v] (7) at (1,1.5) {7};
-  \node[v] (3) at (-1,0.1) {3};
-  \node[p] (0) at (-2.3,-0.8) {0};
-  \node[v] (4) at (-1,-1.7) {4};
-  \node[v] (6) at (1,-1.7) {6};
-  \node[p] (1) at (2.3,-0.8) {1};
-  \foreach \a/\b in {0/3,0/4,1/3,1/6,2/5,2/7,3/5,4/6,4/7,5/7,6/7}
-    \draw (\a)--(\b);
-  \draw (2)--++(0,0.6) node[above,font=\scriptsize]{port $p_0$};
-  \draw (0)--++(-0.5,-0.4) node[below left,font=\scriptsize]{$p_1$};
-  \draw (1)--++(0.5,-0.4) node[below right,font=\scriptsize]{$p_2$};
+\tikzset{
+  v/.style={circle,draw,fill=white,inner sep=1.6pt,minimum size=13pt,font=\scriptsize},
+  p/.style={circle,draw,fill=black!15,inner sep=1.6pt,minimum size=13pt,font=\scriptsize},
+  d/.style={circle,draw,double,double distance=1pt,fill=white,inner sep=1.3pt,minimum size=13pt,font=\scriptsize},
+  lab/.style={font=\scriptsize}}
+\begin{tikzpicture}[scale=0.92]
+  \node[p] (0) at (0,2.5) {0};
+  \node[v] (3) at (-1.2,1.3) {3};
+  \node[v] (4) at (1.2,1.3) {4};
+  \node[p] (1) at (-2.3,-0.8) {1};
+  \node[v] (5) at (-0.8,-1.5) {5};
+  \node[v] (6) at (0.8,-1.5) {6};
+  \node[p] (2) at (2.3,-0.8) {2};
+  \foreach \a/\b in {0/3,0/4,1/3,1/5,2/4,2/6,3/5,4/6,5/6} \draw (\a)--(\b);
+  \draw (0)--++(0,0.6) node[above,lab]{$p_0$};
+  \draw (1)--++(-0.5,-0.4) node[below left,lab]{$p_1$};
+  \draw (2)--++(0.5,-0.4) node[below right,lab]{$p_2$};
+  \node[font=\small] at (0,-2.5) {(a) $\Hseven$};
+\end{tikzpicture}\hspace{3em}%
+\begin{tikzpicture}[scale=0.92]
+  \node[p] (2) at (0,2.7) {2};
+  \node[v] (5) at (-1.6,1.3) {5};
+  \node[d] (7) at (0.5,1.3) {7};
+  \node[v] (4) at (-0.3,0) {4};
+  \node[v] (6) at (1.2,0) {6};
+  \node[p] (0) at (-2.2,-0.8) {0};
+  \node[v] (3) at (0,-1.7) {3};
+  \node[p] (1) at (2.2,-0.8) {1};
+  \foreach \a/\b in {0/3,0/4,1/3,1/6,2/5,2/7,3/5,4/6,4/7,5/7,6/7} \draw (\a)--(\b);
+  \draw (2)--++(0,0.6) node[above,lab]{$p_0$};
+  \draw (0)--++(-0.5,-0.4) node[below left,lab]{$p_1$};
+  \draw (1)--++(0.5,-0.4) node[below right,lab]{$p_2$};
+  \node[font=\small] at (0,-2.6) {(b) $\Height$};
 \end{tikzpicture}
-\caption{The gadget $\Height$. Ports are shaded; the edge stubs show where the
-gadget is attached to the base graph. Vertex $7$ has degree $4$.}
+\caption{The gadgets $\Hseven$ and $\Height$, drawn with port $p_0$ at the
+top. Ports are shaded, and the edge stubs show where a gadget is attached to the
+base graph. In $\Height$ the vertex $7$ (double circle) has degree $4$. The
+crossing of the edges $3\text{--}5$ and $0\text{--}4$ cannot be avoided: $\Height$
+is planar, but it has no drawing without crossings in which all three ports lie
+on the outer face.}
 \label{fig:h8}
 \end{figure}
 
@@ -278,23 +342,36 @@ one along each edge, so $\varphi(x)\le d_H(p_i,x)$. The absence of $4$- and
 $8$-cycles is certified by a cycle search whose soundness is proved in Lean.
 
 %======================================================================
-\section{Small graphs: proofs of parts (i) and (ii)}\label{sec:small}
+\section{Graphs on 73 and 345 vertices}\label{sec:small}
 
 \subsection{Seventy-three vertices}
-Let $B$ be the Petersen graph with vertices $0,\dots,9$ and neighbourhoods
-\[
-\begin{array}{c|cccccccccc}
-v & 0&1&2&3&4&5&6&7&8&9\\\hline
-N(v) & 1,4,5 & 0,2,6 & 1,3,7 & 2,4,8 & 0,3,9 & 0,7,8 & 1,8,9 & 2,5,9 & 3,5,6 & 4,6,7
-\end{array}
-\]
-Put $\Height$ at the vertices $0,1,2$ and $\Hseven$ at the other seven vertices,
-with distinguished neighbours
-\[
-(q(0),\dots,q(9))=(1,6,1,2,0,0,1,2,6,6).
-\]
-(The construction was found by a computer search over gadget assignments and
-the maps $q$.)
+Let $B$ be the Petersen graph, labelled as in \cref{tab:petersen}. Put
+$\Height$ at the vertices $0,1,2$ and $\Hseven$ at the other seven vertices,
+with the distinguished neighbours $q$ of witness A in \cref{tab:petersen}. (The
+construction was found by a computer search over gadget assignments and the
+maps $q$.)
+
+\begin{table}[ht]
+\centering
+\caption{Petersen graph: neighbourhoods $N(v)$, and the gadget $H_v$ and
+distinguished neighbour $q(v)$ for the two $73$-vertex witnesses.}
+\label{tab:petersen}
+\small
+\begin{tabular}{@{}rlcrcr@{\hspace{2.5em}}rlcrcr@{}}
+\toprule
+& & \multicolumn{2}{c}{witness A} & \multicolumn{2}{c}{witness B} & & & \multicolumn{2}{c}{witness A} & \multicolumn{2}{c}{witness B}\\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){9-10}\cmidrule(l){11-12}
+$v$ & $N(v)$ & $H_v$ & $q$ & $H_v$ & $q$ & $v$ & $N(v)$ & $H_v$ & $q$ & $H_v$ & $q$\\
+\midrule
+0 & 1, 4, 5 & $\Height$ & 1 & $U_1$ & -- & 5 & 0, 7, 8 & $\Hseven$ & 0 & $\Height$ & 0\\
+1 & 0, 2, 6 & $\Height$ & 6 & $\Height$ & 0 & 6 & 1, 8, 9 & $\Hseven$ & 1 & $\Height$ & 1\\
+2 & 1, 3, 7 & $\Height$ & 1 & $\Height$ & 1 & 7 & 2, 5, 9 & $\Hseven$ & 2 & $\Height$ & 5\\
+3 & 2, 4, 8 & $\Hseven$ & 2 & $\Height$ & 4 & 8 & 3, 5, 6 & $\Hseven$ & 6 & $\Height$ & 5\\
+4 & 0, 3, 9 & $\Hseven$ & 0 & $\Height$ & 0 & 9 & 4, 6, 7 & $\Hseven$ & 6 & $\Height$ & 4\\
+\bottomrule
+\end{tabular}
+\end{table}
+
 The lift has $3\cdot 8+7\cdot 7=73$ vertices and $111$ edges, $70$ vertices of
 degree $3$ and $3$ of degree $4$.
 
@@ -306,11 +383,10 @@ is attained). No gadget contains a cycle of length $4$, $8$ or $16$
 $4$, $8$ or $16$.
 \end{proof}
 
-A second, structurally different witness keeps vertex $0$ of the Petersen graph
-as $U_1$ and puts $\Height$ at the other nine vertices, with
-$q=(1,0,1,4,0,0,1,5,5,4)$. It also has $73$ vertices; it has $114$ edges and
-nine vertices of degree $4$. Both witnesses are $2$-connected. We do not know
-whether $\fd(4)<73$.
+A second, structurally different witness (B in \cref{tab:petersen}) keeps
+vertex $0$ of the Petersen graph as $U_1$ and puts $\Height$ at the other nine
+vertices. It also has $73$ vertices; it has $114$ edges and nine vertices of
+degree $4$. The same computation applies. We do not know whether $\fd(4)<73$.
 
 \subsection{Three hundred and forty-five vertices}
 Let $B$ be the Tutte--Coxeter graph~\cite{Tutte1947}, the $(3,8)$-cage on $30$
@@ -335,23 +411,25 @@ lift has no cycle of length $4,8,16,32$.
 \centering
 \caption{Tutte--Coxeter graph: neighbourhoods $N(v)$, and the distinguished
 neighbours $q(v)$ for the $345$-vertex lift ($q_{345}$) and for the $370$-vertex
-lift ($q_{370}$).}
+lift ($q_{370}$). In the column $q_{345}$ a bold entry means $H_v=\Height$
+(otherwise $\Hfifteen$); in the column $q_{370}$ a bold entry means
+$H_v=\Hseven$ (otherwise $\Hfifteen$).}
 \label{tab:tc}
 \footnotesize
 \begin{tabular}{@{}rlrr@{\hspace{2.2em}}rlrr@{\hspace{2.2em}}rlrr@{}}
 \toprule
 $v$ & $N(v)$ & $q_{345}$ & $q_{370}$ & $v$ & $N(v)$ & $q_{345}$ & $q_{370}$ & $v$ & $N(v)$ & $q_{345}$ & $q_{370}$\\
 \midrule
-0 & 1, 17, 29 & 29 & 29 & 10 & 9, 11, 19 & 11 & 19 & 20 & 19, 21, 27 & 19 & 19\\
-1 & 0, 2, 22 & 0 & 0 & 11 & 10, 12, 24 & 12 & 24 & 21 & 14, 20, 22 & 22 & 20\\
-2 & 1, 3, 9 & 1 & 3 & 12 & 11, 13, 29 & 13 & 13 & 22 & 1, 21, 23 & 1 & 23\\
-3 & 2, 4, 26 & 26 & 26 & 13 & 4, 12, 14 & 4 & 14 & 23 & 6, 22, 24 & 24 & 6\\
-4 & 3, 5, 13 & 3 & 13 & 14 & 13, 15, 21 & 21 & 21 & 24 & 11, 23, 25 & 11 & 23\\
-5 & 4, 6, 18 & 18 & 6 & 15 & 8, 14, 16 & 14 & 14 & 25 & 16, 24, 26 & 16 & 24\\
-6 & 5, 7, 23 & 23 & 7 & 16 & 15, 17, 25 & 15 & 25 & 26 & 3, 25, 27 & 27 & 25\\
-7 & 6, 8, 28 & 8 & 8 & 17 & 0, 16, 18 & 18 & 0 & 27 & 20, 26, 28 & 20 & 20\\
-8 & 7, 9, 15 & 15 & 9 & 18 & 5, 17, 19 & 17 & 17 & 28 & 7, 27, 29 & 7 & 7\\
-9 & 2, 8, 10 & 10 & 2 & 19 & 10, 18, 20 & 10 & 18 & 29 & 0, 12, 28 & 28 & 12\\
+0 & 1, 17, 29 & 29 & 29 & 10 & 9, 11, 19 & \textbf{11} & \textbf{19} & 20 & 19, 21, 27 & \textbf{19} & 19\\
+1 & 0, 2, 22 & 0 & \textbf{0} & 11 & 10, 12, 24 & \textbf{12} & \textbf{24} & 21 & 14, 20, 22 & 22 & 20\\
+2 & 1, 3, 9 & 1 & 3 & 12 & 11, 13, 29 & \textbf{13} & 13 & 22 & 1, 21, 23 & 1 & \textbf{23}\\
+3 & 2, 4, 26 & \textbf{26} & 26 & 13 & 4, 12, 14 & \textbf{4} & 14 & 23 & 6, 22, 24 & \textbf{24} & 6\\
+4 & 3, 5, 13 & \textbf{3} & \textbf{13} & 14 & 13, 15, 21 & 21 & 21 & 24 & 11, 23, 25 & \textbf{11} & 23\\
+5 & 4, 6, 18 & 18 & \textbf{6} & 15 & 8, 14, 16 & 14 & \textbf{14} & 25 & 16, 24, 26 & 16 & 24\\
+6 & 5, 7, 23 & \textbf{23} & 7 & 16 & 15, 17, 25 & 15 & \textbf{25} & 26 & 3, 25, 27 & \textbf{27} & 25\\
+7 & 6, 8, 28 & 8 & 8 & 17 & 0, 16, 18 & \textbf{18} & 0 & 27 & 20, 26, 28 & \textbf{20} & \textbf{20}\\
+8 & 7, 9, 15 & 15 & 9 & 18 & 5, 17, 19 & 17 & 17 & 28 & 7, 27, 29 & 7 & \textbf{7}\\
+9 & 2, 8, 10 & \textbf{10} & 2 & 19 & 10, 18, 20 & \textbf{10} & 18 & 29 & 0, 12, 28 & 28 & 12\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -371,12 +449,13 @@ here is a formal proof.
 
 Let $B$ be a cubic graph and let $f\colon V(B)\to V(B)$ map each vertex to one
 of its neighbours. We call $f$ an \emph{orientation}, and a vertex $s$ a
-\emph{source} if $f(v)\ne s$ for every $v$. A \emph{directed cycle of length
-$t$} is a vertex $x$ with $f^t(x)=x$.
+\emph{source} if $f(v)\ne s$ for every $v$. We say that $f$ has a
+\emph{directed cycle of length at most $m$} if $f^t(x)=x$ for some vertex $x$
+and some $1\le t\le m$.
 
 \begin{theorem}[Source packing]\label{thm:packing}
 Let $B$ be a cubic graph on $N$ vertices of girth at least $16$, and let $f$ be
-an orientation of $B$ without directed cycles of length $1,\dots,16$. Let $S$ be
+an orientation of $B$ without directed cycles of length at most $16$. Let $S$ be
 a set of sources of $f$ that are pairwise at distance at least $9$ in $B$. Put
 $\Hseven$ at the vertices of $S$ and $\Hfifteen$ at all other vertices, with
 distinguished neighbour $q(v)=f(v)$. The lift is a cubic graph on $15N-8|S|$
@@ -416,6 +495,17 @@ most $16$, a contradiction. That vertex contributes $6$ instead of $4$, so
 $w(D)\ge 4\cdot 16-1+2=65$.
 \end{proof}
 
+\begin{remark}[Other values of $k$]\label{rem:general}
+The same argument works for every $k\ge 5$. Let $g=2^{k-2}$, let $B$ have girth
+at least $g$, let $f$ have no directed cycle of length at most $g$, and let the
+sources in $S$ be pairwise at distance at least $g/2+1$. Every base cycle then
+has $w(D)\ge 3g>2^{k-1}$. A base cycle of length $\ell\ge g+1$ meets at most
+$\lfloor \ell/(g/2+1)\rfloor$ sources, so $w(D)\ge 4\ell-\lfloor\ell/(g/2+1)\rfloor\ge 4g+3$.
+A base cycle of length $g$ meets at most one source, and the argument above gives
+$w(D)\ge 4g+1$. Hence $\fc(k)\le 15N-8|S|$. For $|S|=1$ this is Henry's
+refinement. The Lean formalization covers only $k=6$.
+\end{remark}
+
 \begin{proof}[Proof of \cref{thm:main}(iii)]
 Let $B$ be Poláček's cubic graph on $702$ vertices (House of
 Graphs~\cite{HoG}, file \texttt{k3\_g16\_n702.g6}, SHA-256 prefix
@@ -434,21 +524,29 @@ $4,8,16,32,64$.
 \begin{remark}
 The girth of $B$ is the delicate input: Henry's bound $10{,}522$ was
 conditional on the existence of this graph, which he did not reconstruct. In the
-formal proof the girth is established as follows. Two explicit permutations of
-$V(B)$ are checked to be automorphisms, and the group they generate is checked
-to act transitively on one colour class of the bipartition. A breadth-first
-search tree of depth $7$ from a fixed vertex of that class certifies that no
-cycle of length less than $16$ passes through it. Every cycle meets both colour
-classes, so it can be moved by an automorphism to pass through the fixed
-vertex. Hence $B$ has girth at least $16$.
+formal proof the girth is established as follows. A $2$-colouring of $B$ is
+checked, so $B$ is bipartite (\lean{k3\_g16\_n702\_bipartite}). Two explicit
+permutations of $V(B)$ are checked to be automorphisms, and the group they
+generate is checked to act transitively on one colour class. A breadth-first
+search from a fixed vertex $v_0$ of that class certifies that the ball of
+radius $7$ around $v_0$ induces a tree. A cycle of length less than $16$
+through $v_0$ would lie in that ball, so there is none. Every cycle meets both
+colour classes, so an automorphism moves it to a cycle through $v_0$. Hence $B$
+has girth at least $16$.
 \end{remark}
 
 \begin{remark}
-We used only $|S|=4$; a larger packing of sources would improve the bound. The
-library also contains a variant for bases of girth at least $17$, where the vertices of a greedily chosen maximal $4$-packing (pairwise
+The orientation $f$ and the set $S$ were found by a heuristic search, and we
+made no attempt to maximise $|S|$. Each additional source lowers the bound by
+$8$. Balls of radius $4$ around the sources are pairwise disjoint and have $46$
+vertices each, so $|S|\le\lfloor 702/46\rfloor=15$ for this base; we do not
+know how large $|S|$ can be when $f$ is required to have no short directed
+cycles. The library also contains a variant for bases of girth at least $17$,
+where the vertices of a greedily chosen maximal $4$-packing (pairwise
 distance at least $5$) receive $\Hseven$, without using an orientation
-(\lean{f\_cubic\_6\_4packing}). With the known
-$2048$-vertex cubic graph of girth $17$ it gives a weaker bound.
+(\lean{f\_cubic\_6\_4packing}). With the
+$2048$-vertex cubic graph of girth $17$ of~\cite{EGJSV2026} it gives a weaker
+bound.
 \end{remark}
 
 %======================================================================
@@ -486,8 +584,8 @@ theorem f_delta3_5_le_345 : ∃ G : FinGraph 345,
     ¬ G.HasCycle 16 ∧ ¬ G.HasCycle 32
 
 theorem f_cubic_6_le_10498 : ∃ G : FinGraph 10498,
-    G.IsCubic ∧ ¬ G.HasCycle 4 ∧ ¬ G.HasCycle 8 ∧ ¬ G.HasCycle 16 ∧
-    ¬ G.HasCycle 32 ∧ ¬ G.HasCycle 64
+    G.IsCubic ∧ ¬ G.HasCycle 4 ∧ ¬ G.HasCycle 8 ∧
+    ¬ G.HasCycle 16 ∧ ¬ G.HasCycle 32 ∧ ¬ G.HasCycle 64
 \end{leancode}
 
 The proofs follow the paper. \Cref{lem:projection} is proved once for arbitrary
@@ -512,9 +610,14 @@ every change. It fails if any reported axiom is outside this set, or if
 \lean{axiom} declaration appears in the code. A full build takes about one
 minute on a desktop computer.
 
-The library also proves that every witness is $2$-connected. This is shown for
-lifts in general (\lean{liftGraph\_is2Connected}) and checked on the bases and
-gadgets. It also contains two results that are not part of this paper:
+The library also proves \cref{lem:2conn} (\lean{liftGraph\_is2Connected}) and
+uses it to show that the $73$-, $345$-, $370$- and $78$-vertex witnesses are
+$2$-connected (\lean{pet73v1\_is2Connected}, \lean{pet73v2\_is2Connected},
+\lean{tc345\_is2Connected}, \lean{tc370\_is2Connected},
+\lean{f\_cubic\_4\_le\_78}). For the $10{,}498$-vertex witness, $2$-connectivity
+follows from \cref{lem:2conn} as explained in \cref{sec:lifts}; the connectivity
+of the $702$-vertex base is checked by the independent checker but is not
+formalized. It also contains two results that are not part of this paper:
 double-counting bounds for lifts of the Tutte--Coxeter graph, and reductions for
 cubic bipartite graphs, which support computer-assisted lower bounds to be
 reported separately.
@@ -544,8 +647,10 @@ $73$-vertex graphs and the $78$-vertex cubic graph have no cycle of length
 $4$, $8$ or $16$, and that the $345$- and $370$-vertex graphs have no cycle of
 length $4$, $8$ or $16$; the absence of $32$-cycles is covered by the weight
 computation. It recomputes $w(D)$ over all relevant base cycles. For
-the $702$-vertex base it checks the girth by breadth-first search, the
-orientation, the sources, and $w(D)\ge 65$ for every $16$-cycle. Its code shares
+the $702$-vertex base it checks the girth by breadth-first search, its
+connectivity, the orientation, the sources, and $w(D)\ge 65$ for each of the
+$9{,}828$ $16$-cycles. It also checks that the $10{,}498$-vertex lift is
+cubic and $2$-connected and has no cycle of length $4$ or $8$. Its code shares
 nothing with the Lean development except the input data.
 
 \section*{Use of AI tools}

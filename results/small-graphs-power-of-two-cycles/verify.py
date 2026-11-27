@@ -141,32 +141,36 @@ def simple_cycles_up_to(adj, maxlen: int):
 
 
 def is_2_connected(adj) -> bool:
+    """No cut vertex and connected (iterative Hopcroft-Tarjan, safe for large graphs)."""
     n = len(adj)
     if n < 3:
         return False
-    disc, low, cut = [-1] * n, [0] * n, False
-    sys.setrecursionlimit(max(10000, 4 * n))
-    timer = [0]
-
-    def dfs(u: int, parent: int) -> None:
-        nonlocal cut
-        disc[u] = low[u] = timer[0]
-        timer[0] += 1
-        children = 0
-        for v in adj[u]:
+    disc, low = [-1] * n, [0] * n
+    disc[0] = low[0] = 0
+    timer, root_children = 1, 0
+    stack = [(0, -1, iter(adj[0]))]
+    while stack:
+        u, parent, it = stack[-1]
+        advanced = False
+        for v in it:
             if disc[v] < 0:
-                children += 1
-                dfs(v, u)
-                low[u] = min(low[u], low[v])
-                if parent >= 0 and low[v] >= disc[u]:
-                    cut = True
-            elif v != parent:
+                disc[v] = low[v] = timer
+                timer += 1
+                stack.append((v, u, iter(adj[v])))
+                advanced = True
+                break
+            if v != parent:
                 low[u] = min(low[u], disc[v])
-        if parent < 0 and children > 1:
-            cut = True
-
-    dfs(0, -1)
-    return not cut and all(d >= 0 for d in disc)
+        if advanced:
+            continue
+        stack.pop()
+        if parent >= 0:
+            low[parent] = min(low[parent], low[u])
+            if parent == 0:
+                root_children += 1
+            elif low[u] >= disc[parent]:
+                return False
+    return root_children == 1 and all(d >= 0 for d in disc)
 
 
 def encode_graph6(adj) -> str:
@@ -358,6 +362,7 @@ def check_f6(quick: bool) -> None:
                 elif par[u] != v:
                     girth = min(girth, dist[u] + dist[v] + 1)
     check(girth == 16, f"girth = {girth}")
+    check(all(d >= 0 for d in bfs(adj, 0)), "base is connected")
     chosen, S = DATA["f6"]["chosen"], DATA["f6"]["sources"]
     check(all(chosen[u] in adj[u] for u in range(n)), "orientation: every vertex points to a neighbour")
     ok = True
@@ -379,6 +384,7 @@ def check_f6(quick: bool) -> None:
     N, ladj, slot = build_lift(base, gadget, choice)
     check(N == 10498, f"lift order = {N}")
     check({len(a) for a in ladj} == {3}, "lift is cubic")
+    check(is_2_connected(ladj), "lift is 2-connected")
     check(not has_cycle_of_length(ladj, 4) and not has_cycle_of_length(ladj, 8),
           "direct search: no 4-cycle, no 8-cycle")
     # Every lifted cycle outside a gadget projects to a base cycle of length >= 16,
