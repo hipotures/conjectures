@@ -47,7 +47,7 @@ Branch B root labelling, and the C++ programs themselves.
 ```bash
 python3 independent_check.py      # ~30 s, standard library only
 python3 reproduce.py --quick      # ~5 s, small caps (CI runs this)
-python3 reproduce.py              # full proof, ~15 min on 16 cores
+python3 reproduce.py              # full proof, ~20 min on 16 cores
 ```
 
 `reproduce.py` needs a C++17 compiler. It compiles `src/`, reruns both

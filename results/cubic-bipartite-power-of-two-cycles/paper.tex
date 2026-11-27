@@ -142,9 +142,10 @@ The proof is computer-assisted. Its mathematical part, which reduces the
 theorem to two finite searches, is short and is written out in
 \cref{sec:configs,sec:search}; the case split and the soundness of the witness
 checks are also proved in Lean~4 (\cref{sec:lean}). The searches visit about
-$2\cdot 10^{10}$ candidate blocks. Each rejection is either a degree or pair
-condition that the checker recomputes, or comes with an explicit cycle that the
-checker verifies by intersecting the named blocks. The correctness of the
+$2\cdot 10^{10}$ candidate blocks. Each rejection is either structural (the two
+new points of the candidate block already lie in a common block), which the
+checker recomputes, or comes with an explicit cycle that the checker verifies
+by intersecting the named blocks. The correctness of the
 enumeration itself rests on the coverage argument of \cref{prop:coverage} and on
 its implementation; we cross-check the latter against Tranquilli's program and
 against an independent implementation (\cref{sec:validation}).
@@ -334,7 +335,7 @@ with $s=7$ and no previous block.
   }
   \draw[decorate,decoration={brace,mirror,amplitude=4pt},black!60] (-14.5,-0.25) -- (-5.5,-0.25);
   \node[font=\scriptsize,align=center,anchor=north] at (-10,-0.45)
-    {$8$ blocks, two through each of $3,4,5,6$;\\ their other points are $15,\dots,30$ (depth $5$, not drawn)};
+    {$8$ blocks, two through each of $3,4,5,6$;\\ other points $15,\dots,30$\\ (depth $5$, not drawn)};
 \end{tikzpicture}
 \caption{The root of Branch B (\cref{lem:moore-root}): $15$ blocks on $31$
 points in the Levi graph. Squares are blocks, circles are points.}
@@ -344,8 +345,8 @@ points in the Levi graph. Squares are blocks, circles are points.}
 %======================================================================
 \section{Certificates and checking}\label{sec:certs}
 
-For every proposal that passes the degree and pair tests, the search program
-writes one record to a stream: either \emph{expand}, or a rejection with the
+For every proposal of step~(3) of \cref{sec:search} that is not a structural
+rejection, the search program writes one record to a stream: either \emph{expand}, or a rejection with the
 indices of the blocks of a witness from \cref{lem:incremental} ($2$ blocks for
 a $6$-cycle, $3$ for an $8$-cycle, $7$ for a $16$-cycle, plus the pair of
 points of the candidate at which the $16$-cycle is closed). The cycle searches in
@@ -381,8 +382,8 @@ times on a $16$-core AMD Ryzen~9 7950X3D.
 \centering
 \small
 \caption{Branch A (configurations with a Berge triangle), by cap $v$ and root
-orbit. ``Structural'' counts degree and pair rejections; $C_8$ and $C_{16}$
-count rejections with a witness cycle. Caps $29$ and $34$ reproduce~\cite{Tranquilli2026,Zhuge2026}.}
+orbit. ``Structural'' counts the rejections of step~(4) in which $q$ and $r$
+are already paired; $C_8$ and $C_{16}$ count rejections with a witness cycle. Caps $29$ and $34$ reproduce~\cite{Tranquilli2026,Zhuge2026}.}
 \label{tab:branchA}
 \begin{tabular}{@{}rcrrrrr@{}}
 \toprule
@@ -432,6 +433,11 @@ $v$ ($n\le 2v$) & states & proposals & structural & $C_6$ & $C_8$ & $C_{16}$\\
 \end{tabular}
 \end{table}
 
+Branch~B runs single-threaded. At cap $42$ the search took $2.1$\,s and wrote a
+$141$\,MB stream, which the checker read in $0.9$\,s; at cap $44$ the search
+took $28$\,s for a $1.36$\,GB stream, checked in $8.6$\,s.
+
+\FloatBarrier
 \begin{proof}[Proof of \cref{thm:main}]
 Suppose $G$ is a cubic bipartite graph on at most $84$ vertices without cycles of
 length $4$, $8$ and $16$. A connected component of $G$ has the same properties,
@@ -529,8 +535,8 @@ rest of the repository is in the public domain (CC0). The script
 \code{reproduce.py} compiles the programs, runs Branch~A at caps $29$, $34$, $35$,
 $40$, $41$, $42$ and Branch~B at caps $35$--$44$, checks every witness stream,
 and compares all counters with \code{data/expected\_counts.json}. A full run
-takes about $15$ minutes on $16$ cores and needs no disk space beyond the largest
-Branch~B stream ($1.3$\,GB). The file \code{data/upstream\_crosscheck.json}
+takes about $20$ minutes on $16$ cores and needs no disk space beyond the largest
+Branch~B stream ($1.36$\,GB). The file \code{data/upstream\_crosscheck.json}
 records the output of Tranquilli's program, including its transcript hashes,
 and \code{independent\_check.py} runs checks (b) and (c) of
 \cref{sec:validation} in about half a minute.
