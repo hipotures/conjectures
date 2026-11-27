@@ -168,6 +168,30 @@ reach. Each has a 16-cycle, as Theorem 1.3 requires.</td>
 </tr>
 </table>
 
+### Visual highlights: censuses of cubic graphs
+
+<table>
+<tr>
+<td width="50%" valign="top"><img src="assets/cubic-census-power-of-two-cycles/share32.svg" alt="Share of symmetric graphs that need a 32-cycle, by order"><br>
+Among cubic symmetric graphs, the share without cycles of length 4, 8 and 16
+rises with the order. Orange: girth 17 to 20, where this is forced.</td>
+<td width="50%" valign="top"><img src="assets/cubic-census-power-of-two-cycles/girth_sym.svg" alt="Symmetric graphs by girth and shortest power-of-two cycle"><br>
+Symmetric graphs up to 10,000 vertices by girth and shortest power-of-two
+cycle length. No graph needs a 64-cycle.</td>
+</tr>
+<tr>
+<td width="50%" valign="top"><img src="assets/cubic-census-power-of-two-cycles/girth_vt.svg" alt="Vertex-transitive graphs by girth and shortest power-of-two cycle"><br>
+Vertex-transitive graphs up to 1280 vertices. Only 100 of 111,360 need a
+32-cycle; 53 of them have girth 3.</td>
+<td width="50%" valign="top">
+
+**How these images are made.** Same script, from `data/summary.json` and
+`data/shortest32.tsv`, which `run_census.py` writes from the checked results.
+
+</td>
+</tr>
+</table>
+
 ---
 
 ## Erdős–Gyárfás conjecture

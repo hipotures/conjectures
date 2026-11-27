@@ -13,7 +13,7 @@
 4. Run check_witnesses.py, which re-reads the original files with its own parsers,
    checks every witness cycle, and for the vertex-transitive censuses confirms by a
    separate search that no shorter power-of-two cycle passes through vertex 0.
-5. Write data/summary.json and data/shortest32.tsv.
+5. Write data/summary.json (counts by girth and by order) and data/shortest32.tsv.
 
 Takes about 3.5 minutes on 16 cores once the files are downloaded.
 """
@@ -162,14 +162,18 @@ def main() -> int:
         rows = list(read_witnesses(path))
         by_len = Counter("none" if L is None else str(L) for _, _, _, L, _ in rows)
         by_girth = defaultdict(Counter)
-        for _, _, g, L, _ in rows:
+        by_order = defaultdict(Counter)
+        for _, n, g, L, _ in rows:
             by_girth[str(g)]["none" if L is None else str(L)] += 1
+            by_order[str(n)]["none" if L is None else str(L)] += 1
         key = lambda kv: (kv[0] == "none", int(kv[0]) if kv[0] != "none" else 0)
         entry = {"graphs": len(rows), "min_order": min(r[1] for r in rows),
                  "max_order": max(r[1] for r in rows),
                  "shortest_power_of_two_cycle": dict(sorted(by_len.items(), key=key)),
                  "by_girth": {g: dict(sorted(c.items(), key=key))
-                              for g, c in sorted(by_girth.items(), key=lambda kv: int(kv[0]))}}
+                              for g, c in sorted(by_girth.items(), key=lambda kv: int(kv[0]))},
+                 "by_order": {o: dict(sorted(c.items(), key=key))
+                              for o, c in sorted(by_order.items(), key=lambda kv: int(kv[0]))}}
         summary[name] = entry
         for rid, n, g, L, cyc in rows:
             if L is None or L >= 32:

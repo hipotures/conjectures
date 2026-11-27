@@ -389,10 +389,11 @@ def girth_table(result: Path, out: Path, key: str, fname: str, main: str, sub: s
     cols = ["4", "8", "16", "32"]
     cmap = LinearSegmentedColormap.from_list("seq", ["#0e3d7e", "#1b64be", "#338ced", "#84b9f3", "#cce3fd"])
     vmax = math.log10(max(max(c.values()) for c in summ.values()))
-    fig, ax = plt.subplots(figsize=(4.6, 0.33 * len(girths) + 1.9))
-    fig.subplots_adjust(left=0.14, right=0.97, bottom=0.03, top=1 - 1.35 / (0.33 * len(girths) + 1.9))
-    fig.text(0.04, 0.985, main, fontsize=13, family="DejaVu Serif", va="top")
-    fig.text(0.04, 0.985 - 0.42 / (0.33 * len(girths) + 1.9), sub, fontsize=8.5, color=TEXT2, va="top")
+    height = 0.3 * len(girths) + 1.45
+    fig, ax = plt.subplots(figsize=(4.6, height))
+    fig.subplots_adjust(left=0.14, right=0.97, bottom=0.02, top=1 - 1.0 / height)
+    fig.text(0.04, 1 - 0.12 / height, main, fontsize=13, family="DejaVu Serif", va="top")
+    fig.text(0.04, 1 - 0.45 / height, sub, fontsize=8.5, color=TEXT2, va="top")
     for i, g in enumerate(girths):
         for j, L in enumerate(cols):
             n = summ[g].get(L, 0)
