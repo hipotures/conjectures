@@ -142,6 +142,32 @@ always show the committed results.
 </tr>
 </table>
 
+### Visual highlights: cubic bipartite graphs
+
+<table>
+<tr>
+<td width="50%" valign="top"><img src="assets/cubic-bipartite-power-of-two-cycles/root_branch_b.svg" alt="The forced root of the girth-10 search"><br>
+Girth at least 10 forces this tree of 15 blocks on 31 points around any block,
+so the girth-10 search starts from it instead of from a list of cages.</td>
+<td width="50%" valign="top"><img src="assets/cubic-bipartite-power-of-two-cycles/search_growth.svg" alt="Size of the two searches by cap"><br>
+Candidate blocks examined per point cap. Near the top Branch A grows about 2.5-fold per
+point; at cap 42 it checks 2·10¹⁰ blocks in under ten minutes on 16 cores.</td>
+</tr>
+<tr>
+<td width="50%" valign="top"><img src="assets/cubic-bipartite-power-of-two-cycles/cages16.svg" alt="The three (3,10)-cages with a 16-cycle"><br>
+The three (3,10)-cages are the smallest graphs the girth-10 search has to
+reach. Each has a 16-cycle, as Theorem 1.3 requires.</td>
+<td width="50%" valign="top">
+
+**How these images are made.** Same script,
+[`scripts/build_showcase.py`](scripts/build_showcase.py): the counts come from
+`data/expected_counts.json`, the cages from `data/cagesk3g10.g6`, and the
+16-cycles are found when the image is drawn.
+
+</td>
+</tr>
+</table>
+
 ---
 
 ## Erdős–Gyárfás conjecture

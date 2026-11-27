@@ -7,8 +7,9 @@ Usage (from the repository root):
         python scripts/build_showcase.py small-graphs-power-of-two-cycles
 
 Every image is derived from committed sources, so it can be regenerated and
-cannot drift from them. Every result gets `page1.png`; the other images exist
-only for small-graphs-power-of-two-cycles:
+cannot drift from them. Every result gets `page1.png`.
+
+small-graphs-power-of-two-cycles:
 
 - `page1.png`   first page of `paper.pdf`;
 - `gadgets.svg` the gadgets H7 and H8* from `data/constructions.json`, drawn
@@ -17,6 +18,20 @@ only for small-graphs-power-of-two-cycles:
                 rebuilt with the independent checker `verify.py`;
 - `weights16.svg` the distribution of the weight w(D) over all 16-cycles D
                 of the 702-vertex base, computed by `verify.py`.
+
+cubic-bipartite-power-of-two-cycles:
+
+- `root_branch_b.svg` the forced 15-block root of Branch B (Figure 1 of the paper);
+- `search_growth.svg` candidate blocks per cap, from `data/expected_counts.json`;
+- `cages16.svg`  the three (3,10)-cages from `data/cagesk3g10.g6`, each with a
+                16-cycle found here.
+
+cubic-census-power-of-two-cycles:
+
+- `share32.svg`  share of symmetric graphs with shortest power-of-two cycle 32,
+                by order, from `data/summary.json` and `data/shortest32.tsv`;
+- `girth_vt.svg`, `girth_sym.svg` counts by girth and shortest power-of-two
+                cycle, from `data/summary.json`.
 
 Output goes to `assets/<result>/`.
 """
@@ -192,12 +207,233 @@ def weights16(V, data, out: Path) -> None:
     save(fig, out / "weights16.svg")
 
 
+# ---------------------------------------------------------------- cubic bipartite (paper 2)
+
+def _cycle_dfs(adj, start, length):
+    """One cycle of the given length through `start` (vertex list), or None. Neighbours
+    with fewer free neighbours are tried first (Warnsdorff), which finds Hamiltonian
+    cycles of the cages at once."""
+    path, on = [start], {start}
+
+    def go(x):
+        if len(path) == length:
+            return start in adj[x]
+        for w in sorted(adj[x], key=lambda y: (sum(z not in on for z in adj[y]), y)):
+            if w not in on:
+                on.add(w)
+                path.append(w)
+                if go(w):
+                    return True
+                on.discard(w)
+                path.pop()
+        return False
+
+    return list(path) if go(start) else None
+
+
+def cages16(result: Path, out: Path) -> None:
+    """The three (3,10)-cages, each drawn on a Hamiltonian cycle, with one 16-cycle."""
+    import math
+    lines = (result / "data" / "cagesk3g10.g6").read_text().split()
+    fig, axs = plt.subplots(1, 3, figsize=(10.5, 4.3))
+    fig.subplots_adjust(left=0.01, right=0.99, bottom=0.04, top=0.8, wspace=0.04)
+    title(fig, "The three (3,10)-cages have 16-cycles",
+          "70 vertices, girth 10, bipartite · drawn on a Hamiltonian cycle · a 16-cycle in orange")
+    for ax, line in zip(axs, lines):
+        G = nx.from_graph6_bytes(line.encode())
+        adj = {v: sorted(G[v]) for v in G}
+        ham = _cycle_dfs(adj, 0, len(adj))
+        c16 = _cycle_dfs(adj, 0, 16)
+        pos = {v: (math.cos(2 * math.pi * i / len(ham)), math.sin(2 * math.pi * i / len(ham)))
+               for i, v in enumerate(ham)}
+        on16 = {frozenset((c16[i], c16[(i + 1) % 16])) for i in range(16)}
+        side = nx.bipartite.color(G)
+        rim = {frozenset((ham[i], ham[(i + 1) % len(ham)])) for i in range(len(ham))}
+        for a, b in G.edges:
+            e = frozenset((a, b))
+            if e in on16:
+                ax.plot(*zip(pos[a], pos[b]), color=ORANGE, lw=3.0, zorder=2, solid_capstyle="round")
+            else:
+                ax.plot(*zip(pos[a], pos[b]), color=TEXT2 if e in rim else GRID,
+                        lw=1.1 if e in rim else 0.7, zorder=1)
+        for v, (x, y) in pos.items():
+            hot = v in c16
+            ax.scatter([x], [y], s=22 if hot else 9, color=ORANGE if hot else (TEXT if side[v] else SURFACE),
+                       edgecolors=ORANGE if hot else TEXT, linewidths=0.7, zorder=3)
+        ax.set_aspect("equal")
+        ax.set_xlim(-1.12, 1.12)
+        ax.set_ylim(-1.12, 1.12)
+        ax.axis("off")
+    save(fig, out / "cages16.svg")
+
+
+def search_growth(result: Path, out: Path) -> None:
+    """Number of proposals per cap in both branches (from data/expected_counts.json)."""
+    import json
+    exp = json.loads((result / "data" / "expected_counts.json").read_text())
+    a = {int(c): sum(o["attempted"] for o in v.values()) for c, v in exp["branch_a"].items()}
+    a.update({int(c): v["attempted"] for c, v in exp.get("branch_a_small", {}).items()})
+    b = {int(c): v["attempted"] for c, v in exp["branch_b"].items()}
+    fig, ax = plt.subplots(figsize=(7, 4.2))
+    fig.subplots_adjust(left=0.1, right=0.83, bottom=0.15, top=0.8)
+    title(fig, "Size of the two searches",
+          "candidate blocks examined at point cap v (graphs with n ≤ 2v) · all runs: 0 completions")
+    for data, col, name in ((a, BLUE, "Branch A\n(6-cycle)"), (b, ORANGE, "Branch B\n(girth ≥ 10)")):
+        xs = sorted(data)
+        ax.plot(xs, [data[x] for x in xs], color=col, lw=2, marker="o", ms=5, zorder=3,
+                markeredgecolor=SURFACE, markeredgewidth=1.2)
+        ax.text(xs[-1] + 0.4, data[xs[-1]], name, color=TEXT, fontsize=9, va="center")
+    ax.set_yscale("log")
+    ax.axvline(42.5, color=TEXT2, lw=1.1, ls=(0, (4, 3)), zorder=1)
+    ax.text(42.3, 3e5, "Theorem 1.1\nneeds v ≤ 42", ha="right", fontsize=8.5, color=TEXT2)
+    ax.set_xlabel("point cap v")
+    ax.set_ylabel("candidate blocks")
+    ax.grid(axis="y", color=GRID, lw=0.6, zorder=0)
+    for sp in ("top", "right", "left"):
+        ax.spines[sp].set_visible(False)
+    ax.tick_params(length=0)
+    save(fig, out / "search_growth.svg")
+
+
+def root_branch_b(out: Path) -> None:
+    """The forced 15-block root of Branch B (Figure 1 of the paper)."""
+    fig, ax = plt.subplots(figsize=(8.6, 4.0))
+    fig.subplots_adjust(left=0.01, right=0.99, bottom=0.02, top=0.8)
+    title(fig, "The root of the girth-10 search",
+          "girth ≥ 10 forces 15 blocks (squares) on 31 points (circles) around any block · depth 5 not drawn")
+    def pt(x, y, label):
+        ax.scatter([x], [y], s=210, color=SURFACE, edgecolors=TEXT, linewidths=1.1, zorder=3)
+        ax.text(x, y, label, ha="center", va="center", fontsize=7.5, zorder=4)
+    def bl(x, y, col=BLUE):
+        ax.scatter([x], [y], s=70, marker="s", color=col, edgecolors=SURFACE, linewidths=0.8, zorder=3)
+    def ln(p, q):
+        ax.plot(*zip(p, q), color=TEXT2, lw=0.9, zorder=1)
+    root = (0, 4)
+    bl(*root, ORANGE)
+    ax.text(0.7, 4, r"$\beta=\{0,1,2\}$", fontsize=9, va="center")
+    P = {0: (-10, 3), 1: (0, 3), 2: (10, 3)}
+    for p, xy in P.items():
+        ln(root, xy)
+        pt(*xy, str(p))
+    for a, b, c, x in ((0, 3, 4, -12.5), (0, 5, 6, -7.5), (1, 7, 8, -2.5), (1, 9, 10, 2.5),
+                       (2, 11, 12, 7.5), (2, 13, 14, 12.5)):
+        ln(P[a], (x, 2))
+        bl(x, 2)
+        for q, dx in ((b, -1.1), (c, 1.1)):
+            ln((x, 2), (x + dx, 1))
+            pt(x + dx, 1, str(q))
+            P[q] = (x + dx, 1)
+    for q in (3, 4, 5, 6):
+        x = P[q][0]
+        for dx in (-0.55, 0.55):
+            ln(P[q], (x + dx, 0.1))
+            bl(x + dx, 0.1)
+    for d, y in enumerate((4, 3, 2, 1, 0.1)):
+        ax.text(-16.2, y, f"depth {d}", fontsize=8, color=TEXT2, va="center")
+    ax.set_xlim(-16.5, 14.2)
+    ax.set_ylim(-0.5, 4.5)
+    ax.axis("off")
+    save(fig, out / "root_branch_b.svg")
+
+
+# ---------------------------------------------------------------- cubic censuses (paper 3)
+
+def share32(result: Path, out: Path) -> None:
+    """Share of symmetric graphs whose shortest power-of-two cycle is 32, by order."""
+    import json
+    summ = json.loads((result / "data" / "summary.json").read_text())
+    by_order = summ["AllSymmCubic-OrderUpTo10000-ByEdgeSets.txt.gz"]["by_order"]
+    rows = [r.split("\t") for r in (result / "data" / "shortest32.tsv").read_text().splitlines()
+            if r and not r.startswith("#") and r.startswith("AllSymm")]
+    width = 1000
+    bands = range(0, 10000, width)
+    tot = Counter()
+    for o, c in by_order.items():
+        tot[(int(o) - 1) // width] += sum(c.values())
+    lo16, hi17 = Counter(), Counter()
+    for r in rows:
+        k = (int(r[2]) - 1) // width
+        (hi17 if int(r[3]) >= 17 else lo16)[k] += 1
+    xs = list(range(len(bands)))
+    y1 = [100 * lo16[k] / tot[k] for k in xs]
+    y2 = [100 * hi17[k] / tot[k] for k in xs]
+    fig, ax = plt.subplots(figsize=(7, 4.2))
+    fig.subplots_adjust(left=0.1, right=0.97, bottom=0.2, top=0.78)
+    title(fig, "Symmetric graphs that need a 32-cycle",
+          "share of Conder's cubic symmetric graphs with no cycle of length 4, 8 or 16, by order")
+    ax.bar(xs, y1, width=0.72, color=BLUE, zorder=2, label="girth ≤ 16")
+    ax.bar(xs, y2, width=0.72, bottom=y1, color=ORANGE, zorder=2, label="girth 17–20 (forced)",
+           edgecolor=SURFACE, linewidth=2)
+    for k in xs:
+        ax.text(k, y1[k] + y2[k] + 0.6, f"{lo16[k] + hi17[k]}/{tot[k]}", ha="center", fontsize=7.5,
+                color=TEXT2)
+    ax.set_xticks(xs)
+    ax.set_xticklabels([f"{b // 1000}–{(b + width) // 1000}k" if b else "≤1k" for b in bands], fontsize=8)
+    ax.set_xlabel("order (vertices)")
+    ax.set_ylabel("% of graphs")
+    ax.grid(axis="y", color=GRID, lw=0.6, zorder=0)
+    for sp in ("top", "right", "left"):
+        ax.spines[sp].set_visible(False)
+    ax.tick_params(length=0)
+    ax.legend(loc="upper left", frameon=False, fontsize=8.5, labelcolor=TEXT)
+    save(fig, out / "share32.svg")
+
+
+def girth_table(result: Path, out: Path, key: str, fname: str, main: str, sub: str) -> None:
+    """Heat table: number of graphs by girth (rows) and shortest power-of-two cycle (columns)."""
+    import json
+    import math
+    from matplotlib.colors import LinearSegmentedColormap, to_rgb
+    summ = json.loads((result / "data" / "summary.json").read_text())[key]["by_girth"]
+    girths = sorted(summ, key=int)
+    cols = ["4", "8", "16", "32"]
+    cmap = LinearSegmentedColormap.from_list("seq", ["#0e3d7e", "#1b64be", "#338ced", "#84b9f3", "#cce3fd"])
+    vmax = math.log10(max(max(c.values()) for c in summ.values()))
+    fig, ax = plt.subplots(figsize=(4.6, 0.33 * len(girths) + 1.9))
+    fig.subplots_adjust(left=0.14, right=0.97, bottom=0.03, top=1 - 1.35 / (0.33 * len(girths) + 1.9))
+    fig.text(0.04, 0.985, main, fontsize=13, family="DejaVu Serif", va="top")
+    fig.text(0.04, 0.985 - 0.42 / (0.33 * len(girths) + 1.9), sub, fontsize=8.5, color=TEXT2, va="top")
+    for i, g in enumerate(girths):
+        for j, L in enumerate(cols):
+            n = summ[g].get(L, 0)
+            if not n:
+                continue
+            col = cmap(math.log10(n) / vmax if vmax else 1)
+            ax.add_patch(plt.Rectangle((j + 0.04, i + 0.06), 0.92, 0.88, color=col, zorder=1))
+            lum = sum(w * c for w, c in zip((0.2126, 0.7152, 0.0722), to_rgb(col)))
+            ax.text(j + 0.5, i + 0.5, f"{n:,}", ha="center", va="center", fontsize=8,
+                    color=SURFACE if lum > 0.45 else TEXT, zorder=2)
+    ax.set_xlim(0, 4)
+    ax.set_ylim(len(girths), 0)
+    ax.set_xticks([j + 0.5 for j in range(4)])
+    ax.set_xticklabels([f"ℓ₂ = {L}" for L in cols], fontsize=8.5)
+    ax.xaxis.tick_top()
+    ax.set_yticks([i + 0.5 for i in range(len(girths))])
+    ax.set_yticklabels([f"g = {g}" for g in girths], fontsize=8)
+    for sp in ax.spines.values():
+        sp.set_visible(False)
+    ax.tick_params(length=0)
+    save(fig, out / fname)
+
+
 def main() -> None:
     name = sys.argv[1] if len(sys.argv) > 1 else "small-graphs-power-of-two-cycles"
     result = ROOT / "results" / name
     out = ROOT / "assets" / name
     out.mkdir(parents=True, exist_ok=True)
     page1(result, out)
+    if name == "cubic-bipartite-power-of-two-cycles":
+        root_branch_b(out)
+        search_growth(result, out)
+        cages16(result, out)
+        return
+    if name == "cubic-census-power-of-two-cycles":
+        share32(result, out)
+        girth_table(result, out, "main_Graph.txt", "girth_vt.svg", "Vertex-transitive, n ≤ 1280",
+                    "graphs by girth g and shortest power-of-two cycle ℓ₂")
+        girth_table(result, out, "AllSymmCubic-OrderUpTo10000-ByEdgeSets.txt.gz", "girth_sym.svg",
+                    "Symmetric, n ≤ 10,000", "graphs by girth g and shortest power-of-two cycle ℓ₂")
+        return
     if not (result / "verify.py").exists():
         return  # results without construction data get only the first-page card
     V = load_verify(result)
