@@ -45,7 +45,7 @@ explicit and independently verified witnesses, on three published lists of
 cubic graphs. All $1{,}436{,}474$ connected cubic graphs of girth at least $9$
 on $58$ to $64$ vertices contain a $16$-cycle. All $111{,}360$ graphs of the
 Potočnik--Spiga--Verret census of cubic vertex-transitive graphs on at most
-$1280$ vertices, and all $3{,}815$ graphs of Conder's list of cubic symmetric
+$1280$ vertices, and all $3815$ graphs of Conder's list of cubic symmetric
 graphs on at most $10{,}000$ vertices, contain a cycle of length $4$, $8$, $16$
 or $32$. We determine the shortest power-of-two cycle length of every graph.
 It is $32$ for exactly $100$ vertex-transitive graphs, the smallest of which has
@@ -86,7 +86,7 @@ cycles, such as voltage lifts and vertex replacements~\cite{Exoo2014,Marszalek20
 Complete lists of these graphs exist up to certain orders, and we check all of
 them.
 
-For a graph $G$ let $\sv(G)$ be the least power of two $2^k\ge 4$ such that $G$
+All graphs are finite and simple. For a graph $G$ let $\sv(G)$ be the least power of two $2^k\ge 4$ such that $G$
 has a cycle of length $2^k$ (and $\sv(G)=\infty$ if there is none).
 
 \begin{theorem}\label{thm:girth9}
@@ -115,7 +115,7 @@ have $\sv(G)=32$; the smallest has $180$ vertices.
 \begin{theorem}\label{thm:sym}
 Every graph in Conder's list of connected cubic symmetric (arc-transitive)
 graphs on at most $10{,}000$ vertices~\cite{ConderList} contains a cycle of
-length $4$, $8$, $16$ or $32$. Exactly $689$ of the $3{,}815$ graphs have
+length $4$, $8$, $16$ or $32$. Exactly $689$ of the $3815$ graphs have
 $\sv(G)=32$; the smallest has $1050$ vertices.
 \end{theorem}
 
@@ -140,8 +140,8 @@ graphs are larger); our proof is independent of it.
 census & orders & graphs & $\sv=4$ & $\sv=8$ & $\sv=16$ & $\sv=32$\\
 \midrule
 cubic, girth $\ge 9$~\cite{HoG} & $58$--$64$ & $1{,}436{,}474$ & -- & -- & $1{,}436{,}474$ & --\\
-vertex-transitive~\cite{PSV2013} & $4$--$1280$ & $111{,}360$ & $5{,}756$ & $16{,}624$ & $88{,}880$ & $100$\\
-symmetric~\cite{ConderList} & $4$--$10{,}000$ & $3{,}815$ & $3$ & $111$ & $3{,}012$ & $689$\\
+vertex-transitive~\cite{PSV2013} & $4$--$1280$ & $111{,}360$ & $5756$ & $16{,}624$ & $88{,}880$ & $100$\\
+symmetric~\cite{ConderList} & $4$--$10{,}000$ & $3815$ & $3$ & $111$ & $3012$ & $689$\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -153,9 +153,12 @@ reads the original census files with its own parsers, checks every reported
 cycle edge by edge, and confirms with a different search algorithm that no
 shorter power-of-two cycle exists. The positive part of each statement (a cycle
 exists) therefore rests only on the census files and on a check that a given
-vertex sequence is a cycle. The minimality of $\sv(G)$, which is needed for the
-counts but not for \cref{thm:girth9,thm:vt,thm:sym} themselves, rests on the
-two searches agreeing.
+vertex sequence is a cycle. It does not depend on vertex-transitivity
+either. The minimality of $\sv(G)$ is not needed for these existence statements
+(or for \cref{thm:girth9}), but it is needed for the exact counts and the
+smallest orders in \cref{thm:vt,thm:sym}. For the vertex-transitive and
+symmetric censuses it rests on the two searches agreeing and on
+vertex-transitivity, through \cref{lem:vt}.
 
 %======================================================================
 \section{The censuses}\label{sec:censuses}
@@ -229,8 +232,8 @@ each case it reports $\sv(G)$, the girth, and one cycle of length $\sv(G)$ as
 a list of vertices.
 
 \subsection{Checking}
-The checker \code{check\_witnesses.py} does not use the search program's input
-files. It reads the census files with its own parsers (a character scanner for
+The checker \code{check\_witnesses.py} does not use the converted files that the search
+program reads. It reads the census files with its own parsers (a character scanner for
 the adjacency lists, a line-based reader for Conder's file, and its own graph6
 decoder) and, for every graph:
 \begin{enumerate}[label=(\roman*)]
@@ -250,10 +253,12 @@ of graphs agrees with \cref{sec:censuses}.
 
 The girth is computed as follows: for a vertex $s$, a breadth-first search
 labels each vertex by the neighbour of $s$ through which it is first reached;
-the least value of $d(u)+d(w)+1$ over edges $uw$ with differently labelled ends
-is the length of a shortest cycle through $s$ (both tree paths together with
-$uw$ form a cycle, and along any cycle through $s$ the label must change on
-some edge whose ends are close enough to $s$). Vertex-transitivity is taken
+the least value of $d(u)+d(w)+1$ over edges $uw$ not incident to $s$ with
+differently labelled ends is the length of a shortest cycle through $s$. Indeed,
+both tree paths together with $uw$ form a cycle; and if $C=sv_1\cdots v_{k-1}$
+is a shortest cycle through $s$, then $v_1$ and $v_{k-1}$ have different labels,
+so the label changes on some edge $v_iv_{i+1}$ with $1\le i<k-1$, and every such
+edge satisfies $d(v_i)+d(v_{i+1})+1\le |C|$. Vertex-transitivity is taken
 from the census and not checked.
 
 %======================================================================
@@ -276,21 +281,21 @@ graphs by girth $g$ and shortest power-of-two cycle length $\sv$.}
 $g$ & $\sv=4$ & $\sv=8$ & $\sv=16$ & $\sv=32$ & total\\
 \midrule
 3 & 2 & 3 & 102 & 53 & 160\\
-4 & 5{,}754 & & & & 5{,}754\\
+4 & 5754 & & & & 5754\\
 5 & & 14 & 83 & 3 & 100\\
-6 & & 2{,}957 & 55{,}692 & 25 & 58{,}674\\
+6 & & 2957 & 55{,}692 & 25 & 58{,}674\\
 7 & & 121 & 70 & 1 & 192\\
 8 & & 13{,}529 & & & 13{,}529\\
 9 & & & 218 & 1 & 219\\
 10 & & & 25{,}805 & 1 & 25{,}806\\
 11 & & & 80 & & 80\\
-12 & & & 5{,}407 & 16 & 5{,}423\\
+12 & & & 5407 & 16 & 5423\\
 13 & & & 37 & & 37\\
-14 & & & 1{,}365 & & 1{,}365\\
+14 & & & 1365 & & 1365\\
 15 & & & 12 & & 12\\
 16 & & & 9 & & 9\\
 \addlinespace
-total & 5{,}756 & 16{,}624 & 88{,}880 & 100 & 111{,}360\\
+total & 5756 & 16{,}624 & 88{,}880 & 100 & 111{,}360\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -307,7 +312,7 @@ $g$ & $\sv=4$ & $\sv=8$ & $\sv=16$ & $\sv=32$ & total\\
 3 & 1 & & & & 1\\
 4 & 2 & & & & 2\\
 5 & & 2 & & & 2\\
-6 & & 7 & 1{,}559 & & 1{,}566\\
+6 & & 7 & 1559 & & 1566\\
 7 & & 2 & 8 & 9 & 19\\
 8 & & 100 & & & 100\\
 9 & & & 40 & & 40\\
@@ -320,7 +325,7 @@ $g$ & $\sv=4$ & $\sv=8$ & $\sv=16$ & $\sv=32$ & total\\
 16 & & & 265 & & 265\\
 17--20 & & & & 205 & 205\\
 \addlinespace
-total & 3 & 111 & 3{,}012 & 689 & 3{,}815\\
+total & 3 & 111 & 3012 & 689 & 3815\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -335,12 +340,18 @@ on at most $1280$ vertices have $\sv(G)=32$ ($\mathrm{C1050.1}$,
 $\mathrm{C1134.3}$, $\mathrm{C1134.4}$, $\mathrm{C1134.5}$, $\mathrm{C1140.4}$,
 $\mathrm{C1248.1}$), and they are exactly the arc-transitive graphs among the
 $100$ of \cref{thm:vt}. The file \code{data/shortest32.tsv} lists all $789$
-graphs with $\sv(G)=32$ together with a $32$-cycle.
+census entries with $\sv(G)=32$ together with a $32$-cycle; they are $783$
+distinct graphs, since the six graphs above appear in both censuses.
 
 \emph{Growth with the order.} Among symmetric graphs, the share with
 $\sv(G)=32$ is $1.2\%$ ($6$ of $482$) up to $1280$ vertices, $6.4\%$ ($31$ of
 $487$) from $1281$ to $2560$, $18.8\%$ ($177$ of $942$) from $2561$ to $5000$,
-and $24.9\%$ ($475$ of $1904$) from $5001$ to $10{,}000$ vertices. Among
+and $24.9\%$ ($475$ of $1904$) from $5001$ to $10{,}000$ vertices. Part of
+this growth comes from girth alone: $205$ of the $689$ graphs have girth $17$ to
+$20$, where $\sv(G)\ge 32$ is forced, and all of them have more than $2560$
+vertices. Among symmetric graphs of girth at most $16$ the share is $15.8\%$
+($144$ of $909$) from $2561$ to $5000$ and $17.5\%$ ($303$ of $1732$) from $5001$
+to $10{,}000$ vertices. Among
 vertex-transitive graphs it stays below $0.11\%$ in each quarter of the range
 up to $1280$ vertices. No graph in either census needs a $64$-cycle.
 
@@ -358,7 +369,7 @@ Besides the checker of \cref{sec:method}, we ran the following checks.
 \begin{enumerate}[label=(\alph*)]
 \item \emph{Census metadata.} The girth computed by both programs agrees with
 the girth stored in the census for all $111{,}360$ vertex-transitive and all
-$3{,}815$ symmetric graphs.
+$3815$ symmetric graphs.
 \item \emph{Negative controls.} The script \code{test\_checker.py} feeds the
 checker corrupted results for the Möbius--Kantor graph and the Heawood graph: a
 claimed $16$-cycle where an $8$-cycle exists, a cycle of the wrong length, a
@@ -366,10 +377,6 @@ non-adjacent step, a repeated vertex, a wrong girth (reported or in the
 census), a mismatched graph name, a missing cycle, and a graph of girth $6$
 offered as a girth-$9$ graph. The checker rejects each of them and accepts the
 two correct results.
-\item \emph{A second search program.} An earlier scanner, written
-independently in Rust in the author's research workspace and not part of this
-repository, gives the same value of $\sv(G)$ for every graph of all three
-censuses.
 \item \emph{Prior counts.} The census sizes agree with the published
 ones~\cite{PSV2013,ConderList,HoG}, and the girth-$12$ count agrees
 with~\cite{Gebendorfer2026}.
@@ -385,7 +392,7 @@ $2.6$\,GB, mostly the vertex-transitive census) and checks their SHA-256 hashes
 against \code{data/sources.json}. It then compiles and runs the search program
 \code{src/census\_scan.cpp}, runs the checker \code{check\_witnesses.py}, and
 writes the files \code{data/summary.json} and \code{data/shortest32.tsv}. Once the
-files are downloaded, a run takes about three and a half minutes on a $16$-core
+files are downloaded, a run takes a little over three minutes on a $16$-core
 machine: about a minute to convert the files, half a minute for the searches
 and a minute and a half for the checks.
 
@@ -403,6 +410,11 @@ Gabriel Verret, of Marston Conder, and of House of Graphs, and on their public
 release.
 
 \begin{thebibliography}{99}
+
+\bibitem{PSVdata}
+J.~Azarija, K.~Berčič, F.~Koprivec, T.~Marc, P.~Potočnik, P.~Rotar, P.~Spiga,
+G.~Verret and J.~Vidali, \emph{Cubic vertex-transitive graphs on up to 1280
+vertices}, dataset, Zenodo, 2022, \url{https://doi.org/10.5281/zenodo.6576526}.
 
 \bibitem{BrinkmannMcKaySaager1995}
 G.~Brinkmann, B.~D.~McKay and C.~Saager, \emph{The smallest cubic graphs of
@@ -460,11 +472,6 @@ cycle of length 4, 8 or 16}, preprint, 2026,
 P.~Potočnik, P.~Spiga and G.~Verret, \emph{Cubic vertex-transitive graphs on up
 to 1280 vertices}, J. Symbolic Comput. \textbf{50} (2013), 465--477,
 \url{https://doi.org/10.1016/j.jsc.2012.09.002}.
-
-\bibitem{PSVdata}
-J.~Azarija, K.~Berčič, F.~Koprivec, T.~Marc, P.~Potočnik, P.~Rotar, P.~Spiga,
-G.~Verret and J.~Vidali, \emph{Cubic vertex-transitive graphs on up to 1280
-vertices}, dataset, Zenodo, 2022, \url{https://doi.org/10.5281/zenodo.6576526}.
 
 \bibitem{Ripatti2017}
 A.~V.~Ripatti, \emph{Faster approach for exhaustive search over graphs with

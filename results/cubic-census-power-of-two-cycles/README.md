@@ -27,8 +27,9 @@ other two are statements about the published censuses.
 
 The smallest vertex-transitive graph that needs a 32-cycle has 180 vertices
 (CVT(180,50), girth 3). The smallest symmetric one is C1050.1 (1050 vertices,
-girth 12). [`data/shortest32.tsv`](data/shortest32.tsv) lists all 789 graphs
-that need a 32-cycle, each with one. [`data/summary.json`](data/summary.json)
+girth 12). [`data/shortest32.tsv`](data/shortest32.tsv) lists all 789 census entries
+that need a 32-cycle (783 distinct graphs: six symmetric graphs are also in the
+vertex-transitive census), each with one. [`data/summary.json`](data/summary.json)
 breaks the counts down by girth. No graph needs a 64-cycle.
 
 ## What is checked, and by what
