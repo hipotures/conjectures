@@ -205,11 +205,11 @@ degree at least 3 (respectively, a cubic graph) that has no cycle of length
 
 | Bound | Previous | Lean theorem | Notes |
 |---|---|---|---|
-| f_δ≥3(4) ≤ **73** | 78 (cubic; Exoo, Ripatti) | `f_delta3_4_le_73`, `f_delta3_4_le_73_alt` | new gadget H8\* |
-| f_δ≥3(5) ≤ **345** | 370 (cubic; Henry 2026) | `f_delta3_5_le_345` | new |
-| f_cubic(6) ≤ **10,498** | 10,522 (Henry 2026, conditional) | `f_cubic_6_le_10498` | source-packing theorem; girth of the 702-vertex base proved in Lean |
-| f_cubic(5) ≤ 370 | Henry 2026 (first) | `f_cubic_5_le_370` | independent rediscovery; formal proof |
-| f_cubic(4) ≤ 78 | Exoo | `f_cubic_4_le_78` | formal proof of a known bound |
+| f_δ≥3(4)&nbsp;≤&nbsp;**73** | 78 (cubic; Exoo, Ripatti) | `f_delta3_4_le_73`, `f_delta3_4_le_73_alt` | new gadget H8\* |
+| f_δ≥3(5)&nbsp;≤&nbsp;**345** | 370 (cubic; Henry 2026) | `f_delta3_5_le_345` | new |
+| f_cubic(6)&nbsp;≤&nbsp;**10,498** | 10,522 (Henry&nbsp;2026, conditional) | `f_cubic_6_le_10498` | source-packing theorem; girth of the 702-vertex base proved in Lean |
+| f_cubic(5)&nbsp;≤&nbsp;370 | Henry 2026 (first) | `f_cubic_5_le_370` | independent rediscovery; formal proof |
+| f_cubic(4)&nbsp;≤&nbsp;78 | Exoo | `f_cubic_4_le_78` | formal proof of a known bound |
 
 The cycle-projection lemma for gadget lifts and the gadgets H7 and H15 are due
 to García (2026) and Henry (2026); this repository formalizes them. All
