@@ -6,6 +6,7 @@ authors:
   - family-names: "Marszałek"
     given-names: "Andrzej"
     affiliation: "Independent Researcher"
+    orcid: "https://orcid.org/0009-0006-6148-2965"
 license: CC0-1.0
 repository-code: "https://github.com/hipotures/conjectures"
 keywords:

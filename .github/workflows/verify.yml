@@ -23,3 +23,9 @@ jobs:
         run: python3 scripts/check_axioms.py
       - name: Forbidden constructs
         run: python3 scripts/check_forbidden.py
+      - name: Construction data matches the Lean sources
+        run: |
+          python3 scripts/extract_lean_data.py
+          git diff --exit-code -- results/
+      - name: Independent checker (small graphs without power-of-two cycles)
+        run: python3 results/small-graphs-power-of-two-cycles/verify.py

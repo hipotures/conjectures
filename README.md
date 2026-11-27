@@ -1,80 +1,88 @@
 # Conjectures
 
-Formally verified results on open problems in graph theory, published with
-their Lean 4 proofs, graph certificates, and independent checkers.
+Results on open problems in mathematics, each published with a paper, a Lean 4
+proof checked by the Lean kernel, an independent checker, and the data needed
+to reproduce it.
 
-**Author:** Andrzej Marszałek (Independent Researcher) · **License:** CC0 1.0
-(public domain) · [![verify](https://github.com/hipotures/conjectures/actions/workflows/verify.yml/badge.svg)](https://github.com/hipotures/conjectures/actions/workflows/verify.yml)
+**Author:** Andrzej Marszałek (Independent Researcher, ORCID
+[0009-0006-6148-2965](https://orcid.org/0009-0006-6148-2965)) ·
+**License:** CC0 1.0 (public domain) ·
+[![verify](https://github.com/hipotures/conjectures/actions/workflows/verify.yml/badge.svg)](https://github.com/hipotures/conjectures/actions/workflows/verify.yml)
+
+## Catalog
+
+| Problem | Result | Status | Category | Artifacts |
+|---|---|---|:-:|---|
+| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Small graphs without cycles of length a power of two](results/small-graphs-power-of-two-cycles/) | draft paper | A | [PDF](results/small-graphs-power-of-two-cycles/paper.pdf) · [TeX](results/small-graphs-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas) · [Python](results/small-graphs-power-of-two-cycles/verify.py) · [Data](results/small-graphs-power-of-two-cycles/data) |
+| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | Cubic bipartite graphs on at most 84 vertices contain a cycle of length 4, 8 or 16 | in preparation | B | [Lean reductions](lean/ErdosGyarfas/CubicBipartite.lean) |
+
+**Categories.** **A**: every claim is proved by the Lean kernel; no external
+computation is trusted. **B**: computer-assisted; Lean proves the reductions
+and the soundness of the certificate checkers, while the exhaustive search runs
+outside Lean and is reproducible from the published code.
+
+Each result lives in its own folder under `results/`, and each problem has its
+own Lean library under `lean/`. New problems are added the same way.
 
 ---
 
-## Erdős–Gyárfás conjecture: small graphs without power-of-two cycles
+## Erdős–Gyárfás conjecture
 
 > **Conjecture (Erdős–Gyárfás, 1995).** Every finite simple graph with minimum
 > degree at least 3 contains a cycle whose length is a power of two.
 
-The conjecture is open. A counterexample would have to avoid cycles of lengths
-4, 8, 16, 32, … simultaneously. The extremal functions below measure how small
-a graph can be while avoiding only the first few of these lengths:
+`f_δ≥3(k)` and `f_cubic(k)` denote the least order of a graph with minimum
+degree at least 3 (respectively, a cubic graph) that has no cycle of length
+4, 8, …, 2^k.
 
-- **f_δ≥3(k)** — the minimum order of a graph with minimum degree at least 3
-  that has no cycle of length 4, 8, …, 2^k;
-- **f_cubic(k)** — the same, restricted to 3-regular graphs (this is the f(k)
-  of Henry 2026).
+| Bound | Previous | Lean theorem | Notes |
+|---|---|---|---|
+| f_δ≥3(4) ≤ **73** | 78 (cubic; Exoo, Ripatti) | `f_delta3_4_le_73`, `f_delta3_4_le_73_alt` | new gadget H8\* |
+| f_δ≥3(5) ≤ **345** | 370 (cubic; Henry 2026) | `f_delta3_5_le_345` | new |
+| f_cubic(6) ≤ **10,498** | 10,522 (Henry 2026, conditional) | `f_cubic_6_le_10498` | source-packing theorem; girth of the 702-vertex base proved in Lean |
+| f_cubic(5) ≤ 370 | Henry 2026 (first) | `f_cubic_5_le_370` | independent rediscovery; formal proof |
+| f_cubic(4) ≤ 78 | Exoo | `f_cubic_4_le_78` | formal proof of a known bound |
 
-### Results
+The cycle-projection lemma for gadget lifts and the gadgets H7 and H15 are due
+to García (2026) and Henry (2026); this repository formalizes them. All
+category-A witnesses are proved 2-connected.
 
-Category **A** means the statement is proved in full by the Lean kernel (no
-external computation is trusted). Category **B** means the result is
-computer-assisted: Lean proves the reductions and the soundness of the
-certificate checkers, but the exhaustive search or SAT refutation runs outside
-Lean.
+---
 
-| Result | Previous bound | Cat. | Lean theorem |
-|---|---|:-:|---|
-| f_δ≥3(4) ≤ **73** | 78 (cubic, Exoo) | A | `f_delta3_4_le_73`, `f_delta3_4_le_73_alt` |
-| f_δ≥3(5) ≤ **345** | 370 (cubic, Henry 2026) | A | `f_delta3_5_le_345` |
-| f_cubic(6) ≤ **10,498** | 10,522 (Henry's one-source theorem applied to Poláček's 702-vertex girth-16 graph) | A | `f_cubic_6_le_10498` |
-| f_cubic(5) ≤ 370 — independent rediscovery, first found by Henry (2026) | 370 | A | `f_cubic_5_le_370` |
-| f_cubic(4) ≤ 78 — formal check of a known bound | 78 (Exoo; optimal per Ripatti 2017) | A | `f_cubic_4_le_78` |
-| Cycle projection for 3-port gadget lifts — known (García 2026, Henry 2026), formalized here | — | A | `liftGraph_cycle_dichotomy`, `liftGraph_no_cycle` |
-| Every cubic bipartite graph on ≤ 84 vertices has a C4, C8, or C16 | ≤ 68 (Zhuge 2026) | B | reductions in `CubicBipartite` |
-| 370 and 345 are optimal among lifts of the Tutte–Coxeter graph by H7, H8\*, H15 | — | B | reductions in `TutteCoxeter` |
+## Verification
 
-Bold entries are new bounds. The gadgets H7 and H15 are due to García (2026);
-H8\* was found in this work. All witnesses in category A are also proved 2-connected
-(`*_is2Connected`). Full statements, constructions, and references will be
-given in the accompanying papers (in preparation).
+Every push runs [`verify.yml`](.github/workflows/verify.yml):
 
-## Verify it yourself
+1. **Kernel build.** `lake build` checks every proof (Lean 4.36.0, no Mathlib,
+   about a minute).
+2. **Axiom audit.** [`scripts/check_axioms.py`](scripts/check_axioms.py) runs
+   `#print axioms` over [`lean/Audit.lean`](lean/Audit.lean) and accepts only
+   `propext`, `Classical.choice`, `Quot.sound`.
+3. **Forbidden constructs.** [`scripts/check_forbidden.py`](scripts/check_forbidden.py)
+   rejects `sorry`, `native_decide`, `implemented_by`, `extern` and `axiom` in
+   code.
+4. **Independent checks.** Each result's `verify.py` rebuilds the constructions
+   from data extracted from the Lean sources and checks them with separately
+   written code.
+
+To reproduce locally:
 
 ```bash
-# Lean 4 via elan: https://github.com/leanprover/elan
 cd lean && lake build && cd ..
 python3 scripts/check_axioms.py
 python3 scripts/check_forbidden.py
+python3 results/small-graphs-power-of-two-cycles/verify.py
 ```
-
-`lake build` kernel-checks every proof in about a minute on a desktop CPU.
-CI repeats these checks on every push.
-
-## Repository layout
-
-| Path | Contents |
-|---|---|
-| `lean/` | Lean 4 library `ErdosGyarfas` (no dependencies). See [`lean/README.md`](lean/README.md). |
-| `lean/Audit.lean` | `#print axioms` for every headline theorem. |
-| `scripts/` | Axiom and forbidden-construct gates. |
 
 ## Use of AI
 
-These results were obtained with substantial help from AI systems: mainly
+These results were obtained with substantial help from AI systems, mainly
 Gemini 4 Neon (Google) and Claude Opus 5.5 (Anthropic), working through the
-Antigravity and Claude Code tools. AI systems are not authors. Every
-category-A statement is checked by the Lean kernel, and the author takes
-responsibility for the statements, their attribution, and their presentation.
+Antigravity and Claude Code tools. AI systems are not authors. Category-A
+statements are checked by the Lean kernel. The author takes responsibility for
+the statements, their attribution, and their presentation.
 
 ## Citation
 
-See [`CITATION.cff`](CITATION.cff). Each tagged release is archived on Zenodo
-with a DOI.
+See [`CITATION.cff`](CITATION.cff). Tagged releases are archived on Zenodo with
+a DOI.
