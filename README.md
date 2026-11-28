@@ -66,7 +66,8 @@ the Lean kernel; `#print axioms` shows only `propext`, `Classical.choice`,
 
 ### [Every cubic bipartite graph on at most 88 vertices has a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/paper.pdf)
 
-Erdős–Gyárfás conjecture · category B · 8 pages · v1.2.0
+Erdős–Gyárfás conjecture · category B · 8 pages ·
+[v1.2.0, doi:10.5281/zenodo.24624865](https://doi.org/10.5281/zenodo.24624865)
 
 A cubic bipartite counterexample needs at least **90** vertices (previously 60
 and 70). Graphs with a 6-cycle go through Tranquilli's triangle-rooted search
@@ -94,7 +95,8 @@ proved in Lean.
 
 ### [Cycles of length 4, 8, 16 and 32 in censuses of cubic graphs](results/cubic-census-power-of-two-cycles/paper.pdf)
 
-Erdős–Gyárfás conjecture · category C · 6 pages · v1.2.0
+Erdős–Gyárfás conjecture · category C · 6 pages ·
+[v1.2.0, doi:10.5281/zenodo.24624865](https://doi.org/10.5281/zenodo.24624865)
 
 All **1,436,474** connected cubic graphs of girth ≥ 9 on 58–64 vertices have a
 16-cycle. Every graph in the census of cubic vertex-transitive graphs up to
@@ -121,7 +123,8 @@ checked by a separate program that reads the census files itself.
 
 ### [The smallest Tutte–Coxeter lifts without cycles of length 32](results/tutte-coxeter-lifts-without-32-cycles/paper.pdf)
 
-Erdős–Gyárfás conjecture · category B · 6 pages · v1.2.0
+Erdős–Gyárfás conjecture · category B · 6 pages ·
+[v1.2.0, doi:10.5281/zenodo.24624865](https://doi.org/10.5281/zenodo.24624865)
 
 The graphs behind f_δ≥3(5) ≤ 345 and f_cubic(5) ≤ 370 replace each vertex of
 the Tutte–Coxeter graph by a small gadget. Among all **18³⁰** such lifts with

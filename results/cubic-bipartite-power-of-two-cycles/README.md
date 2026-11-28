@@ -1,7 +1,7 @@
 # Cubic bipartite graphs on at most 88 vertices have a cycle of length 4, 8 or 16
 
 **Category B** (computer-assisted). Paper: [`paper.pdf`](paper.pdf) ([TeX](paper.tex)).
-Release v1.2.0. The previous version (n ≤ 84) is release v1.1.0,
+Release v1.2.0, [doi:10.5281/zenodo.24624865](https://doi.org/10.5281/zenodo.24624865). The previous version (n ≤ 84) is release v1.1.0,
 [doi:10.5281/zenodo.24599605](https://doi.org/10.5281/zenodo.24599605).
 
 > **Theorem.** Every simple cubic bipartite graph on at most 88 vertices contains
