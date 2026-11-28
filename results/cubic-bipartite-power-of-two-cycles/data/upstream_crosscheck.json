@@ -213,6 +213,50 @@
     "transcript_sha256": "29412b5d2eb6c237bb62743f89c6322be05a65e5d53da7c623fc6059b4bb4b4a",
     "seconds": 14168.3
    }
+  },
+  "43": {
+   "orbit1": {
+    "states": 9927817,
+    "attempted": 2194417526,
+    "structural": 105924630,
+    "c8": 1159305416,
+    "c16": 919259664,
+    "completions": 0,
+    "transcript_sha256": "c89175c8cdf418f565070c5abe9ace74e39c132cd01ca8969bd8aed8a3354805",
+    "seconds": 1320.3
+   },
+   "orbit2": {
+    "states": 153503717,
+    "attempted": 42099985394,
+    "structural": 1970440132,
+    "c8": 16039462995,
+    "c16": 23936578551,
+    "completions": 0,
+    "transcript_sha256": "b0ddd5f4f8c4a2bb12cc423f32a53568a053905ef731f0e703c9659dc6de44c5",
+    "seconds": 29174.7
+   }
+  },
+  "44": {
+   "orbit1": {
+    "states": 17483028,
+    "attempted": 4099940858,
+    "structural": 192333142,
+    "c8": 2182254575,
+    "c16": 1707870114,
+    "completions": 0,
+    "transcript_sha256": "25374eb38bd0eea09ee2a9bf1813cd6413e20ec402f13f2be90cc343f86cb5f3",
+    "seconds": 2392.8
+   },
+   "orbit2": {
+    "states": 294881022,
+    "attempted": 80040643727,
+    "structural": 3636662237,
+    "c8": 31036505576,
+    "c16": 45072594893,
+    "completions": 0,
+    "transcript_sha256": "a8cff77c304da55a1ff80c3a13d370b18139faf667b6fcccbfe9cd143028f0b5",
+    "seconds": 54456.3
+   }
   }
  },
  "matches_this_work": {
@@ -225,6 +269,8 @@
   "35": true,
   "40": true,
   "41": true,
-  "42": true
+  "42": true,
+  "43": true,
+  "44": true
  }
 }

@@ -277,15 +277,13 @@ def search_growth(result: Path, out: Path) -> None:
     fig, ax = plt.subplots(figsize=(7, 4.2))
     fig.subplots_adjust(left=0.1, right=0.83, bottom=0.15, top=0.8)
     title(fig, "Size of the two searches",
-          "candidate blocks examined at point cap v (graphs with n ≤ 2v) · all runs: 0 completions")
+          "candidate blocks examined at point cap v (graphs with n ≤ 2v) · 0 completions up to v = 44")
     for data, col, name in ((a, BLUE, "Branch A\n(6-cycle)"), (b, ORANGE, "Branch B\n(girth ≥ 10)")):
         xs = sorted(data)
         ax.plot(xs, [data[x] for x in xs], color=col, lw=2, marker="o", ms=5, zorder=3,
                 markeredgecolor=SURFACE, markeredgewidth=1.2)
         ax.text(xs[-1] + 0.4, data[xs[-1]], name, color=TEXT, fontsize=9, va="center")
     ax.set_yscale("log")
-    ax.axvline(42.5, color=TEXT2, lw=1.1, ls=(0, (4, 3)), zorder=1)
-    ax.text(42.3, 3e5, "Theorem 1.1\nneeds v ≤ 42", ha="right", fontsize=8.5, color=TEXT2)
     ax.set_xlabel("point cap v")
     ax.set_ylabel("candidate blocks")
     ax.grid(axis="y", color=GRID, lw=0.6, zorder=0)

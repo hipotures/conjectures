@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Rebuild the search programs, rerun the proof, and compare every counter.
 
-    python3 reproduce.py           # full proof: n <= 84 (about 15 min on 16 cores)
+    python3 reproduce.py           # full proof: n <= 88 (about 80 min on 16 cores)
     python3 reproduce.py --quick   # small caps only (about 1 min; used by CI)
 
 Needs a C++17 compiler (g++ or clang++). Branch B witness streams (up to 1.3 GiB at
@@ -9,7 +9,7 @@ cap 44) are written to a temporary directory and deleted after checking.
 
 Each run must end with zero completed configurations, the C++ witness checkers must
 accept every stream, and all counters must equal `data/expected_counts.json`. The
-counters for caps 29 to 42 of Branch A also equal those of Tranquilli's original
+counters for caps 29 to 44 of Branch A also equal those of Tranquilli's original
 program (see `data/upstream_crosscheck.json`).
 """
 from __future__ import annotations
@@ -26,7 +26,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 EXPECTED = json.loads((HERE / "data" / "expected_counts.json").read_text())
 
-FULL_A = [29, 34, 35, 40, 41, 42]
+FULL_A = [29, 34, 35, 40, 41, 42, 43, 44]
 FULL_B = list(range(35, 45))
 QUICK_A = [29]
 QUICK_B = [35]

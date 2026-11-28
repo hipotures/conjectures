@@ -171,6 +171,42 @@
     "c16": 10818439808,
     "completions": 0
    }
+  },
+  "43": {
+   "orbit1": {
+    "states": 9927817,
+    "attempted": 2194417526,
+    "structural": 105924630,
+    "c8": 1159305416,
+    "c16": 919259664,
+    "completions": 0
+   },
+   "orbit2": {
+    "states": 153503717,
+    "attempted": 42099985394,
+    "structural": 1970440132,
+    "c8": 16039462995,
+    "c16": 23936578551,
+    "completions": 0
+   }
+  },
+  "44": {
+   "orbit1": {
+    "states": 17483028,
+    "attempted": 4099940858,
+    "structural": 192333142,
+    "c8": 2182254575,
+    "c16": 1707870114,
+    "completions": 0
+   },
+   "orbit2": {
+    "states": 294881022,
+    "attempted": 80040643727,
+    "structural": 3636662237,
+    "c8": 31036505576,
+    "c16": 45072594893,
+    "completions": 0
+   }
   }
  },
  "branch_b": {

@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use these results, formal proofs, or certificates, please cite them as below."
 title: "Conjectures: computer-assisted and formally verified results on open problems in mathematics"
 type: software
-version: "1.1.0"
-date-released: "2026-11-27"
+version: "1.2.0"
+date-released: "2026-11-28"
 doi: "10.5281/zenodo.24588312"
 authors:
   - family-names: "Marszałek"
@@ -24,6 +24,8 @@ keywords:
   - formal verification
   - cubic bipartite graphs
   - computer-assisted proof
+  - vertex-transitive graphs
+  - graph lifts
 abstract: >-
   Papers, code, data and machine-checked proofs (Lean 4, DRAT) for results on
   open problems in mathematics. Current problem: the Erdős–Gyárfás conjecture

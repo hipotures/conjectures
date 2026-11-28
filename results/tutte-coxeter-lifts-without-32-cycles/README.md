@@ -1,7 +1,7 @@
 # The smallest Tutte–Coxeter lifts without cycles of length 32
 
 **Category B** (Lean counting lemma; SAT with DRAT proofs checked by
-drat-trim). Paper: [`paper.pdf`](paper.pdf) ([TeX](paper.tex)).
+drat-trim). Paper: [`paper.pdf`](paper.pdf) ([TeX](paper.tex)). Release v1.2.0.
 
 > **Theorem.** Replace every vertex of the Tutte–Coxeter graph by one of the
 > gadgets H7, H8\*, H15, with any port bijections. If the resulting graph has no

@@ -1,7 +1,7 @@
 # Cycles of length 4, 8, 16 and 32 in censuses of cubic graphs
 
 **Category C** (census computation with independently checked witnesses). Paper:
-[`paper.pdf`](paper.pdf) ([TeX](paper.tex)).
+[`paper.pdf`](paper.pdf) ([TeX](paper.tex)). Release v1.2.0.
 
 > **Theorem.** Every connected cubic graph of girth at least 9 on at most 64
 > vertices contains a 16-cycle. Hence every cubic graph of girth at least 8 on

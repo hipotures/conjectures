@@ -15,9 +15,9 @@ it is proved by the Lean kernel is stated by its category (below).
 | Problem | Result | Status | Category | Artifacts |
 |---|---|---|:-:|---|
 | [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Small graphs without cycles of length a power of two](results/small-graphs-power-of-two-cycles/) | preprint, v1.0.0 | A | [PDF](results/small-graphs-power-of-two-cycles/paper.pdf) · [TeX](results/small-graphs-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas) · [Python](results/small-graphs-power-of-two-cycles/verify.py) · [Data](results/small-graphs-power-of-two-cycles/data) |
-| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Cubic bipartite graphs on at most 84 vertices have a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/) | preprint, v1.1.0 | B | [PDF](results/cubic-bipartite-power-of-two-cycles/paper.pdf) · [TeX](results/cubic-bipartite-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas/CubicBipartite.lean) · [C++](results/cubic-bipartite-power-of-two-cycles/src) · [Python](results/cubic-bipartite-power-of-two-cycles/independent_check.py) · [Data](results/cubic-bipartite-power-of-two-cycles/data) |
-| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Cycles of length 4, 8, 16 and 32 in censuses of cubic graphs](results/cubic-census-power-of-two-cycles/) | draft | C | [PDF](results/cubic-census-power-of-two-cycles/paper.pdf) · [TeX](results/cubic-census-power-of-two-cycles/paper.tex) · [C++](results/cubic-census-power-of-two-cycles/src) · [Python](results/cubic-census-power-of-two-cycles/check_witnesses.py) · [Data](results/cubic-census-power-of-two-cycles/data) |
-| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [The smallest Tutte–Coxeter lifts without cycles of length 32](results/tutte-coxeter-lifts-without-32-cycles/) | draft | B | [PDF](results/tutte-coxeter-lifts-without-32-cycles/paper.pdf) · [TeX](results/tutte-coxeter-lifts-without-32-cycles/paper.tex) · [Lean](lean/ErdosGyarfas/TutteCoxeter.lean) · [Python](results/tutte-coxeter-lifts-without-32-cycles/encode.py) · [Data](results/tutte-coxeter-lifts-without-32-cycles/data) |
+| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Cubic bipartite graphs on at most 88 vertices have a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/) | preprint, v1.2.0 | B | [PDF](results/cubic-bipartite-power-of-two-cycles/paper.pdf) · [TeX](results/cubic-bipartite-power-of-two-cycles/paper.tex) · [Lean](lean/ErdosGyarfas/CubicBipartite.lean) · [C++](results/cubic-bipartite-power-of-two-cycles/src) · [Python](results/cubic-bipartite-power-of-two-cycles/independent_check.py) · [Data](results/cubic-bipartite-power-of-two-cycles/data) |
+| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [Cycles of length 4, 8, 16 and 32 in censuses of cubic graphs](results/cubic-census-power-of-two-cycles/) | preprint, v1.2.0 | C | [PDF](results/cubic-census-power-of-two-cycles/paper.pdf) · [TeX](results/cubic-census-power-of-two-cycles/paper.tex) · [C++](results/cubic-census-power-of-two-cycles/src) · [Python](results/cubic-census-power-of-two-cycles/check_witnesses.py) · [Data](results/cubic-census-power-of-two-cycles/data) |
+| [Erdős–Gyárfás](#erdősgyárfás-conjecture) | [The smallest Tutte–Coxeter lifts without cycles of length 32](results/tutte-coxeter-lifts-without-32-cycles/) | preprint, v1.2.0 | B | [PDF](results/tutte-coxeter-lifts-without-32-cycles/paper.pdf) · [TeX](results/tutte-coxeter-lifts-without-32-cycles/paper.tex) · [Lean](lean/ErdosGyarfas/TutteCoxeter.lean) · [Python](results/tutte-coxeter-lifts-without-32-cycles/encode.py) · [Data](results/tutte-coxeter-lifts-without-32-cycles/data) |
 
 **Categories.** **A**: every claim is proved by the Lean kernel; no external
 computation is trusted. **B**: computer-assisted; Lean proves the reductions
@@ -64,18 +64,17 @@ the Lean kernel; `#print axioms` shows only `propext`, `Classical.choice`,
 <td width="42%" valign="top"><a href="results/cubic-bipartite-power-of-two-cycles/paper.pdf"><img src="assets/cubic-bipartite-power-of-two-cycles/page1.png" alt="First page of the paper"></a></td>
 <td valign="top">
 
-### [Every cubic bipartite graph on at most 84 vertices has a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/paper.pdf)
+### [Every cubic bipartite graph on at most 88 vertices has a cycle of length 4, 8 or 16](results/cubic-bipartite-power-of-two-cycles/paper.pdf)
 
-Erdős–Gyárfás conjecture · category B · 8 pages ·
-[v1.1.0, doi:10.5281/zenodo.24599605](https://doi.org/10.5281/zenodo.24599605)
+Erdős–Gyárfás conjecture · category B · 8 pages · v1.2.0
 
-A cubic bipartite counterexample needs at least **86** vertices (previously 60
+A cubic bipartite counterexample needs at least **90** vertices (previously 60
 and 70). Graphs with a 6-cycle go through Tranquilli's triangle-rooted search
 at a larger cap; graphs of girth at least 10 go through a new search from a
 forced 15-block root, which also shows that every cubic bipartite graph of
 girth ≥ 10 on at most 88 vertices has a 16-cycle.
 
-About 2·10¹⁰ candidate blocks; every rejection carries a witness cycle checked
+About 8·10¹⁰ candidate blocks at the largest cap; every rejection carries a witness cycle checked
 separately. The counters match Tranquilli's original program and an
 independent Python implementation; the case split and witness soundness are
 proved in Lean.
@@ -95,7 +94,7 @@ proved in Lean.
 
 ### [Cycles of length 4, 8, 16 and 32 in censuses of cubic graphs](results/cubic-census-power-of-two-cycles/paper.pdf)
 
-Erdős–Gyárfás conjecture · category C · 6 pages · draft
+Erdős–Gyárfás conjecture · category C · 6 pages · v1.2.0
 
 All **1,436,474** connected cubic graphs of girth ≥ 9 on 58–64 vertices have a
 16-cycle. Every graph in the census of cubic vertex-transitive graphs up to
@@ -122,7 +121,7 @@ checked by a separate program that reads the census files itself.
 
 ### [The smallest Tutte–Coxeter lifts without cycles of length 32](results/tutte-coxeter-lifts-without-32-cycles/paper.pdf)
 
-Erdős–Gyárfás conjecture · category B · 6 pages · draft
+Erdős–Gyárfás conjecture · category B · 6 pages · v1.2.0
 
 The graphs behind f_δ≥3(5) ≤ 345 and f_cubic(5) ≤ 370 replace each vertex of
 the Tutte–Coxeter graph by a small gadget. Among all **18³⁰** such lifts with
@@ -179,8 +178,8 @@ always show the committed results.
 Girth at least 10 forces this tree of 15 blocks on 31 points around any block,
 so the girth-10 search starts from it instead of from a list of cages.</td>
 <td width="50%" valign="top"><img src="assets/cubic-bipartite-power-of-two-cycles/search_growth.svg" alt="Size of the two searches by cap"><br>
-Candidate blocks examined per point cap. Near the top Branch A grows about 2.5-fold per
-point; at cap 42 it checks 2·10¹⁰ blocks in under ten minutes on 16 cores.</td>
+Candidate blocks examined per point cap. Near the top Branch A grows about twofold per
+point; at cap 44 it checks 8·10¹⁰ blocks in 39 minutes on 16 cores.</td>
 </tr>
 <tr>
 <td width="50%" valign="top"><img src="assets/cubic-bipartite-power-of-two-cycles/cages16.svg" alt="The three (3,10)-cages with a 16-cycle"><br>
@@ -273,15 +272,14 @@ category-A witnesses are proved 2-connected.
 
 | Lower bound | Previous | Status | Notes |
 |---|---|---|---|
-| a cubic bipartite graph without C4, C8, C16 has ≥ **86** vertices | 60 (Tranquilli), 70 (Zhuge) | category B, preprint v1.1.0 | Lean: case split and witness soundness |
-| a cubic bipartite graph of girth ≥ 10 without C16 has ≥ **90** vertices | — | category B, preprint v1.1.0 | Branch B of the same proof |
-| a lift of the Tutte–Coxeter graph by H7, H8\*, H15 without C32 has ≥ **345** vertices (≥ **370** if cubic) | — | category B, draft | Lean: counting identity; SAT with drat-trim-checked DRAT proofs |
+| a cubic bipartite graph without C4, C8, C16 has ≥ **90** vertices | 60 (Tranquilli), 70 (Zhuge) | category B, preprint v1.2.0 | Lean: case split and witness soundness |
+| a lift of the Tutte–Coxeter graph by H7, H8\*, H15 without C32 has ≥ **345** vertices (≥ **370** if cubic) | — | category B, preprint v1.2.0 | Lean: counting identity; SAT with drat-trim-checked DRAT proofs |
 
 | Census | Graphs | Result | Status |
 |---|--:|---|---|
-| cubic, girth ≥ 9, 58–64 vertices | 1,436,474 | all have C16 | category C, draft |
-| cubic vertex-transitive, ≤ 1280 vertices | 111,360 | all have C4, C8, C16 or C32; 100 need C32 | category C, draft |
-| cubic symmetric, ≤ 10,000 vertices | 3,815 | all have C4, C8, C16 or C32; 689 need C32 | category C, draft |
+| cubic, girth ≥ 9, 58–64 vertices | 1,436,474 | all have C16 | category C, preprint v1.2.0 |
+| cubic vertex-transitive, ≤ 1280 vertices | 111,360 | all have C4, C8, C16 or C32; 100 need C32 | category C, preprint v1.2.0 |
+| cubic symmetric, ≤ 10,000 vertices | 3,815 | all have C4, C8, C16 or C32; 689 need C32 | category C, preprint v1.2.0 |
 
 ---
 
